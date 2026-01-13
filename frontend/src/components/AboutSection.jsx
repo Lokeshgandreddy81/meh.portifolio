@@ -5,13 +5,11 @@ const AboutSection = () => {
   const sections = [
     {
       title: 'I started my career as a frontend developer',
-      description: 'I graduated with a degree in computer science from The University of Virginia. I also held a frontend-focused SWE internship at Goldman Sachs and worked part-time at a local web agency.',
-      icon: '🌸'
+      description: 'I graduated with a degree in computer science from The University of Virginia. I also held a frontend-focused SWE internship at Goldman Sachs and worked part-time at a local web agency.'
     },
     {
       title: 'But my true love is human psychology',
-      description: 'I transitioned to design after I found a passion for mental health. I find time to code when I can — like this portfolio.',
-      icon: '🌳'
+      description: 'I transitioned to design after I found a passion for mental health. I find time to code when I can — like this portfolio.'
     },
     {
       title: 'I spent a year as a social entreprenuer, improving college mental health outcomes',
