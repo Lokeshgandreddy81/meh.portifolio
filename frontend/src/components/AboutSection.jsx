@@ -45,33 +45,26 @@ const AboutSection = () => {
     <section className="py-20 px-8">
       <div className="max-w-[1200px] mx-auto space-y-32">
         {sections.map((section, index) => (
-          <div key={index} className="grid md:grid-cols-2 gap-16 items-start">
-            <div className="space-y-6">
-              <h2 
-                className="text-3xl md:text-4xl font-light leading-tight"
-                style={{ fontFamily: 'Cormorant Garamond, serif' }}
+          <div key={index} className="space-y-6">
+            <h2 
+              className="text-3xl md:text-4xl font-light leading-tight"
+              style={{ fontFamily: 'Cormorant Garamond, serif' }}
+            >
+              {section.title}
+            </h2>
+            <p className="text-[#999] text-base leading-relaxed max-w-[800px]">
+              {section.description}
+            </p>
+            {section.hasLink && (
+              <a 
+                href={section.link}
+                target={section.link.startsWith('http') ? '_blank' : '_self'}
+                rel={section.link.startsWith('http') ? 'noopener noreferrer' : ''}
+                className="inline-flex items-center justify-center w-14 h-14 rounded-full border border-[#333] hover:border-[#666] transition-all duration-300 group"
               >
-                {section.title}
-              </h2>
-              <p className="text-[#999] text-base leading-relaxed">
-                {section.description}
-              </p>
-              {section.hasLink && (
-                <a 
-                  href={section.link}
-                  className="inline-flex items-center justify-center w-14 h-14 rounded-full border border-[#333] hover:border-[#666] transition-all duration-300 group"
-                >
-                  <ArrowRight className="w-5 h-5 text-[#999] group-hover:text-[#e8e8e8] group-hover:translate-x-1 transition-all duration-300" />
-                </a>
-              )}
-            </div>
-            <div className="flex items-center justify-center">
-              {section.icon && (
-                <div className="text-[200px] opacity-20 select-none">
-                  {section.icon}
-                </div>
-              )}
-            </div>
+                <ArrowRight className="w-5 h-5 text-[#999] group-hover:text-[#e8e8e8] group-hover:translate-x-1 transition-all duration-300" />
+              </a>
+            )}
           </div>
         ))}
       </div>
