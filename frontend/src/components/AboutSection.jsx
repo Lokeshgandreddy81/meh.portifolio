@@ -3,13 +3,13 @@ import { ArrowRight } from 'lucide-react';
 
 const AboutSection = () => {
   return (
-    <section className="py-20 px-8">
-      <div className="max-w-[1400px] mx-auto space-y-40">
-        {/* Frontend Developer Section */}
-        <div className="grid lg:grid-cols-2 gap-20">
-          <div className="space-y-8">
+    <section className="py-0">
+      <div className="w-full">
+        {/* Frontend Developer - Text Left */}
+        <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
+          <div className="px-16 py-24 flex flex-col justify-center border-r border-[#222]">
             <h2 
-              className="text-4xl md:text-5xl font-light leading-tight"
+              className="text-5xl font-light leading-tight mb-8"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               I started my career as a frontend developer
@@ -18,19 +18,19 @@ const AboutSection = () => {
               I graduated with a degree in computer science from The University of Virginia. I also held a frontend-focused SWE internship at Goldman Sachs and worked part-time at a local web agency.
             </p>
           </div>
-          <div className="flex items-center justify-center">
-            <div className="w-full h-full opacity-0"></div>
+          <div className="px-16 py-24 flex items-center justify-center">
+            {/* Decorative illustration space */}
           </div>
         </div>
 
-        {/* Psychology Section */}
-        <div className="grid lg:grid-cols-2 gap-20">
-          <div className="flex items-center justify-center order-2 lg:order-1">
-            <div className="w-full h-full opacity-0"></div>
+        {/* Psychology - Text Right */}
+        <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
+          <div className="px-16 py-24 flex items-center justify-center border-r border-[#222]">
+            {/* Decorative illustration space */}
           </div>
-          <div className="space-y-8 order-1 lg:order-2">
+          <div className="px-16 py-24 flex flex-col justify-center">
             <h2 
-              className="text-4xl md:text-5xl font-light leading-tight"
+              className="text-5xl font-light leading-tight mb-8"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               But my true love is human psychology
@@ -41,16 +41,16 @@ const AboutSection = () => {
           </div>
         </div>
 
-        {/* Mental Health Section */}
-        <div className="grid lg:grid-cols-2 gap-20">
-          <div className="space-y-8">
+        {/* Mental Health - Text Left */}
+        <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
+          <div className="px-16 py-24 flex flex-col justify-center border-r border-[#222]">
             <h2 
-              className="text-4xl md:text-5xl font-light leading-tight"
+              className="text-5xl font-light leading-tight mb-8"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               I spent a year as a social entreprenuer, improving college mental health outcomes
             </h2>
-            <p className="text-[#999] text-lg leading-relaxed">
+            <p className="text-[#999] text-lg leading-relaxed mb-12">
               <a 
                 href="https://medium.com/@dxautry/how-my-depression-became-my-career-ddf80c2cc5fd" 
                 target="_blank"
@@ -62,29 +62,29 @@ const AboutSection = () => {
             </p>
             <a 
               href="#mentalhealth"
-              className="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 border-[#333] hover:border-[#666] transition-all duration-300 group"
+              className="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 border-[#333] hover:border-[#666] transition-all duration-300 group self-start"
             >
               <ArrowRight className="w-6 h-6 text-[#999] group-hover:text-[#e8e8e8] group-hover:translate-x-1 transition-all duration-300" />
             </a>
           </div>
-          <div className="flex items-center justify-center">
-            <div className="w-full h-full opacity-0"></div>
+          <div className="px-16 py-24 flex items-center justify-center">
+            {/* Decorative illustration space */}
           </div>
         </div>
 
-        {/* Mentorship Section */}
-        <div className="grid lg:grid-cols-2 gap-20">
-          <div className="flex items-center justify-center order-2 lg:order-1">
-            <div className="w-full h-full opacity-0"></div>
+        {/* Mentorship - Text Right */}
+        <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
+          <div className="px-16 py-24 flex items-center justify-center border-r border-[#222]">
+            {/* Decorative illustration space */}
           </div>
-          <div className="space-y-8 order-1 lg:order-2">
+          <div className="px-16 py-24 flex flex-col justify-center">
             <h2 
-              className="text-4xl md:text-5xl font-light leading-tight"
+              className="text-5xl font-light leading-tight mb-8"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               I also teach and mentor aspiring designers and developers
             </h2>
-            <p className="text-[#999] text-lg leading-relaxed">
+            <p className="text-[#999] text-lg leading-relaxed mb-12">
               Shoot me a line if you'd like to connect on mentorship. Number one tip — <a 
                 href="https://www.reddit.com/r/UXDesign/comments/q3ldjb/why_is_there_such_a_disconnect_between/" 
                 target="_blank"
@@ -95,21 +95,21 @@ const AboutSection = () => {
               </a>
             </p>
             <a 
-              href="https://adplist.org/mentors/daniel-autry?utm_source=linkedin&utm_medium=social&utm_campaign=user_profileshare&utm_content=danielautry"
+              href="https://adplist.org/mentors/daniel-autry"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 border-[#333] hover:border-[#666] transition-all duration-300 group"
+              className="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 border-[#333] hover:border-[#666] transition-all duration-300 group self-start"
             >
               <ArrowRight className="w-6 h-6 text-[#999] group-hover:text-[#e8e8e8] group-hover:translate-x-1 transition-all duration-300" />
             </a>
           </div>
         </div>
 
-        {/* Passions Section */}
-        <div className="grid lg:grid-cols-2 gap-20">
-          <div className="space-y-8">
+        {/* Passions - Text Left */}
+        <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
+          <div className="px-16 py-24 flex flex-col justify-center border-r border-[#222]">
             <h2 
-              className="text-4xl md:text-5xl font-light leading-tight"
+              className="text-5xl font-light leading-tight mb-8"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               In addition to Psychology, I'm passionate about News, Healthcare, Climate Change, and Education
@@ -118,19 +118,19 @@ const AboutSection = () => {
               This is where I find the intersection of technology and social impact the most fascinating, assuming there are the appropiate safeguards
             </p>
           </div>
-          <div className="flex items-center justify-center">
-            <div className="w-full h-full opacity-0"></div>
+          <div className="px-16 py-24 flex items-center justify-center">
+            {/* Decorative illustration space */}
           </div>
         </div>
 
-        {/* UX Resource Section */}
-        <div className="grid lg:grid-cols-2 gap-20">
-          <div className="flex items-center justify-center order-2 lg:order-1">
-            <div className="w-full h-full opacity-0"></div>
+        {/* UX Resource - Text Right */}
+        <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
+          <div className="px-16 py-24 flex items-center justify-center border-r border-[#222]">
+            {/* Decorative illustration space */}
           </div>
-          <div className="space-y-8 order-1 lg:order-2">
+          <div className="px-16 py-24 flex flex-col justify-center">
             <h2 
-              className="text-4xl md:text-5xl font-light leading-tight"
+              className="text-5xl font-light leading-tight mb-8"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               My current project is an open-source UX resource for aspiring designers (coming soon)
@@ -141,11 +141,11 @@ const AboutSection = () => {
           </div>
         </div>
 
-        {/* Houseplant Section */}
-        <div className="grid lg:grid-cols-2 gap-20">
-          <div className="space-y-8">
+        {/* Houseplant - Text Left */}
+        <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
+          <div className="px-16 py-24 flex flex-col justify-center border-r border-[#222]">
             <h2 
-              className="text-4xl md:text-5xl font-light leading-tight"
+              className="text-5xl font-light leading-tight mb-8"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               Outside of work, I'm a houseplant enthusiast and powerlifter
@@ -154,19 +154,19 @@ const AboutSection = () => {
               I hope to get a NASM training and nutrition certification when time allows (and learn how to keep a fiddle leaf alive)
             </p>
           </div>
-          <div className="flex items-center justify-center">
-            <div className="w-full h-full opacity-0"></div>
+          <div className="px-16 py-24 flex items-center justify-center">
+            {/* Decorative illustration space */}
           </div>
         </div>
 
-        {/* DJ Section */}
-        <div className="grid lg:grid-cols-2 gap-20">
-          <div className="flex items-center justify-center order-2 lg:order-1">
-            <div className="w-full h-full opacity-0"></div>
+        {/* DJ - Text Right */}
+        <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
+          <div className="px-16 py-24 flex items-center justify-center border-r border-[#222]">
+            {/* Decorative illustration space */}
           </div>
-          <div className="space-y-8 order-1 lg:order-2">
+          <div className="px-16 py-24 flex flex-col justify-center">
             <h2 
-              className="text-4xl md:text-5xl font-light leading-tight"
+              className="text-5xl font-light leading-tight mb-8"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               And an aspiring house DJ (80% serious)
