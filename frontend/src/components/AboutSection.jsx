@@ -1,8 +1,23 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
+import TreeIllustration from './decorative/TreeIllustration';
+import FlowerSprig from './decorative/FlowerSprig';
+import Houseplant from './decorative/Houseplant';
+import DJEqualizer from './decorative/DJEqualizer';
 
 const AboutSection = () => {
+  const decorations = [
+    <FlowerSprig className="opacity-30" />,
+    <TreeIllustration className="opacity-30" />,
+    <Houseplant className="opacity-30" />,
+    <FlowerSprig className="opacity-30" />,
+    <TreeIllustration className="opacity-30" />,
+    <Houseplant className="opacity-30" />,
+    <FlowerSprig className="opacity-30" />,
+    <DJEqualizer className="opacity-30" />
+  ];
+
   return (
     <section className="py-0">
       <div className="w-full">
@@ -36,7 +51,7 @@ const AboutSection = () => {
                     )}
                   </>
                 ) : (
-                  <div>{/* Decorative space */}</div>
+                  <div>{decorations[index]}</div>
                 )}
               </div>
               
@@ -65,7 +80,7 @@ const AboutSection = () => {
                     )}
                   </>
                 ) : (
-                  <div>{/* Decorative space */}</div>
+                  <div>{decorations[index]}</div>
                 )}
               </div>
             </div>
