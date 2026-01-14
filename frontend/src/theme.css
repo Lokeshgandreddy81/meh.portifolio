@@ -24,14 +24,21 @@
   border-color: var(--border);
 }
 
-/* Decorative SVG elements - adapt to theme */
+/* Decorative SVG elements - more visible in both themes */
 .decorative-svg {
-  opacity: 0.3;
-  transition: opacity 0.3s ease;
+  color: var(--muted);
+  opacity: 0.7;
+  transition: opacity 0.3s ease, color 0.3s ease;
 }
 
 :root.light .decorative-svg {
-  opacity: 0.2;
+  color: var(--muted);
+  opacity: 0.6;
+}
+
+:root.dark .decorative-svg {
+  color: var(--foreground);
+  opacity: 0.5;
 }
 
 /* Logo boxes - invert in light mode */
