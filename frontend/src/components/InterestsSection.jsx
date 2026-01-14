@@ -1,5 +1,6 @@
 import React from 'react';
 import { Gamepad2, Headphones, BookOpen } from 'lucide-react';
+import siteConfig from '../config/siteConfig';
 
 const InterestsSection = () => {
   return (
@@ -12,8 +13,9 @@ const InterestsSection = () => {
             <Gamepad2 className="w-16 h-16 text-[#e8e8e8] mb-8" strokeWidth={1} />
             <h3 className="text-2xl font-semibold mb-6 text-[#e8e8e8]">Playing:</h3>
             <ul className="space-y-3 text-[#999] text-lg">
-              <li>Elden Ring</li>
-              <li>Animal Crossing (late to the party)</li>
+              {siteConfig.interests.playing.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </div>
           
@@ -22,11 +24,9 @@ const InterestsSection = () => {
             <Headphones className="w-16 h-16 text-[#e8e8e8] mb-8" strokeWidth={1} />
             <h3 className="text-2xl font-semibold mb-6 text-[#e8e8e8]">Listening to:</h3>
             <ul className="space-y-3 text-[#999] text-lg">
-              <li>Fred Again</li>
-              <li>Mac Miller</li>
-              <li>Lofi beats</li>
-              <li>Khruangbin</li>
-              <li>The Daily</li>
+              {siteConfig.interests.listening.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </div>
           
@@ -35,7 +35,9 @@ const InterestsSection = () => {
             <BookOpen className="w-16 h-16 text-[#e8e8e8] mb-8" strokeWidth={1} />
             <h3 className="text-2xl font-semibold mb-6 text-[#e8e8e8]">Reading:</h3>
             <ul className="space-y-3 text-[#999] text-lg">
-              <li>Do comic books count?</li>
+              {siteConfig.interests.reading.map((item, index) => (
+                <li key={index}>{item}</li>
+              ))}
             </ul>
           </div>
         </div>
@@ -52,7 +54,7 @@ const InterestsSection = () => {
             className="text-5xl font-light text-[#999]"
             style={{ fontFamily: 'Cormorant Garamond, serif' }}
           >
-            All the best,<br />Gandreddy Lokesh Ram
+            All the best,<br />{siteConfig.name}
           </p>
         </div>
       </div>
