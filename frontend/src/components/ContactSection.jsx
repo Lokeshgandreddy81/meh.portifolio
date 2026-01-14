@@ -9,21 +9,21 @@ const ContactSection = () => {
         {/* Split-screen layout: Text Left (60%), Image Right (40%) */}
         <div className="grid lg:grid-cols-[60%_40%] border-b section-border min-h-screen">
           {/* Left Side - Contact Content */}
-          <div className="px-12 md:px-16 lg:px-20 py-24 flex flex-col justify-center border-r section-border">
-            <h2 
-              className="text-5xl md:text-6xl lg:text-7xl font-light leading-[1.1] mb-16 text-foreground"
+          <div className="px-6 py-12 md:px-16 lg:px-20 md:py-24 flex flex-col justify-center border-r section-border">
+            <h2
+              className="text-4xl md:text-6xl lg:text-7xl font-light leading-[1.1] mb-8 md:mb-16 text-foreground"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               I'm always curious about ambitious problems, thoughtful collaboration, and the next layer of abstraction.
             </h2>
-            
-            <p 
-              className="text-2xl md:text-3xl font-light text-foreground mb-16" 
+
+            <p
+              className="text-2xl md:text-3xl font-light text-foreground mb-16"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               Let's build something that matters.
             </p>
-            
+
             {/* Contact Links */}
             <div className="space-y-6 text-lg md:text-xl">
               <div>
@@ -36,7 +36,7 @@ const ContactSection = () => {
                   <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>
               </div>
-              
+
               <div>
                 <a
                   href={siteConfig.linkedIn}
@@ -49,7 +49,7 @@ const ContactSection = () => {
                   <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>
               </div>
-              
+
               <div>
                 <a
                   href={siteConfig.github}
@@ -63,25 +63,25 @@ const ContactSection = () => {
                 </a>
               </div>
             </div>
-            
+
             {/* Signature */}
             <div className="mt-20 md:mt-24">
-              <p 
+              <p
                 className="text-4xl md:text-5xl font-light text-muted"
                 style={{ fontFamily: 'Cormorant Garamond, serif' }}
               >
                 All the best,<br />{siteConfig.name}
               </p>
-              
+
               <div className="flex items-center gap-3 mt-8">
                 <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
                 <span className="text-foreground font-medium">Available for collaboration</span>
               </div>
             </div>
           </div>
-          
+
           {/* Right Side - Full-Height Portrait Image */}
-          <div 
+          <div
             className="hidden lg:block relative min-h-screen"
             style={{
               backgroundImage: `url(https://customer-assets.emergentagent.com/job_daniel-autry/artifacts/2c2yfqzx_PHOTO-2026-01-14-14-18-00.jpg)`,

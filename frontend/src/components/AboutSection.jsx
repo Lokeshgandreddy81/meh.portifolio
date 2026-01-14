@@ -23,24 +23,24 @@ const AboutSection = () => {
       <div className="w-full">
         {siteConfig.aboutSections.map((section, index) => {
           const isEven = index % 2 === 0;
-          
+
           return (
-            <div key={index} className="grid grid-cols-2 border-b border-[#222] min-h-screen">
+            <div key={index} className={`flex ${!isEven ? 'flex-col-reverse' : 'flex-col-reverse'} md:grid md:grid-cols-2 border-b border-[#222] min-h-screen`}>
               {/* Left Column */}
-              <div className={`px-16 py-24 flex ${isEven ? 'flex-col justify-center' : 'items-center justify-center'} border-r border-[#222]`}>
+              <div className={`px-6 py-12 md:px-16 md:py-24 flex ${isEven ? 'flex-col justify-center' : 'items-center justify-center'} section-border md:border-r border-t md:border-t-0`}>
                 {isEven ? (
                   <>
-                    <h2 
-                      className="text-5xl font-light leading-tight mb-8"
+                    <h2
+                      className="text-4xl md:text-5xl font-light leading-tight mb-6 md:mb-8"
                       style={{ fontFamily: 'Cormorant Garamond, serif' }}
                     >
                       {section.title}
                     </h2>
-                    <p className="text-[#999] text-lg leading-relaxed mb-12">
+                    <p className="text-[#999] text-lg leading-relaxed mb-8 md:mb-12">
                       {section.description}
                     </p>
                     {section.hasLink && (
-                      <a 
+                      <a
                         href={section.link}
                         target={section.link.startsWith('http') ? '_blank' : '_self'}
                         rel={section.link.startsWith('http') ? 'noopener noreferrer' : ''}
@@ -51,25 +51,25 @@ const AboutSection = () => {
                     )}
                   </>
                 ) : (
-                  <div>{decorations[index]}</div>
+                  <div className="w-3/4 h-3/4 md:w-full md:h-full flex items-center justify-center">{decorations[index]}</div>
                 )}
               </div>
-              
+
               {/* Right Column */}
-              <div className={`px-16 py-24 flex ${!isEven ? 'flex-col justify-center' : 'items-center justify-center'}`}>
+              <div className={`px-6 py-12 md:px-16 md:py-24 flex ${!isEven ? 'flex-col justify-center' : 'items-center justify-center'} border-b md:border-b-0`}>
                 {!isEven ? (
                   <>
-                    <h2 
-                      className="text-5xl font-light leading-tight mb-8"
+                    <h2
+                      className="text-4xl md:text-5xl font-light leading-tight mb-6 md:mb-8"
                       style={{ fontFamily: 'Cormorant Garamond, serif' }}
                     >
                       {section.title}
                     </h2>
-                    <p className="text-[#999] text-lg leading-relaxed mb-12">
+                    <p className="text-[#999] text-lg leading-relaxed mb-8 md:mb-12">
                       {section.description}
                     </p>
                     {section.hasLink && (
-                      <a 
+                      <a
                         href={section.link}
                         target={section.link.startsWith('http') ? '_blank' : '_self'}
                         rel={section.link.startsWith('http') ? 'noopener noreferrer' : ''}
@@ -80,7 +80,7 @@ const AboutSection = () => {
                     )}
                   </>
                 ) : (
-                  <div>{decorations[index]}</div>
+                  <div className="w-3/4 h-3/4 md:w-full md:h-full flex items-center justify-center">{decorations[index]}</div>
                 )}
               </div>
             </div>
