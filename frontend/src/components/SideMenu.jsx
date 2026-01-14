@@ -2,13 +2,7 @@ import React from 'react';
 import { X } from 'lucide-react';
 
 const SideMenu = ({ isOpen, onClose }) => {
-  const menuItems = [
-    { label: 'Home', href: '#home' },
-    { label: 'Google', href: '#google' },
-    { label: 'The Washington Post', href: '#washingtonpost' },
-    { label: 'College Mental Health', href: '#mentalhealth' },
-    { label: 'Contact', href: 'https://www.linkedin.com/in/daniel-autry/', external: true }
-  ];
+  const menuItems = [\n    { label: 'Home', href: '#home' },\n    { label: 'Contact', href: '#contact' },\n    { label: 'Sara.ai', href: '#saraai' },\n    { label: 'Autonomous AI Engine', href: '#aiengine' },\n    { label: 'Document Intelligence', href: '#docintel' },\n    { label: 'Project Demos', href: '#demos' }\n  ];
 
   return (
     <>
