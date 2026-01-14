@@ -2,7 +2,17 @@ import React from 'react';
 import { X } from 'lucide-react';
 
 const SideMenu = ({ isOpen, onClose }) => {
-  const menuItems = [\n    { label: 'Home', href: '#home' },\n    { label: 'Contact', href: '#contact' },\n    { label: 'Sara.ai', href: '#saraai' },\n    { label: 'Autonomous AI Engine', href: '#aiengine' },\n    { label: 'Document Intelligence', href: '#docintel' },\n    { label: 'Project Demos', href: '#demos' }\n  ];
+  const mainMenuItems = [
+    { label: 'Home', href: '#home' },
+    { label: 'Contact', href: '#contact' }
+  ];
+  
+  const workMenuItems = [
+    { label: 'Sara.ai', href: '#saraai' },
+    { label: 'Autonomous AI Engine', href: '#aiengine' },
+    { label: 'Document Intelligence', href: '#docintel' },
+    { label: 'Project Demos', href: '#demos' }
+  ];
 
   return (
     <>
@@ -16,34 +26,52 @@ const SideMenu = ({ isOpen, onClose }) => {
       
       {/* Side Menu */}
       <div 
-        className={`fixed top-0 right-0 h-full w-full md:w-[400px] bg-[#0a0a0a] border-l border-[#222] z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-full md:w-[500px] bg-[#0a0a0a] border-l border-[#222] z-50 transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="p-8">
           <button 
             onClick={onClose}
-            className="mb-12 text-[#999] hover:text-[#e8e8e8] transition-colors"
+            className="mb-12 text-[#999] hover:text-[#e8e8e8] transition-colors flex items-center gap-2"
           >
-            <X className="w-6 h-6" />
+            <span>Close menu</span>
+            <span className="text-[#666]">·</span>
           </button>
           
-          <nav className="space-y-6">
-            <h2 className="text-4xl font-serif mb-8" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Navigation</h2>
-            {menuItems.map((item, index) => (
-              <a
-                key={index}
-                href={item.href}
-                target={item.external ? '_blank' : '_self'}
-                rel={item.external ? 'noopener noreferrer' : ''}
-                onClick={!item.external ? onClose : undefined}
-                className="block text-2xl font-serif text-[#e8e8e8] hover:text-[#999] transition-colors"
-                style={{ fontFamily: 'Cormorant Garamond, serif' }}
-              >
-                {item.label}
-              </a>
-            ))}
-          </nav>
+          <div className="grid grid-cols-2 gap-12">
+            {/* MAIN Column */}
+            <nav className="space-y-6">
+              <h3 className="text-sm uppercase tracking-wider text-[#666] mb-6">MAIN</h3>
+              {mainMenuItems.map((item, index) => (
+                <a
+                  key={index}
+                  href={item.href}
+                  onClick={onClose}
+                  className="block text-2xl font-serif text-[#e8e8e8] hover:text-[#999] transition-colors"
+                  style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+            
+            {/* WORK Column */}
+            <nav className="space-y-6">
+              <h3 className="text-sm uppercase tracking-wider text-[#666] mb-6">WORK</h3>
+              {workMenuItems.map((item, index) => (
+                <a
+                  key={index}
+                  href={item.href}
+                  onClick={onClose}
+                  className="block text-2xl font-serif text-[#e8e8e8] hover:text-[#999] transition-colors"
+                  style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                >
+                  {item.label}
+                </a>
+              ))}
+            </nav>
+          </div>
         </div>
       </div>
     </>
