@@ -26,29 +26,29 @@ const SideMenu = ({ isOpen, onClose }) => {
       
       {/* Side Menu */}
       <div 
-        className={`fixed top-0 right-0 h-full w-full md:w-[500px] bg-[#0a0a0a] border-l border-[#222] z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-full md:w-[500px] bg-background border-l border-border z-50 transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="p-8">
           <button 
             onClick={onClose}
-            className="mb-12 text-[#999] hover:text-[#e8e8e8] transition-colors flex items-center gap-2"
+            className="mb-12 text-muted hover:text-foreground transition-colors flex items-center gap-2"
           >
             <span>Close menu</span>
-            <span className="text-[#666]">·</span>
+            <span className="text-muted/50">·</span>
           </button>
           
           <div className="grid grid-cols-2 gap-12">
             {/* MAIN Column */}
             <nav className="space-y-6">
-              <h3 className="text-sm uppercase tracking-wider text-[#666] mb-6">MAIN</h3>
+              <h3 className="text-sm uppercase tracking-wider text-muted/70 mb-6">MAIN</h3>
               {mainMenuItems.map((item, index) => (
                 <a
                   key={index}
                   href={item.href}
                   onClick={onClose}
-                  className="block text-2xl font-serif text-[#e8e8e8] hover:text-[#999] transition-colors"
+                  className="block text-2xl font-serif text-foreground hover:text-muted transition-colors"
                   style={{ fontFamily: 'Cormorant Garamond, serif' }}
                 >
                   {item.label}
@@ -58,13 +58,13 @@ const SideMenu = ({ isOpen, onClose }) => {
             
             {/* WORK Column */}
             <nav className="space-y-6">
-              <h3 className="text-sm uppercase tracking-wider text-[#666] mb-6">WORK</h3>
+              <h3 className="text-sm uppercase tracking-wider text-muted/70 mb-6">WORK</h3>
               {workMenuItems.map((item, index) => (
                 <a
                   key={index}
                   href={item.href}
                   onClick={onClose}
-                  className="block text-2xl font-serif text-[#e8e8e8] hover:text-[#999] transition-colors"
+                  className="block text-2xl font-serif text-foreground hover:text-muted transition-colors"
                   style={{ fontFamily: 'Cormorant Garamond, serif' }}
                 >
                   {item.label}
