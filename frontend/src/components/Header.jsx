@@ -37,7 +37,7 @@ const Header = ({ onMenuClick }) => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#0a0a0a]/80 backdrop-blur-sm">
       <div className="max-w-[1400px] mx-auto px-8 py-6 flex items-center justify-between">
         <div className="flex items-center gap-6 text-sm text-[#999]">
-          <span className="hover:text-[#e8e8e8] transition-colors cursor-pointer">danielautry.com</span>
+          <span className="hover:text-[#e8e8e8] transition-colors cursor-pointer">lokesh-ai-portfolio.vercel.app</span>
           <span className="hidden md:inline">·</span>
           <span className="hidden md:inline">{siteConfig.location}</span>
           <span className="hidden md:inline">·</span>
