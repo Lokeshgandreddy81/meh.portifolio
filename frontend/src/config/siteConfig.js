@@ -29,30 +29,19 @@ export const siteConfig = {
       id: "saraai",
       company: "Sara.ai",
       logo: "S",
-      title: "Right now, I architect AI-powered learning experiences at Sara.ai",
+      title: "Right now, I'm building Sara.ai — an AI-native learning platform that adapts in real time to how people learn.",
       descriptions: [
-        "September 2023 — Present: Founder & Lead Engineer of personalized learning platform serving 1,700+ active users with 92% monthly retention rate.",
-        "Engineered RAG-based recommendation system using transformer embeddings and FAISS, reducing content discovery latency by 32% and increasing click-through rates by 24%."
+        "We're reimagining education not as content delivery, but as an interactive, responsive system."
       ],
-      link: "https://sara.ai",
-      highlights: [
-        "99.7% uptime with scalable microservices architecture",
-        "50,000+ daily events processed with real-time analytics",
-        "Reduced deployment time from 4 hours to 15 minutes with CI/CD"
-      ]
+      link: "https://sara.ai"
     },
     {
-      id: "vaagisha",
-      company: "Vaagisha Enterprises",
-      logo: "V",
-      title: "Previously, I was an AI Systems Engineering Consultant at Vaagisha Enterprises",
-      description: "Designed and implemented AI-powered hiring platform using Next.js and serverless architecture. Integrated Gemini AI for interview analysis with 94% accuracy, reducing manual screening time by 65%. Built real-time collaboration features and matching algorithms improving candidate placements by 42%.",
-      link: "https://vaagisha.com",
-      highlights: [
-        "65% reduction in manual screening time",
-        "94% accuracy in automated candidate evaluation",
-        "42% improvement in successful placements"
-      ]
+      id: "enterprise",
+      company: "AI Enterprise",
+      logo: "AE",
+      title: "Previously, I designed enterprise AI systems that transform how companies hire, collaborate, and make decisions.",
+      description: "From screening automation to real-time candidate engagement — I build bridges between intelligence and action.",
+      link: "#enterprise"
     }
   ],
   
