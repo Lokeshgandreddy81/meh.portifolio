@@ -46,13 +46,13 @@ const InterestsSection = () => {
             className="text-5xl md:text-6xl font-light leading-tight mb-16"
             style={{ fontFamily: 'Cormorant Garamond, serif' }}
           >
-            Always down to collaborate when I have the time. Reach out for case studies.
+            Always excited to collaborate on challenging AI/automation problems. Reach out for project demos and code samples.
           </h2>
           <p 
             className="text-5xl font-light text-[#999]"
             style={{ fontFamily: 'Cormorant Garamond, serif' }}
           >
-            All the best,<br />Daniel
+            All the best,<br />Gandreddy Lokesh Ram
           </p>
         </div>
       </div>
