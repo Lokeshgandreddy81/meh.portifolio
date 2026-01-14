@@ -4,6 +4,7 @@ import Hero from '../components/Hero';
 import WorkSection from '../components/WorkSection';
 import AboutSection from '../components/AboutSection';
 import InterestsSection from '../components/InterestsSection';
+import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
 import SideMenu from '../components/SideMenu';
 
@@ -19,6 +20,7 @@ const Home = () => {
         <WorkSection />
         <AboutSection />
         <InterestsSection />
+        <ContactSection />
       </main>
       <Footer />
     </div>
