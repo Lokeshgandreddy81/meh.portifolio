@@ -8,7 +8,7 @@ const Footer = () => {
         <p className="mb-2">
           {siteConfig.footer.text}{' '}
           <a 
-            href={siteConfig.linkedIn}
+            href={siteConfig.github}
             target="_blank" 
             rel="noopener noreferrer"
             className="text-[#999] hover:text-[#e8e8e8] transition-colors underline"
