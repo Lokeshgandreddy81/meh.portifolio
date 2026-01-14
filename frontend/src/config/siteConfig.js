@@ -115,9 +115,9 @@ export const siteConfig = {
   
   // ===== INTERESTS =====
   interests: {
-    building: ["Scalable AI systems", "RAG architectures", "Multi-agent frameworks"],
-    learning: ["System design podcasts", "AI/ML research papers", "DevOps best practices"],
-    reading: ["Designing Data-Intensive Applications", "Cloud architecture blogs", "Open source code"]
+    building: ["Prototypes that become products", "Tools that become standards", "Systems that scale gracefully"],
+    reading: ["Systems design papers", "Founder memoirs", "Architecture that inspires"],
+    learning: ["Long-form interviews with builders", "Ambient soundscapes for deep work", "AI/ML research breakthroughs"]
   },
   
   // ===== TECHNICAL SKILLS =====
