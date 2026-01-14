@@ -13,8 +13,12 @@ const ContactSection = () => {
               className="text-6xl md:text-7xl font-light leading-tight mb-16 text-foreground"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
-              Always excited to collaborate on challenging AI/automation problems. Let's build something impactful together.
+              I'm always curious about ambitious problems, thoughtful collaboration, and the next layer of abstraction.
             </h2>
+            
+            <p className="text-2xl font-light text-foreground mb-12" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+              Let's build something that matters.
+            </p>
             
             <div className="space-y-6 text-lg">
               <div>
@@ -56,29 +60,28 @@ const ContactSection = () => {
             </div>
           </div>
           
-          {/* Right - Final Signature */}
-          <div className="px-16 py-24 flex flex-col justify-center">
+          {/* Right - Closing Image & Signature */}
+          <div className="px-16 py-24 flex flex-col justify-center items-center">
+            {/* Closing Portrait Image */}
+            <div className="mb-16">
+              <img 
+                src={siteConfig.closingImage}
+                alt={siteConfig.name}
+                className="w-64 h-64 rounded-full object-cover grayscale border-2 border-border"
+              />
+            </div>
+            
             <p 
-              className="text-5xl md:text-6xl font-light text-muted mb-8"
+              className="text-5xl md:text-6xl font-light text-muted text-center mb-8"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               All the best,<br />{siteConfig.name}
             </p>
             
-            <div className="mt-16 space-y-4 text-muted">
-              <p className="text-lg">Open to:</p>
-              <ul className="space-y-2 text-base">
-                <li>• Full-time opportunities</li>
-                <li>• Contract projects</li>
-                <li>• Technical consulting</li>
-                <li>• Open source collaborations</li>
-              </ul>
-              
-              <div className="mt-8 pt-8 border-t border-border">
-                <div className="flex items-center gap-3">
-                  <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
-                  <span className="text-foreground font-medium">Available for projects</span>
-                </div>
+            <div className="mt-8 text-center">
+              <div className="flex items-center justify-center gap-3 mb-4">
+                <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
+                <span className="text-foreground font-medium">Available for collaboration</span>
               </div>
             </div>
           </div>
