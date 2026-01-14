@@ -3,14 +3,16 @@
 
 export const siteConfig = {
   // ===== PERSONAL INFORMATION =====
-  name: "Gandreddy Lokesh",
+  name: "Gandreddy Lokesh Ram",
   firstName: "Lokesh",
   location: "Tirupati, India",
   timezone: "ist",
-  tagline: "an AI Systems & Automation Engineer building intelligent platforms that scale. This is my technical playground.",
+  tagline: "I architect intelligent systems that think, automate, and scale. This is where ideas become infrastructure.",
   
-  // ===== PROFILE IMAGE =====
+  // ===== PROFILE IMAGES =====
   profileImage: "https://customer-assets.emergentagent.com/job_daniel-autry/artifacts/vpfro1p6_WhatsApp%20Image%202026-01-13%20at%2019.29.21.jpeg",
+  // Add your closing portrait image here (displayed at the end before footer)
+  closingImage: "https://customer-assets.emergentagent.com/job_daniel-autry/artifacts/vpfro1p6_WhatsApp%20Image%202026-01-13%20at%2019.29.21.jpeg",
   
   // ===== CONTACT & SOCIAL LINKS =====
   email: "gandreddylokesh7@gmail.com",
