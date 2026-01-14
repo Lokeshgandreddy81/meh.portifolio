@@ -4,14 +4,16 @@ import { X } from 'lucide-react';
 const SideMenu = ({ isOpen, onClose }) => {
   const mainMenuItems = [
     { label: 'Home', href: '#home' },
-    { label: 'Contact', href: '#contact' }
+    { label: 'Contact', href: '#contact' },
+    { label: 'Resume', href: 'https://customer-assets.emergentagent.com/job_daniel-autry/artifacts/6pudtwl8_Lokesh_resume.pdf', external: true }
   ];
   
   const workMenuItems = [
-    { label: 'Sara.ai', href: '#saraai' },
-    { label: 'Autonomous AI Engine', href: '#aiengine' },
+    { label: 'Sara.ai Platform', href: '#saraai' },
+    { label: 'Autonomous Agent Framework', href: 'https://github.com/Lokeshgandr', external: true },
     { label: 'Document Intelligence', href: '#docintel' },
-    { label: 'Project Demos', href: '#demos' }
+    { label: 'AI Hiring Platform', href: '#vaagisha' },
+    { label: 'Technical Blog', href: 'https://lokeshgandreddy.hashnode.dev', external: true }
   ];
 
   return (
@@ -47,7 +49,9 @@ const SideMenu = ({ isOpen, onClose }) => {
                 <a
                   key={index}
                   href={item.href}
-                  onClick={onClose}
+                  onClick={!item.external ? onClose : undefined}
+                  target={item.external ? '_blank' : '_self'}
+                  rel={item.external ? 'noopener noreferrer' : ''}
                   className="block text-2xl font-serif text-foreground hover:text-muted transition-colors"
                   style={{ fontFamily: 'Cormorant Garamond, serif' }}
                 >
@@ -63,7 +67,9 @@ const SideMenu = ({ isOpen, onClose }) => {
                 <a
                   key={index}
                   href={item.href}
-                  onClick={onClose}
+                  onClick={!item.external ? onClose : undefined}
+                  target={item.external ? '_blank' : '_self'}
+                  rel={item.external ? 'noopener noreferrer' : ''}
                   className="block text-2xl font-serif text-foreground hover:text-muted transition-colors"
                   style={{ fontFamily: 'Cormorant Garamond, serif' }}
                 >
