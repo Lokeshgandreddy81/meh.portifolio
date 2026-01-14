@@ -1,12 +1,14 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
+import LotusFlower from './decorative/LotusFlower';
+import BotanicalLeaf from './decorative/BotanicalLeaf';
 
 const WorkSection = () => {
   return (
     <section className="py-0">
       <div className="w-full">
-        {/* Sara.ai Section - Text Left, Empty Right */}
+        {/* Sara.ai Section - Text Left, Decoration Right */}
         <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
           <div className="px-16 py-24 flex flex-col justify-center border-r border-[#222]">
             {/* Company Logo */}
@@ -38,14 +40,14 @@ const WorkSection = () => {
             </a>
           </div>
           <div className="px-16 py-24 flex items-center justify-center">
-            {/* Empty space for decorative element */}
+            <LotusFlower className="opacity-30" />
           </div>
         </div>
 
-        {/* AI Consultant Section - Empty Left, Text Right */}
+        {/* AI Consultant Section - Decoration Left, Text Right */}
         <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
           <div className="px-16 py-24 flex items-center justify-center border-r border-[#222]">
-            {/* Empty space for decorative element */}
+            <BotanicalLeaf className="opacity-30" />
           </div>
           <div className="px-16 py-24 flex flex-col justify-center">
             {/* Company Logo */}
