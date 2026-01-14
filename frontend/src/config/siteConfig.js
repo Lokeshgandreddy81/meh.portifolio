@@ -85,34 +85,6 @@ export const siteConfig = {
     }
   ],
   
-  // ===== PROJECTS =====
-  projects: [
-    {
-      title: "Sara.ai - AI Learning Platform",
-      description: "Personalized learning platform with 1,700+ active users and 92% retention",
-      tech: ["RAG", "FAISS", "Docker", "Kubernetes", "FastAPI", "React"],
-      link: "https://sara.ai"
-    },
-    {
-      title: "Autonomous Business Process Engine",
-      description: "Multi-agent automation framework with 400+ GitHub stars",
-      tech: ["LangChain", "CrewAI", "Python", "Microservices"],
-      link: "https://github.com/Lokeshgandr"
-    },
-    {
-      title: "Document Intelligence Pipeline",
-      description: "Processes 5,000+ documents daily with 99.2% accuracy",
-      tech: ["GPT-4 Vision", "Claude API", "PostgreSQL", "AWS"],
-      link: "https://github.com/Lokeshgandr"
-    },
-    {
-      title: "AI Hiring Platform",
-      description: "Reduced manual screening by 65% with 94% accuracy",
-      tech: ["Gemini AI", "Next.js", "WebSocket", "Serverless"],
-      link: "#"
-    }
-  ],
-  
   // ===== INTERESTS =====
   interests: {
     building: ["Prototypes that become products", "Tools that become standards", "Systems that scale gracefully"],
