@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Moon } from 'lucide-react';
+import siteConfig from '../config/siteConfig';
 
 const Header = ({ onMenuClick }) => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -13,13 +14,23 @@ const Header = ({ onMenuClick }) => {
   }, []);
 
   const formatTime = (date) => {
+    const timeZones = {
+      'et': 'America/New_York',
+      'ist': 'Asia/Kolkata',
+      'pst': 'America/Los_Angeles',
+      'cst': 'America/Chicago',
+      'gmt': 'Europe/London'
+    };
+    
+    const timeZone = timeZones[siteConfig.timezone.toLowerCase()] || 'America/New_York';
+    
     return date.toLocaleTimeString('en-US', {
       hour: 'numeric',
       minute: '2-digit',
       second: '2-digit',
       hour12: true,
-      timeZone: 'America/New_York'
-    }) + ' et';
+      timeZone: timeZone
+    }) + ' ' + siteConfig.timezone.toLowerCase();
   };
 
   return (
@@ -28,7 +39,7 @@ const Header = ({ onMenuClick }) => {
         <div className="flex items-center gap-6 text-sm text-[#999]">
           <span className="hover:text-[#e8e8e8] transition-colors cursor-pointer">danielautry.com</span>
           <span className="hidden md:inline">·</span>
-          <span className="hidden md:inline">Washington, DC</span>
+          <span className="hidden md:inline">{siteConfig.location}</span>
           <span className="hidden md:inline">·</span>
           <span className="hidden md:inline font-mono">{formatTime(currentTime)}</span>
         </div>
