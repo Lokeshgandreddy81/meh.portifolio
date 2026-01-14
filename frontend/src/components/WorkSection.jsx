@@ -1,16 +1,17 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
+import siteConfig from '../config/siteConfig';
 
 const WorkSection = () => {
   return (
     <section className="py-0">
       <div className="w-full">
-        {/* Google Section - Text Left, Empty Right */}
+        {/* Sara.ai Section - Text Left, Empty Right */}
         <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
           <div className="px-16 py-24 flex flex-col justify-center border-r border-[#222]">
             {/* Company Logo */}
             <div className="w-24 h-24 rounded-3xl bg-[#e8e8e8] flex items-center justify-center mb-12">
-              <span className="text-5xl font-bold text-[#0a0a0a]">G</span>
+              <span className="text-5xl font-bold text-[#0a0a0a]">{siteConfig.workExperiences[0].logo}</span>
             </div>
             
             {/* Title */}
@@ -18,18 +19,19 @@ const WorkSection = () => {
               className="text-5xl font-light leading-tight mb-8"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
-              Right now, I design immersive news and election experiences at Google
+              {siteConfig.workExperiences[0].title}
             </h2>
             
             {/* Description */}
             <div className="text-[#999] text-lg leading-relaxed space-y-4 mb-12">
-              <p>2023 — News on Search (news queries), Civics on Search (global election queries).</p>
-              <p>2022 — 2023: Google News apps (iOS, Android, and news.google.com)</p>
+              {siteConfig.workExperiences[0].descriptions.map((desc, index) => (
+                <p key={index}>{desc}</p>
+              ))}
             </div>
             
             {/* CTA Button */}
             <a 
-              href="#google"
+              href={siteConfig.workExperiences[0].link}
               className="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 border-[#333] hover:border-[#666] transition-all duration-300 group self-start"
             >
               <ArrowRight className="w-6 h-6 text-[#999] group-hover:text-[#e8e8e8] group-hover:translate-x-1 transition-all duration-300" />
@@ -40,7 +42,7 @@ const WorkSection = () => {
           </div>
         </div>
 
-        {/* Washington Post Section - Empty Left, Text Right */}
+        {/* AI Consultant Section - Empty Left, Text Right */}
         <div className="grid grid-cols-2 border-b border-[#222] min-h-screen">
           <div className="px-16 py-24 flex items-center justify-center border-r border-[#222]">
             {/* Empty space for decorative element */}
@@ -48,7 +50,7 @@ const WorkSection = () => {
           <div className="px-16 py-24 flex flex-col justify-center">
             {/* Company Logo */}
             <div className="w-24 h-24 rounded-3xl bg-[#e8e8e8] flex items-center justify-center mb-12">
-              <span className="text-3xl font-bold text-[#0a0a0a]">WP</span>
+              <span className="text-3xl font-bold text-[#0a0a0a]">{siteConfig.workExperiences[1].logo}</span>
             </div>
             
             {/* Title */}
@@ -56,17 +58,17 @@ const WorkSection = () => {
               className="text-5xl font-light leading-tight mb-8"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
-              Previously, I was a Senior Product Designer at The Washington Post
+              {siteConfig.workExperiences[1].title}
             </h2>
             
             {/* Description */}
             <p className="text-[#999] text-lg leading-relaxed mb-12">
-              Lead designer for the initial launch of The 7 (a daily news briefing), co-designer for 2020 United States election experiences. I also led design and research for a suite of consumer personalization and enterprise CMS experiences.
+              {siteConfig.workExperiences[1].description}
             </p>
             
             {/* CTA Button */}
             <a 
-              href="#washingtonpost"
+              href={siteConfig.workExperiences[1].link}
               className="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 border-[#333] hover:border-[#666] transition-all duration-300 group self-start"
             >
               <ArrowRight className="w-6 h-6 text-[#999] group-hover:text-[#e8e8e8] group-hover:translate-x-1 transition-all duration-300" />
