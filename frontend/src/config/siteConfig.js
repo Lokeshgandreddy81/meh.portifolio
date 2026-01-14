@@ -92,29 +92,11 @@ export const siteConfig = {
     learning: ["Long-form interviews with builders", "Ambient soundscapes for deep work", "AI/ML research breakthroughs"]
   },
   
-  // ===== TECHNICAL SKILLS =====
-  skills: {
-    ai: ["LangChain", "RAG Systems", "Vector Databases", "GPT-4/Claude", "Transformer Models"],
-    cloud: ["AWS", "Google Cloud", "Docker", "Kubernetes", "Terraform", "Serverless"],
-    backend: ["Python", "FastAPI", "Node.js", "REST APIs", "GraphQL", "WebSocket"],
-    devops: ["GitHub Actions", "CI/CD", "Prometheus", "Grafana", "Monitoring"],
-    frontend: ["React.js", "Next.js", "TypeScript"],
-    data: ["MongoDB", "PostgreSQL", "Redis", "Vector Databases", "Analytics"]
-  },
-  
-  // ===== ACHIEVEMENTS =====
-  achievements: [
-    "Scaled Sara.ai from MVP to 1,700+ users with 92% retention in 8 months",
-    "Reduced system latency by 32% and database queries by 78%",
-    "400+ GitHub stars with 15+ production deployments",
-    "Technical articles read by 2,000+ developers"
-  ],
-  
   // ===== FOOTER =====
   footer: {
-    text: "This portfolio is hand-coded with React, FastAPI, and MongoDB. Check out the code on",
+    text: "This site, like everything I build, is crafted, not assembled. Explore the code on",
     linkText: "my GitHub.",
-    copyright: "Copyright © 2024 Gandreddy Lokesh. Built with modern tech stack and deployed on cloud infrastructure."
+    copyright: "Copyright © 2024 Gandreddy Lokesh Ram. Built with intention, deployed with purpose."
   }
 };
 
