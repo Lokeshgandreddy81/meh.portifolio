@@ -4,7 +4,7 @@ import { X } from 'lucide-react';
 const SideMenu = ({ isOpen, onClose }) => {
   const mainMenuItems = [
     { label: 'Home', href: '#home' },
-    { label: 'Contact', href: '#contact' },
+    { label: "Let's work together", href: '#contact' },
     { label: 'Resume', href: 'https://customer-assets.emergentagent.com/job_daniel-autry/artifacts/6pudtwl8_Lokesh_resume.pdf', external: true }
   ];
   
