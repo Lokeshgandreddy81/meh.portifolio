@@ -6,28 +6,33 @@ const ContactSection = () => {
   return (
     <section id="contact" className="py-0">
       <div className="w-full">
-        <div className="grid lg:grid-cols-2 border-b section-border min-h-screen">
-          {/* Left - Main Message */}
-          <div className="px-16 py-24 flex flex-col justify-center border-r section-border">
+        {/* Split-screen layout: Text Left (60%), Image Right (40%) */}
+        <div className="grid lg:grid-cols-[60%_40%] border-b section-border min-h-screen">
+          {/* Left Side - Contact Content */}
+          <div className="px-12 md:px-16 lg:px-20 py-24 flex flex-col justify-center border-r section-border">
             <h2 
-              className="text-6xl md:text-7xl font-light leading-tight mb-16 text-foreground"
+              className="text-5xl md:text-6xl lg:text-7xl font-light leading-[1.1] mb-16 text-foreground"
               style={{ fontFamily: 'Cormorant Garamond, serif' }}
             >
               I'm always curious about ambitious problems, thoughtful collaboration, and the next layer of abstraction.
             </h2>
             
-            <p className="text-2xl font-light text-foreground mb-12" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+            <p 
+              className="text-2xl md:text-3xl font-light text-foreground mb-16" 
+              style={{ fontFamily: 'Cormorant Garamond, serif' }}
+            >
               Let's build something that matters.
             </p>
             
-            <div className="space-y-6 text-lg">
+            {/* Contact Links */}
+            <div className="space-y-6 text-lg md:text-xl">
               <div>
                 <a
                   href={`mailto:${siteConfig.email}`}
-                  className="text-muted hover:text-foreground transition-colors inline-flex items-center gap-2 group"
+                  className="text-muted hover:text-foreground transition-colors inline-flex items-center gap-3 group"
                 >
-                  <Mail className="w-5 h-5" />
-                  <span className="underline">{siteConfig.email}</span>
+                  <Mail className="w-6 h-6" />
+                  <span className="underline decoration-1 underline-offset-4">{siteConfig.email}</span>
                   <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>
               </div>
@@ -37,10 +42,10 @@ const ContactSection = () => {
                   href={siteConfig.linkedIn}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted hover:text-foreground transition-colors inline-flex items-center gap-2 group"
+                  className="text-muted hover:text-foreground transition-colors inline-flex items-center gap-3 group"
                 >
-                  <Linkedin className="w-5 h-5" />
-                  <span className="underline">LinkedIn</span>
+                  <Linkedin className="w-6 h-6" />
+                  <span className="underline decoration-1 underline-offset-4">LinkedIn</span>
                   <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>
               </div>
@@ -50,40 +55,44 @@ const ContactSection = () => {
                   href={siteConfig.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted hover:text-foreground transition-colors inline-flex items-center gap-2 group"
+                  className="text-muted hover:text-foreground transition-colors inline-flex items-center gap-3 group"
                 >
-                  <Github className="w-5 h-5" />
-                  <span className="underline">GitHub</span>
+                  <Github className="w-6 h-6" />
+                  <span className="underline decoration-1 underline-offset-4">GitHub</span>
                   <ExternalLink className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
                 </a>
               </div>
             </div>
-          </div>
-          
-          {/* Right - Closing Image & Signature */}
-          <div className="px-16 py-24 flex flex-col justify-center items-center">
-            {/* Closing Portrait Image */}
-            <div className="mb-16">
-              <img 
-                src={siteConfig.closingImage}
-                alt={siteConfig.name}
-                className="w-64 h-64 rounded-full object-cover grayscale border-2 border-border"
-              />
-            </div>
             
-            <p 
-              className="text-5xl md:text-6xl font-light text-muted text-center mb-8"
-              style={{ fontFamily: 'Cormorant Garamond, serif' }}
-            >
-              All the best,<br />{siteConfig.name}
-            </p>
-            
-            <div className="mt-8 text-center">
-              <div className="flex items-center justify-center gap-3 mb-4">
+            {/* Signature */}
+            <div className="mt-20 md:mt-24">
+              <p 
+                className="text-4xl md:text-5xl font-light text-muted"
+                style={{ fontFamily: 'Cormorant Garamond, serif' }}
+              >
+                All the best,<br />{siteConfig.name}
+              </p>
+              
+              <div className="flex items-center gap-3 mt-8">
                 <div className="w-3 h-3 rounded-full bg-green-500 animate-pulse"></div>
                 <span className="text-foreground font-medium">Available for collaboration</span>
               </div>
             </div>
+          </div>
+          
+          {/* Right Side - Full-Height Portrait Image */}
+          <div 
+            className="hidden lg:block relative min-h-screen"
+            style={{
+              backgroundImage: `url(https://customer-assets.emergentagent.com/job_daniel-autry/artifacts/2c2yfqzx_PHOTO-2026-01-14-14-18-00.jpg)`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              filter: 'grayscale(100%)'
+            }}
+          >
+            {/* Optional overlay for better text contrast if needed */}
+            <div className="absolute inset-0 bg-black/5"></div>
           </div>
         </div>
       </div>
