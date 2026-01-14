@@ -48,42 +48,40 @@ export const siteConfig = {
   // ===== ABOUT SECTIONS =====
   aboutSections: [
     {
-      title: "I started my career as a backend developer",
-      description: "I'm pursuing my B.Tech in Computer Science from Mohan Babu University with an 8.7 GPA. I hold AWS Solutions Architect certification and am completing Google Cloud Professional Machine Learning Engineer certification."
+      title: "I started in the engine room",
+      description: "Backend systems, cloud architecture, and the gritty details of what makes systems reliable at scale. My degree in Computer Science was just the preface. The real learning began in production."
     },
     {
-      title: "But my true passion is system architecture",
-      description: "I transitioned to AI systems engineering after discovering my love for building scalable, production-ready automation platforms. I architect systems that handle 50,000+ daily events while maintaining 99.7% uptime."
+      title: "But my true passion isn't just building — it's architecting",
+      description: "I believe the most elegant systems are invisible. They don't demand attention; they enable momentum."
     },
     {
-      title: "I built an open-source multi-agent automation framework",
-      description: "Created a business process engine using LangChain and CrewAI with 400+ GitHub stars. It enables businesses to automate complex workflows with self-healing mechanisms, reducing manual intervention by 78%. Now used by 15+ small businesses.",
+      title: "I built an open-source framework for multi-agent automation",
+      description: "Because I believe the future of work is collaborative — between humans and AI, not one replacing the other. It's a toolkit for orchestrating intelligence.",
       hasLink: true,
       link: "https://github.com/Lokeshgandr"
     },
     {
-      title: "I also mentor junior developers in AI/ML and system design",
-      description: "Regular speaker at AI/ML meetups and active contributor to open source projects. I've mentored 3 junior developers in AI/ML best practices. My technical writing on Hashnode and Dev.to has reached 2,000+ readers.",
+      title: "I guide engineers transitioning into AI systems roles",
+      description: "The hardest part isn't the algorithm — it's the discipline of building something that won't break at 3 a.m.",
       hasLink: true,
       link: "https://lokeshgandreddy.hashnode.dev"
     },
     {
-      title: "In addition to AI Systems, I'm passionate about Cloud Infrastructure, DevOps, and Performance Optimization",
-      description: "I specialize in AWS and GCP, with expertise in Docker, Kubernetes, Terraform, and CI/CD pipelines. I've optimized database queries to reduce response times by 78% and built monitoring systems with Prometheus and Grafana."
+      title: "Beyond AI systems, I'm drawn to tools that amplify human creativity",
+      description: "Open-source as a form of technical citizenship. Education that adapts, not just instructs. Architecture that lasts longer than trends. This is where engineering meets ethos."
     },
     {
-      title: "My current project is a Document Intelligence Pipeline",
-      description: "Building automated document processing using GPT-4 Vision and Claude API. The system processes 5,000+ documents daily with 99.2% accuracy, extracting structured data from invoices, contracts, and reports with semantic search capabilities.",
-      hasLink: true,
-      link: "https://github.com/Lokeshgandr"
+      title: "I'm designing an autonomous business engine",
+      description: "A system that observes, decides, and acts within complex workflows. Think of it as a co-pilot for operations, not automation for automation's sake."
     },
     {
-      title: "I'm pursuing AWS and Google Cloud certifications",
-      description: "Currently working towards Google Cloud Professional Machine Learning Engineer certification (Expected Dec 2024). Already certified in AWS Solutions Architect Associate and DeepLearning.AI TensorFlow Developer."
+      title: "Outside the terminal, I'm a student of systems thinking",
+      description: "In code, in teams, in how ideas spread. I write to clarify my own thinking, speak to sharpen it, and listen to broaden it."
     },
     {
-      title: "And an active technical writer (100% serious)",
-      description: "Writing became my way of giving back to the community. My articles on building scalable RAG systems and AI agent architectures have been read by 2,000+ developers. I believe in learning in public and sharing knowledge."
+      title: "I speak at meetups about the craft of production-ready AI",
+      description: "Because great engineering is as much about communication as it is about code. Sharing knowledge isn't just giving back — it's how we all move forward."
     }
   ],
   
