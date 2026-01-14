@@ -11,7 +11,7 @@ const Home = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-[#e8e8e8]">
+    <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
       <Header onMenuClick={() => setMenuOpen(true)} />
       <SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
       <main>
