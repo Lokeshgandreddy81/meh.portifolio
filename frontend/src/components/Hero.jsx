@@ -10,12 +10,12 @@ const Hero = () => {
           <img 
             src={siteConfig.profileImage}
             alt={siteConfig.name}
-            className="w-40 h-40 rounded-full grayscale object-cover border border-[#333]"
+            className="w-40 h-40 rounded-full grayscale object-cover border border-border"
           />
           
           {/* Main Heading */}
           <h1 
-            className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light leading-[1.15] text-[#e8e8e8] max-w-[1100px]"
+            className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light leading-[1.15] text-foreground max-w-[1100px]"
             style={{ fontFamily: 'Cormorant Garamond, serif' }}
           >
             Hi, I'm {siteConfig.name.split(' ')[0]} —<br />
