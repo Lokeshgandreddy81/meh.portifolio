@@ -4,13 +4,16 @@
 export const siteConfig = {
   // Personal Information
   name: "Daniel Autry",
+  firstName: "Daniel",
   location: "Washington, DC",
+  timezone: "et", // "et", "ist", "pst", etc.
   tagline: "a designer fascinated by the social impact space. This is my creative greenhouse.",
   
   // Profile Image
+  // To replace with your own image:
+  // Option 1: Use external URL: "https://your-image-url.com/profile.jpg"
+  // Option 2: Place image in /app/frontend/public/images/ and use: "/images/your-photo.jpg"
   profileImage: "https://danielautry.com/static/media/profile.3aaf58cfebb540d740ee.jpeg",
-  // To use your own image, replace the URL above with your image URL
-  // Example: profileImage: "https://your-image-url.com/profile.jpg",
   
   // Social Links
   linkedIn: "https://www.linkedin.com/in/daniel-autry/",
