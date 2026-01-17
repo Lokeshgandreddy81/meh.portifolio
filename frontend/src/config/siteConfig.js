@@ -8,21 +8,21 @@ export const siteConfig = {
   location: "Tirupati, India",
   timezone: "ist",
   tagline: "I architect intelligent systems that think, automate, and scale. This is where ideas become infrastructure.",
-  
+
   // ===== PROFILE IMAGES =====
   profileImage: "https://customer-assets.emergentagent.com/job_daniel-autry/artifacts/vpfro1p6_WhatsApp%20Image%202026-01-13%20at%2019.29.21.jpeg",
   // Add your closing portrait image here (displayed at the end before footer)
   closingImage: "https://customer-assets.emergentagent.com/job_daniel-autry/artifacts/vpfro1p6_WhatsApp%20Image%202026-01-13%20at%2019.29.21.jpeg",
-  
+
   // ===== CONTACT & SOCIAL LINKS =====
   email: "gandreddylokesh7@gmail.com",
   phone: "+91 6300272531",
   linkedIn: "https://linkedin.com/in/lokeshh-hhh",
-  github: "https://github.com/Lokeshgandr",
+  github: "https://github.com/Lokeshgandreddy81",
   portfolio: "https://lokesh-ai-portfolio.vercel.app",
   blog: "https://lokeshgandreddy.hashnode.dev",
   devto: "https://dev.to/lokeshgandreddy",
-  
+
   // ===== WORK EXPERIENCES =====
   workExperiences: [
     {
@@ -45,7 +45,7 @@ export const siteConfig = {
       link: "#vaagisha"
     }
   ],
-  
+
   // ===== ABOUT SECTIONS =====
   aboutSections: [
     {
@@ -60,7 +60,7 @@ export const siteConfig = {
       title: "I built an open-source framework for multi-agent automation",
       description: "Because I believe the future of work is collaborative — between humans and AI, not one replacing the other. It's a toolkit for orchestrating intelligence.",
       hasLink: true,
-      link: "https://github.com/Lokeshgandr"
+      link: "https://github.com/Lokeshgandreddy81"
     },
     {
       title: "I guide engineers transitioning into AI systems roles",
@@ -85,14 +85,14 @@ export const siteConfig = {
       description: "Because great engineering is as much about communication as it is about code. Sharing knowledge isn't just giving back — it's how we all move forward."
     }
   ],
-  
+
   // ===== INTERESTS =====
   interests: {
     building: ["Prototypes that become products", "Tools that become standards", "Systems that scale gracefully"],
     reading: ["Systems design papers", "Founder memoirs", "Architecture that inspires"],
     learning: ["Long-form interviews with builders", "Ambient soundscapes for deep work", "AI/ML research breakthroughs"]
   },
-  
+
   // ===== FOOTER =====
   footer: {
     text: "This site, like everything I build, is crafted, not assembled. Explore the code on",
