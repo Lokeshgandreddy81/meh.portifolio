@@ -72,7 +72,7 @@ const Resume = () => {
                             <span className="font-bold">Cloud & Deployment:</span> Docker, AWS (EC2, S3)
                         </div>
                         <div>
-                            <span className="font-bold">Foundations:</span> Data Structures & Algorithms, Basic System Design
+                            <span className="font-bold">Foundations:</span> Data Structures & Algorithms, System Design
                         </div>
                         <div>
                             <span className="font-bold">Tools:</span> Git, GitHub, VS Code
