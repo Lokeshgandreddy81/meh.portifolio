@@ -3,7 +3,7 @@
 
 export const siteConfig = {
   // ===== PERSONAL INFORMATION =====
-  name: "Gandreddy Lokesh Ram",
+  name: "Gandreddy Lokesh",
   firstName: "Lokesh",
   location: "Tirupati, India",
   timezone: "ist",
@@ -31,17 +31,18 @@ export const siteConfig = {
       logo: "S",
       title: "Right now, I'm building Sara.ai — an AI-native learning platform that adapts in real time to how people learn.",
       descriptions: [
-        "We're reimagining education not as content delivery, but as an interactive, responsive system."
+        "Founder & Backend Engineer. Built an AI-powered learning platform serving 1,700+ users, owning backend architecture, APIs, and database design.",
+        "Implemented a retrieval-based content system using vector search (FAISS) and deployed scalable services using FastAPI, PostgreSQL, Docker, and AWS."
       ],
       link: "https://sara.ai"
     },
     {
-      id: "enterprise",
-      company: "AI Enterprise",
-      logo: "AE",
+      id: "vaagisha",
+      company: "Vaagisha Enterprises",
+      logo: "VE",
       title: "Previously, I designed enterprise AI systems that transform how companies hire, collaborate, and make decisions.",
-      description: "From screening automation to real-time candidate engagement — I build bridges between intelligence and action.",
-      link: "#enterprise"
+      description: "AI Engineering Consultant. Built backend and application logic using Next.js and serverless APIs to streamline recruiter workflows. Contributed to an AI-assisted hiring platform.",
+      link: "#vaagisha"
     }
   ],
   
@@ -96,7 +97,7 @@ export const siteConfig = {
   footer: {
     text: "This site, like everything I build, is crafted, not assembled. Explore the code on",
     linkText: "my GitHub.",
-    copyright: "Copyright © 2024 Gandreddy Lokesh Ram. Built with intention, deployed with purpose."
+    copyright: "Copyright © 2024 Gandreddy Lokesh. Built with intention, deployed with purpose."
   }
 };
 
