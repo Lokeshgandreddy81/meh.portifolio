@@ -26,15 +26,16 @@ const SideMenu = ({ isOpen, onClose }) => {
     { label: 'Technical Blog', href: 'https://lokeshgandreddy.hashnode.dev', external: true }
   ];
 
-  const handleMenuItemClick = (href, isExternal) => {
+  const handleMenuItemClick = (href, isExternal, isInternalRoute) => {
     if (!isExternal && href.startsWith('#')) {
       // Smooth scroll to section
       const element = document.querySelector(href);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    }
-    if (!isExternal) {
+      setTimeout(onClose, 300);
+    } else if (isInternalRoute) {
+      // For internal routes like /resume, just close menu and let the link handle navigation
       setTimeout(onClose, 300);
     }
   };
@@ -100,9 +101,15 @@ const SideMenu = ({ isOpen, onClose }) => {
                   key={index}
                   href={item.href}
                   onClick={(e) => {
-                    if (!item.external) {
+                    const isInternalRoute = !item.external && item.href.startsWith('/');
+                    const isAnchorLink = !item.external && item.href.startsWith('#');
+
+                    if (isAnchorLink) {
                       e.preventDefault();
-                      handleMenuItemClick(item.href, false);
+                      handleMenuItemClick(item.href, false, false);
+                    } else if (isInternalRoute) {
+                      // Let React Router handle the navigation
+                      handleMenuItemClick(item.href, false, true);
                     }
                   }}
                   target={item.external ? '_blank' : '_self'}
