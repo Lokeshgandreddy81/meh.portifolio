@@ -1,128 +1,183 @@
-import React from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import siteConfig from '../config/siteConfig';
-import SpotlightButton from './ui/SpotlightButton';
 import { ArrowUpRight } from 'lucide-react';
+
+const GlassFoilCard = ({ children, className, delay = 0 }) => {
+  const cardRef = useRef(null);
+  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Simple mount animation cascade
+    const timer = setTimeout(() => setIsVisible(true), 100 + delay);
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Physics-based tilt (-3deg to +3deg max for elegance)
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -3;
+    const rotateY = ((x - centerX) / centerX) * 3;
+
+    const glareX = (x / rect.width) * 100;
+    const glareY = (y / rect.height) * 100;
+
+    setRotate({ x: rotateX, y: rotateY });
+    setGlare({ x: glareX, y: glareY, opacity: 1 });
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setRotate({ x: 0, y: 0 });
+    setGlare(prev => ({ ...prev, opacity: 0 }));
+    setIsHovered(false);
+  };
+
+  return (
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className={`relative w-full group origin-center ${className}`}
+      style={{
+        perspective: '1200px',
+        transformStyle: 'preserve-3d',
+        opacity: isVisible ? 1 : 0,
+        transform: isVisible
+          ? `perspective(1200px) rotateX(${rotate.x}deg) rotateY(${rotate.y}deg) translateY(0)`
+          : `perspective(1200px) rotateX(10deg) translateY(40px)`,
+        transition: isHovered
+          ? 'transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+          : 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s ease-out'
+      }}
+    >
+      <div
+        className="absolute inset-0 bg-white/[0.01] backdrop-blur-[60px] rounded-[2.5rem] overflow-hidden border border-white/[0.05] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.8)]"
+        style={{ transform: 'translateZ(0)' }}
+      >
+        {/* Cinematic Glare Foil / Shimmer */}
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] z-10"
+          style={{
+            opacity: glare.opacity,
+            background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 50%)`,
+            mixBlendMode: 'screen'
+          }}
+        />
+        {/* Slanted Glass Refraction Line */}
+        <div
+          className="absolute top-0 left-0 w-[200%] h-[200%] pointer-events-none opacity-[0.03] transition-transform duration-300 ease-out z-10"
+          style={{
+            transform: `translateX(${glare.x / 2 - 50}%) translateY(${glare.y / 2 - 50}%) rotate(35deg)`,
+            background: `linear-gradient(90deg, transparent 45%, white 50%, transparent 55%)`
+          }}
+        />
+
+        {/* Inner Content Wrapper */}
+        <div className="relative z-20 h-full w-full">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const AboutSection = () => {
   return (
-    <section className="py-24 md:py-32 bg-[#050505] relative overflow-hidden section-border border-b">
-      {/* Deep ambient background lighting */}
-      <div className="absolute top-1/2 left-1/2 w-[800px] h-[800px] bg-gradient-to-tr from-blue-500/10 via-purple-500/5 to-transparent rounded-full blur-[100px] mix-blend-screen pointer-events-none ambient-orb opacity-50" />
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-emerald-500/5 via-transparent to-transparent rounded-full blur-[100px] mix-blend-screen pointer-events-none opacity-30" />
+    <section className="py-32 md:py-48 bg-[#020202] relative overflow-hidden text-white section-border border-b select-none">
 
-      {/* Structured Grid Pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_50%,#000_10%,transparent_100%)] pointer-events-none" />
+      {/* Absolute Void Gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(30,30,40,1)_0%,rgba(2,2,2,1)_100%)] opacity-30 pointer-events-none" />
 
-      <div className="container mx-auto px-6 md:px-12 max-w-[1400px] relative z-10">
+      {/* Super Subtle Scanline Overlay */}
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPjxyZWN0IHdpZHRoPSI0IiBoZWlnaHQ9IjQiIGZpbGw9IiMwMTAxMDEiLz48cGF0aCBkPSJNMCAwTDEgMTAgMUwwIDBaIiBmaWxsPSIjMDUwNTA1Ii8+PC9zdmc+')] opacity-20 pointer-events-none mix-blend-overlay" />
 
-        {/* Editorial Section Header */}
-        <div className="mb-20 md:mb-32 flex flex-col items-center justify-center text-center">
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md mb-8">
-            <div className="w-2 h-2 rounded-full bg-blue-500 animate-[pulse_2s_ease-in-out_infinite]" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/70">Designer & Engineer</span>
-          </div>
+      <div className="container mx-auto px-6 md:px-12 max-w-[1200px] relative z-10">
+
+        {/* Jaw-Dropping Typography Header */}
+        <div className="mb-32 md:mb-48 flex flex-col pt-12">
+          <p className="font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase text-white/40 mb-8 ml-2 flex items-center gap-4">
+            <span className="w-12 h-[1px] bg-white/20" />
+            01 // Anatomy of a Builder
+          </p>
           <h2
-            className="text-5xl md:text-7xl font-light leading-tight text-white/90 mb-6"
-            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+            className="text-[4rem] md:text-[8rem] lg:text-[10rem] font-bold leading-[0.85] tracking-tighter text-transparent bg-clip-text bg-gradient-to-br from-white via-white/80 to-white/10"
           >
-            The Art of <span className="italic text-white/50">Systems</span>
+            SYSTEMS.<br />
+            <span className="italic font-light ml-0 md:ml-32" style={{ fontFamily: 'Cormorant Garamond, serif' }}>Architecture.</span>
           </h2>
-          <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
         </div>
 
-        {/* JAW-DROPPING BENTO GRID */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[minmax(250px,auto)]">
+        {/* The Overlapping Monolith Cascade */}
+        <div className="relative w-full flex flex-col gap-8 md:gap-0 pb-32">
+
           {siteConfig.aboutSections.map((section, index) => {
-            const isHero = index === 0;
-            const isWide = index === 3;
-            const isStandard = index === 1 || index === 2;
+            // Calculate staggering and offsets to create an editorial collage
+            const isEven = index % 2 === 0;
+            const marginTop = index === 0 ? '0' : 'md:-mt-24';
+            const alignment = isEven ? 'md:mr-auto' : 'md:ml-auto';
+            const width = index === 0 ? 'md:w-[85%]' : index === 3 ? 'md:w-[100%]' : 'md:w-[65%]';
 
             return (
-              <SpotlightButton
-                key={index}
-                className={`group relative flex flex-col border border-white/10 bg-[#0a0a0a]/60 backdrop-blur-2xl rounded-[32px] overflow-hidden hover:border-white/25 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-2 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,1)]
-                  ${isHero ? 'md:col-span-2 md:row-span-2 p-10 md:p-16 lg:p-20 min-h-[400px]' : ''}
-                  ${isStandard ? 'md:col-span-1 md:row-span-1 p-8 md:p-10 min-h-[300px]' : ''}
-                  ${isWide ? 'md:col-span-3 md:row-span-1 p-10 md:p-16 flex-col md:flex-row' : ''}
-                `}
-              >
-                {/* 3D Mass Scale Number */}
-                <div
-                  className={`absolute font-bold leading-none select-none pointer-events-none transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]
-                    text-white/[0.02] group-hover:text-white/[0.06] group-hover:scale-110 group-hover:rotate-[-5deg] origin-bottom-right
-                    ${isHero ? '-bottom-16 -right-12 text-[20rem] md:text-[28rem]' : ''}
-                    ${isStandard ? '-bottom-8 -right-8 text-[12rem] md:text-[16rem]' : ''}
-                    ${isWide ? '-bottom-16 right-0 text-[14rem] md:text-[22rem] md:top-1/2 md:-translate-y-1/2' : ''}
-                  `}
-                  style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                >
-                  {index + 1}
-                </div>
+              <div key={index} className={`relative z-[${10 - index}] ${width} ${alignment} ${marginTop}`}>
+                <GlassFoilCard delay={index * 200} className="w-full">
+                  <div className="p-10 md:p-16 lg:p-24 flex flex-col relative overflow-hidden">
 
-                {/* Laser scanline border highlight */}
-                <div className="absolute top-0 left-0 h-[1px] w-full overflow-hidden opacity-50">
-                  <div className="h-full bg-gradient-to-r from-transparent via-blue-400 to-transparent w-[200%] -translate-x-full group-hover:translate-x-[50%] transition-transform duration-[1.5s] ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                </div>
-
-                {/* Content Matrix */}
-                <div className={`relative z-10 flex ${isWide ? 'md:flex-1 md:flex-row md:items-center md:gap-16' : 'flex-col h-full'} justify-between`}>
-
-                  {/* Header Pillar */}
-                  <div className={`${isWide ? 'md:w-5/12' : 'mb-8'}`}>
-                    <div className="flex items-center gap-3 mb-6">
-                      {/* Interactive diode */}
-                      <div className="w-1.5 h-1.5 rounded-full bg-white/20 group-hover:bg-blue-400 group-hover:shadow-[0_0_12px_rgba(59,130,246,0.8)] transition-all duration-500 scale-100 group-hover:scale-150" />
-                      <span className="text-[10px] font-mono text-white/30 tracking-[0.2em] uppercase group-hover:text-white/70 transition-colors">Principle // {String(index + 1).padStart(2, '0')}</span>
+                    {/* Massive Stroke Number Typography (Jaw-Dropping Depth) */}
+                    <div
+                      className="absolute -top-10 -right-10 text-[18rem] md:text-[24rem] font-bold leading-none select-none pointer-events-none"
+                      style={{
+                        WebkitTextStroke: '2px rgba(255,255,255,0.03)',
+                        color: 'transparent',
+                        fontFamily: 'system-ui, -apple-system, sans-serif'
+                      }}
+                    >
+                      {String(index + 1).padStart(2, '0')}
                     </div>
 
-                    <h3
-                      className={`font-light leading-snug text-white/80 group-hover:text-white transition-colors duration-500
-                        ${isHero ? 'text-4xl md:text-5xl lg:text-6xl mb-8' : ''}
-                        ${isStandard ? 'text-2xl md:text-3xl mb-4' : ''}
-                        ${isWide ? 'text-3xl md:text-4xl lg:text-5xl' : ''}
-                      `}
-                      style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                    >
-                      {section.title}
-                    </h3>
+                    {/* Content */}
+                    <div className="relative z-10">
+                      <div className="flex items-center gap-4 mb-12">
+                        <div className="w-2 h-2 bg-white/30 rounded-full group-hover:bg-blue-400 group-hover:shadow-[0_0_15px_rgba(59,130,246,1)] transition-all duration-700" />
+                        <span className="font-mono text-xs text-white/40 tracking-widest uppercase group-hover:text-white/70 transition-colors duration-700">Thesis {index + 1}</span>
+                      </div>
 
-                    {/* Retracting rule line on hero */}
-                    {isHero && (
-                      <div className="w-12 h-[1px] bg-white/20 mt-8 group-hover:w-24 group-hover:bg-white/50 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                    )}
+                      <h3
+                        className="text-3xl md:text-5xl lg:text-6xl font-light leading-10 md:leading-[1.1] text-white/90 mb-8 md:max-w-[80%]"
+                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                      >
+                        {section.title}
+                      </h3>
+
+                      <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mt-12 md:mt-24">
+                        <p className="text-white/40 text-lg md:text-xl font-light leading-relaxed max-w-lg group-hover:text-white/70 transition-colors duration-700">
+                          {section.description}
+                        </p>
+
+                        <div className="w-14 h-14 rounded-full border border-white/10 flex items-center justify-center group-hover:border-white/30 group-hover:bg-white/5 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden relative cursor-pointer">
+                          <ArrowUpRight className="w-5 h-5 text-white/50 group-hover:text-white relative z-10 transition-colors duration-500" />
+                          {/* Hover fill */}
+                          <div className="absolute inset-0 bg-white scale-0 rounded-full group-hover:scale-100 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] opacity-0 group-hover:opacity-10" />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-
-                  {/* Body Paragraph */}
-                  <div className={`${isWide ? 'md:w-7/12 border-t md:border-t-0 md:border-l border-white/10 md:pl-16 pt-8 md:pt-0' : 'mt-auto pt-8 border-t border-white/5 group-hover:border-white/15 transition-colors duration-500'}`}>
-                    <p className={`text-white/50 leading-relaxed group-hover:text-white/80 transition-colors duration-500
-                      ${isHero ? 'text-xl md:text-2xl max-w-xl font-light' : 'text-base md:text-lg'}
-                    `}>
-                      {section.description}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Premium corner actionable icon */}
-                <div className="absolute top-8 right-8 w-10 h-10 rounded-full border border-white/5 bg-white/[0.02] flex items-center justify-center opacity-0 scale-75 group-hover:opacity-100 group-hover:scale-100 group-hover:bg-white/10 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
-                  <ArrowUpRight className="w-4 h-4 text-white/70" />
-                </div>
-              </SpotlightButton>
+                </GlassFoilCard>
+              </div>
             );
           })}
+
         </div>
       </div>
-
-      <style>{`
-        @keyframes ambientDrift {
-          0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
-          33% { transform: translate(-45%, -55%) rotate(120deg) scale(1.1); }
-          66% { transform: translate(-55%, -45%) rotate(240deg) scale(0.9); }
-          100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
-        }
-        .ambient-orb {
-          animation: ambientDrift 25s ease-in-out infinite alternate;
-        }
-      `}</style>
     </section>
   );
 };
