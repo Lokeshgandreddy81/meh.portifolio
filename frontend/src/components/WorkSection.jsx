@@ -5,6 +5,7 @@ import LotusFlower from './decorative/LotusFlower';
 import BotanicalLeaf from './decorative/BotanicalLeaf';
 import ProjectAccessModal from './ProjectAccessModal';
 import useScrollReveal from '../hooks/useScrollReveal';
+import MagneticButton from './ui/MagneticButton';
 
 const WorkSection = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,12 +27,16 @@ const WorkSection = () => {
       />
 
       <section className="py-0">
-        <div className="w-full">
+        <div className="w-full relative">
+
           {/* Sara.ai Section - Text Left, Decoration Right */}
-          <div className="flex flex-col-reverse md:grid md:grid-cols-2 border-b section-border min-h-screen">
+          <div className="flex flex-col-reverse md:grid md:grid-cols-2 border-b section-border min-h-screen relative overflow-hidden group">
+
+
+
             <div
               ref={saraRef}
-              className="px-6 py-12 md:px-16 md:py-24 flex flex-col justify-center section-border md:border-r border-t md:border-t-0"
+              className="px-6 py-12 md:px-16 md:py-24 flex flex-col justify-center section-border md:border-r border-t md:border-t-0 relative z-10"
             >
               {/* Premium Company Logo */}
               <div
@@ -81,50 +86,57 @@ const WorkSection = () => {
                 {siteConfig.workExperiences[0].title}
               </h2>
 
-              {/* Description */}
-              <div className="text-muted text-lg leading-relaxed space-y-4 mb-8 md:mb-12">
-                {siteConfig.workExperiences[0].descriptions.map((desc, index) => (
-                  <p
+              {/* Description / Case Study Section */}
+              <div className="text-muted text-lg leading-relaxed space-y-8 mb-12 md:mb-16">
+                {siteConfig.workExperiences[0].caseStudy.map((item, index) => (
+                  <div
                     key={index}
+                    className="flex flex-col md:flex-row gap-2 md:gap-6"
                     style={{
                       opacity: saraVisible ? 1 : 0,
-                      transform: saraVisible ? 'translateX(0)' : 'translateX(-20px)',
-                      transition: `all 0.6s cubic-bezier(0.4, 0, 0.2, 1) ${0.6 + index * 0.1}s`
+                      transform: saraVisible ? 'translateY(0)' : 'translateY(16px)',
+                      transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.6 + index * 0.1}s`
                     }}
                   >
-                    {desc}
-                  </p>
+                    <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted/60 md:w-24 shrink-0 pt-1">
+                      {item.label}
+                    </span>
+                    <p className="text-foreground/90 font-light">
+                      {item.text}
+                    </p>
+                  </div>
                 ))}
               </div>
 
-              {/* CTA Button */}
-              <a
-                href={siteConfig.workExperiences[0].link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 theme-button-border transition-all duration-300 group self-start cursor-pointer hover:scale-110"
+              {/* Advanced Magnetic CTA Button */}
+              <MagneticButton
+                onClick={() => handleProjectClick(siteConfig.workExperiences[0].company)}
+                className="w-20 h-20 rounded-full border border-border bg-background transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-foreground group/btn self-start"
                 style={{
                   opacity: saraVisible ? 1 : 0,
                   transform: saraVisible ? 'scale(1)' : 'scale(0.8)',
-                  transition: 'all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.9s'
+                  transition: 'opacity 0.6s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.9s'
                 }}
               >
-                <ArrowRight className="w-6 h-6 text-muted group-hover:text-foreground group-hover:translate-x-1 transition-all duration-300" />
-              </a>
+                <ArrowRight className="w-6 h-6 text-muted group-hover/btn:text-background group-hover/btn:translate-x-1 group-hover/btn:-rotate-45 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+              </MagneticButton>
             </div>
-            <div className="px-6 py-12 md:px-16 md:py-24 flex items-center justify-center">
-              <LotusFlower className="decorative-svg w-3/4 h-3/4 md:w-full md:h-full" />
+            <div className="px-6 py-12 md:px-16 md:py-24 flex items-center justify-center relative z-10">
+              <LotusFlower className="decorative-svg w-3/4 h-3/4 md:w-full md:h-full transition-transform duration-[2s] group-hover:scale-110 ease-[cubic-bezier(0.16,1,0.3,1)]" />
             </div>
           </div>
 
           {/* Vaagisha Section - Decoration Left, Text Right */}
-          <div className="flex flex-col md:grid md:grid-cols-2 border-b section-border min-h-screen">
-            <div className="px-6 py-12 md:px-16 md:py-24 flex items-center justify-center section-border md:border-r border-b md:border-b-0">
-              <BotanicalLeaf className="decorative-svg w-3/4 h-3/4 md:w-full md:h-full" />
+          <div className="flex flex-col md:grid md:grid-cols-2 border-b section-border min-h-screen relative overflow-hidden group">
+
+
+
+            <div className="px-6 py-12 md:px-16 md:py-24 flex items-center justify-center section-border md:border-r border-b md:border-b-0 relative z-10">
+              <BotanicalLeaf className="decorative-svg w-3/4 h-3/4 md:w-full md:h-full transition-transform duration-[2s] group-hover:scale-110 ease-[cubic-bezier(0.16,1,0.3,1)]" />
             </div>
             <div
               ref={vaagishaRef}
-              className="px-6 py-12 md:px-16 md:py-24 flex flex-col justify-center"
+              className="px-6 py-12 md:px-16 md:py-24 flex flex-col justify-center relative z-10"
             >
               {/* Premium Company Logo - Dual Letter */}
               <div
@@ -187,18 +199,18 @@ const WorkSection = () => {
                 {siteConfig.workExperiences[1].description}
               </p>
 
-              {/* CTA Button */}
-              <button
+              {/* Advanced Magnetic CTA Button */}
+              <MagneticButton
                 onClick={() => handleProjectClick(siteConfig.workExperiences[1].company)}
-                className="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 theme-button-border transition-all duration-300 group self-start cursor-pointer hover:scale-110"
+                className="w-20 h-20 rounded-full border border-border bg-background transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-foreground group/btn self-start"
                 style={{
                   opacity: vaagishaVisible ? 1 : 0,
                   transform: vaagishaVisible ? 'scale(1)' : 'scale(0.8)',
-                  transition: 'all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.8s'
+                  transition: 'opacity 0.6s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.8s'
                 }}
               >
-                <ArrowRight className="w-6 h-6 text-muted group-hover:text-foreground group-hover:translate-x-1 transition-all duration-300" />
-              </button>
+                <ArrowRight className="w-6 h-6 text-muted group-hover/btn:text-background group-hover/btn:translate-x-1 group-hover/btn:-rotate-45 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+              </MagneticButton>
             </div>
           </div>
         </div>

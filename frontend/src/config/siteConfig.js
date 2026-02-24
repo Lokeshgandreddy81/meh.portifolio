@@ -30,12 +30,13 @@ export const siteConfig = {
       company: "Sara.ai",
       logo: "S",
       title: "Right now, I'm building Sara.ai — an AI-native learning platform that adapts in real time to how people learn.",
-      descriptions: [
-        "Founder & Backend Engineer. Built an AI-powered learning platform serving 1,700+ users, owning backend architecture, APIs, and database design.",
-        "Implemented a retrieval-based content system using vector search (FAISS) and deployed scalable services using FastAPI, PostgreSQL, Docker, and AWS."
+      caseStudy: [
+        { label: "Problem", text: "Generic learning platforms force users into rigid pathways, ignoring individual pacing and comprehension gaps." },
+        { label: "Process", text: "Architected a scalable backend with FastAPI and PostgreSQL. Implemented a robust retrieval-based content system utilizing FAISS for vector search." },
+        { label: "Solution", text: "Built Sara.ai, an AI-native platform that dynamically generates and adapts curriculum in real-time, currently serving 1,700+ active learners." },
+        { label: "Impact", text: "Drastically reduced learner drop-off rates by providing personalized, context-aware educational interventions." }
       ],
-      link: "http://sara-ai.in",
-      github: "https://github.com/Lokeshgandreddy81/Sara"
+      link: "https://sara.ai"
     },
     {
       id: "vaagisha",

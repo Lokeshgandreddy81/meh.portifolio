@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { X, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import { X, CheckCircle2, AlertCircle, Loader2, ArrowRight, Github, Linkedin, ExternalLink } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
+import SpotlightButton from './ui/SpotlightButton';
 
 const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }) => {
     const [stage, setStage] = useState('loading');
@@ -69,7 +70,9 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
     useEffect(() => {
         if (!isOpen || stage !== 'loading') return;
 
-        const sequence = [
+        const isSara = projectName === 'Sara.ai';
+
+        const baseSequence = [
             {
                 text: `Initializing secure connection to ${projectName}...`,
                 status: 'loading',
@@ -94,7 +97,18 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
                 text: 'Checking project visibility status...',
                 status: 'loading',
                 duration: 2000
-            },
+            }
+        ];
+
+        const sequence = isSara ? [
+            ...baseSequence,
+            {
+                text: 'ACCESS GRANTED - Connection established to live server',
+                status: 'success',
+                duration: 2500
+            }
+        ] : [
+            ...baseSequence,
             {
                 text: 'ACCESS DENIED - Project is in private development mode',
                 status: 'error',
@@ -107,7 +121,7 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
         const processLine = (index) => {
             if (index >= sequence.length) {
                 const finalTimeout = setTimeout(() => {
-                    setStage('denied');
+                    setStage(isSara ? 'granted' : 'denied');
                 }, 1500);
                 timeoutIds.push(finalTimeout);
                 return;
@@ -164,20 +178,20 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
 
     return (
         <>
-            {/* Premium backdrop - theme aware */}
+            {/* Ultra-Premium Glassmorphism backdrop */}
             <div
-                className="fixed inset-0 bg-background/80 backdrop-blur-md z-[100] transition-all duration-700"
-                style={{ animation: 'backdropFade 0.5s cubic-bezier(0.4, 0, 0.2, 1)' }}
+                className="fixed inset-0 bg-background/40 backdrop-blur-[40px] saturate-[200%] z-[100] transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                style={{ animation: 'backdropFade 0.8s cubic-bezier(0.16,1,0.3,1)' }}
                 onClick={onClose}
             />
 
             {/* Modal - fully theme aware */}
             <div
                 className="fixed inset-0 z-[101] flex items-center justify-center p-4 md:p-8 pointer-events-none"
-                style={{ animation: 'modalEntry 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)' }}
+                style={{ animation: 'modalEntry 1s cubic-bezier(0.16, 1, 0.3, 1)' }}
             >
                 <div
-                    className="bg-background border border-border w-full max-w-5xl max-h-[90vh] overflow-hidden pointer-events-auto relative modal-shadow"
+                    className="bg-background/90 backdrop-blur-3xl border border-white/10 w-full max-w-5xl max-h-[90vh] overflow-hidden pointer-events-auto relative shadow-[0_0_100px_rgba(0,0,0,0.5)] rounded-xl"
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Close button */}
@@ -211,15 +225,19 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
                                     </p>
                                 </div>
 
-                                {/* AI-Style Terminal - theme aware */}
-                                <div className="bg-accent border border-border p-6 md:p-8 terminal-glow">
-                                    <div className="space-y-4 font-mono text-sm min-h-[320px]">
+                                {/* Cinematic CRT Terminal */}
+                                <div className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 relative overflow-hidden group shadow-2xl rounded-sm">
+                                    {/* CRT Scanline Overlay */}
+                                    <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-10 opacity-50 mix-blend-overlay"></div>
+                                    <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(0,0,0,0.9)] z-20"></div>
+
+                                    <div className="space-y-4 font-mono text-sm min-h-[320px] relative z-30 text-[#00ff41] text-shadow-[0_0_5px_rgba(0,255,65,0.4)]">
                                         {terminalLines.map((line, idx) => (
                                             <div
                                                 key={idx}
                                                 className="flex items-start gap-3 opacity-0"
                                                 style={{
-                                                    animation: 'lineSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards'
+                                                    animation: 'decryptionEntry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards'
                                                 }}
                                             >
                                                 <StatusIcon status={line.status} />
@@ -263,7 +281,7 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
                                     </div>
                                 </div>
                             </div>
-                        ) : (
+                        ) : stage === 'denied' ? (
                             /* ===== DENIED STAGE ===== */
                             <div className="px-8 md:px-16 py-12 md:py-20">
                                 {/* Header */}
@@ -407,6 +425,116 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
                                     <p>Your interest has been recorded. Thank you for your curiosity.</p>
                                 </div>
                             </div>
+                        ) : (
+                            /* ===== GRANTED STAGE ===== */
+                            <div className="px-8 md:px-16 py-12 md:py-20 animate-[fade-in_1s_ease-out]">
+                                {/* Header */}
+                                <div className="mb-10 md:mb-14 flex justify-between items-start flex-wrap gap-6 border-b border-border pb-8">
+                                    <div>
+                                        <div className="flex items-center gap-3 mb-4">
+                                            <CheckCircle2 size={20} className="text-green-500" />
+                                            <span className="text-xs uppercase tracking-[0.2em] text-muted">Access Granted</span>
+                                        </div>
+                                        <h1
+                                            className="text-4xl md:text-5xl font-light leading-[1.1] text-foreground mb-3"
+                                            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                                        >
+                                            {projectName} <span className="text-muted text-3xl hidden md:inline">|</span> <br className="md:hidden" />Live Preview
+                                        </h1>
+                                        <p className="text-lg text-muted italic max-w-2xl">
+                                            "Production is where theory meets reality."
+                                        </p>
+                                    </div>
+
+                                    <div className="bg-accent/50 border border-white/5 backdrop-blur-md px-4 py-3 rounded-full flex items-center gap-3 self-start shadow-xl">
+                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-[pulse_2s_ease-in-out_infinite]" />
+                                        <span className="text-xs tracking-widest uppercase font-mono text-foreground/80">System Online</span>
+                                    </div>
+                                </div>
+
+                                {/* Main Content: Browser Tab Preview */}
+                                <div className="mb-12 border border-white/10 bg-[#0a0a0a] rounded-xl overflow-hidden flex flex-col shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative group transition-all duration-700 hover:shadow-[0_30px_60px_rgba(0,0,0,0.7)]">
+                                    {/* Detailed macOS-like header */}
+                                    <div className="bg-[#1e1e1e]/90 backdrop-blur-xl border-b border-white/5 px-4 py-3 flex items-center justify-between sticky top-0 z-20">
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-sm hover:bg-[#ff5f56]/80 transition-colors" />
+                                            <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-sm hover:bg-[#ffbd2e]/80 transition-colors" />
+                                            <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-sm hover:bg-[#27c93f]/80 transition-colors" />
+                                        </div>
+                                        <div className="flex-1 flex justify-center px-4">
+                                            <div className="w-full max-w-md bg-black/40 border border-white/5 rounded-md px-4 py-1.5 flex items-center justify-center">
+                                                <span className="text-[11px] font-mono text-white/50 tracking-wider">
+                                                    sara-ai.in
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="w-12 flex justify-end">
+                                            <a href="http://sara-ai.in" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors duration-300">
+                                                <ExternalLink size={16} />
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    {/* Iframe Content */}
+                                    <div className="w-full bg-background relative" style={{ paddingBottom: '56.25%', minHeight: '350px' }}>
+                                        <iframe
+                                            src="http://sara-ai.in"
+                                            title="Sara.ai Preview"
+                                            className="absolute inset-0 w-full h-full border-none"
+                                            loading="lazy"
+                                        />
+
+                                        {/* Hover overlay hint */}
+                                        <div className="absolute inset-0 pointer-events-none flex items-center justify-center bg-background/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[2px] z-10">
+                                            <a
+                                                href="http://sara-ai.in"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="px-6 py-3 bg-foreground text-background font-medium pointer-events-auto hover:bg-foreground/90 transition-all shadow-xl flex items-center gap-2"
+                                            >
+                                                Open Interactive Experience <ExternalLink size={16} />
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Actions - Spotlight Buttons */}
+                                <p className="text-[11px] text-muted/60 uppercase tracking-[0.2em] mb-6 font-medium">Resources & Links</p>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                                    {/* 1. Website Spotlight Button */}
+                                    <SpotlightButton
+                                        href="http://sara-ai.in"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="group px-6 py-4 bg-foreground text-background text-center font-medium hover:opacity-95 hover:-translate-y-1 hover:shadow-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center gap-2 rounded-xl"
+                                    >
+                                        <span className="relative z-10">Visit Website</span>
+                                        <ArrowRight size={16} className="relative z-10 group-hover:translate-x-1 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                                    </SpotlightButton>
+
+                                    {/* 2. GitHub Spotlight Button */}
+                                    <SpotlightButton
+                                        href="https://github.com/Lokeshgandreddy81/Sara"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="group px-6 py-4 border border-white/10 bg-accent/50 text-foreground hover:border-white/20 hover:bg-accent hover:-translate-y-1 hover:shadow-lg transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center gap-2 rounded-xl"
+                                    >
+                                        <Github size={18} className="relative z-10" />
+                                        <span className="relative z-10">Source Code</span>
+                                    </SpotlightButton>
+
+                                    {/* 3. LinkedIn Spotlight Button */}
+                                    <SpotlightButton
+                                        href={siteConfig.linkedIn}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="group px-6 py-4 border border-white/10 bg-accent/50 text-foreground hover:border-white/20 hover:bg-accent hover:-translate-y-1 hover:shadow-lg transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center gap-2 rounded-xl"
+                                    >
+                                        <Linkedin size={18} className="relative z-10" />
+                                        <span className="relative z-10">Developer Profile</span>
+                                    </SpotlightButton>
+                                </div>
+                            </div>
                         )}
                     </div>
                 </div>
@@ -440,16 +568,23 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
           }
         }
 
-        /* Theme-aware shadows */
-        .modal-shadow {
-          box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 
-                      0 0 0 1px var(--border);
-        }
-
-        .light .modal-shadow {
-          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
-                      0 10px 10px -5px rgba(0, 0, 0, 0.04),
-                      0 0 0 1px var(--border);
+        @keyframes decryptionEntry {
+          0% {
+            opacity: 0;
+            transform: translateX(-10px);
+            filter: blur(4px);
+            font-weight: 100;
+          }
+          50% {
+            opacity: 0.5;
+            font-weight: 900;
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+            filter: blur(0);
+            font-weight: 400;
+          }
         }
 
         /* Terminal glow effect */
