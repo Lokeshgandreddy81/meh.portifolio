@@ -98,8 +98,10 @@ const WorkSection = () => {
               </div>
 
               {/* CTA Button */}
-              <button
-                onClick={() => handleProjectClick(siteConfig.workExperiences[0].company)}
+              <a
+                href={siteConfig.workExperiences[0].link}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center w-16 h-16 rounded-full border-2 theme-button-border transition-all duration-300 group self-start cursor-pointer hover:scale-110"
                 style={{
                   opacity: saraVisible ? 1 : 0,
@@ -108,7 +110,7 @@ const WorkSection = () => {
                 }}
               >
                 <ArrowRight className="w-6 h-6 text-muted group-hover:text-foreground group-hover:translate-x-1 transition-all duration-300" />
-              </button>
+              </a>
             </div>
             <div className="px-6 py-12 md:px-16 md:py-24 flex items-center justify-center">
               <LotusFlower className="decorative-svg w-3/4 h-3/4 md:w-full md:h-full" />

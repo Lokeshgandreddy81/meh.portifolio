@@ -34,7 +34,8 @@ export const siteConfig = {
         "Founder & Backend Engineer. Built an AI-powered learning platform serving 1,700+ users, owning backend architecture, APIs, and database design.",
         "Implemented a retrieval-based content system using vector search (FAISS) and deployed scalable services using FastAPI, PostgreSQL, Docker, and AWS."
       ],
-      link: "https://sara.ai"
+      link: "http://sara-ai.in",
+      github: "https://github.com/Lokeshgandreddy81/Sara"
     },
     {
       id: "vaagisha",
