@@ -29,13 +29,14 @@ export const siteConfig = {
       id: "saraai",
       company: "Sara.ai",
       logo: "S",
-      title: "Right now, I'm building Sara.ai — an AI-native learning platform that adapts in real time to how people learn.",
-      caseStudy: [
-        { label: "Problem", text: "Generic learning platforms force users into rigid pathways, ignoring individual pacing and comprehension gaps." },
-        { label: "Process", text: "Architected a scalable backend with FastAPI and PostgreSQL. Implemented a robust retrieval-based content system utilizing FAISS for vector search." },
-        { label: "Solution", text: "Built Sara.ai, an AI-native platform that dynamically generates and adapts curriculum in real-time, currently serving 1,700+ active learners." },
-        { label: "Impact", text: "Drastically reduced learner drop-off rates by providing personalized, context-aware educational interventions." }
+      title: "Senior Product Engineer",
+      period: "Jan 2024 - Present",
+      descriptions: [
+        "Built Sara.ai, an AI-native platform that dynamically generates and adapts curriculum in real-time.",
+        "Architected a scalable backend with FastAPI and PostgreSQL, implementing a robust retrieval-based content system utilizing FAISS for vector search.",
+        "Drastically reduced learner drop-off rates by providing personalized, context-aware educational interventions."
       ],
+      technologies: ["React", "FastAPI", "PostgreSQL", "FAISS", "Python"],
       link: "https://sara.ai"
     },
     {
@@ -52,39 +53,19 @@ export const siteConfig = {
   aboutSections: [
     {
       title: "I started in the engine room",
-      description: "Backend systems, cloud architecture, and the gritty details of what makes systems reliable at scale. My degree in Computer Science was just the preface. The real learning began in production."
-    },
-    {
-      title: "But my true passion isn't just building — it's architecting",
-      description: "I believe the most elegant systems are invisible. They don't demand attention; they enable momentum."
+      description: "Backend systems, cloud architecture, and the gritty details of what makes systems reliable at scale. The real learning began in production."
     },
     {
       title: "I built an open-source framework for multi-agent automation",
-      description: "Because I believe the future of work is collaborative — between humans and AI, not one replacing the other. It's a toolkit for orchestrating intelligence.",
-      hasLink: true,
-      link: "https://github.com/Lokeshgandreddy81"
+      description: "Because I believe the future of work is collaborative — between humans and AI, not one replacing the other. It's a toolkit for orchestrating intelligence."
     },
     {
       title: "I guide engineers transitioning into AI systems roles",
-      description: "The hardest part isn't the algorithm — it's the discipline of building something that won't break at 3 a.m.",
-      hasLink: true,
-      link: "https://lokeshgandreddy.hashnode.dev"
-    },
-    {
-      title: "Beyond AI systems, I'm drawn to tools that amplify human creativity",
-      description: "Open-source as a form of technical citizenship. Education that adapts, not just instructs. Architecture that lasts longer than trends. This is where engineering meets ethos."
-    },
-    {
-      title: "I'm designing an autonomous business engine",
-      description: "A system that observes, decides, and acts within complex workflows. Think of it as a co-pilot for operations, not automation for automation's sake."
+      description: "The hardest part isn't the algorithm — it's the discipline of building something that won't break at 3 a.m."
     },
     {
       title: "Outside the terminal, I'm a student of systems thinking",
       description: "In code, in teams, in how ideas spread. I write to clarify my own thinking, speak to sharpen it, and listen to broaden it."
-    },
-    {
-      title: "I speak at meetups about the craft of production-ready AI",
-      description: "Because great engineering is as much about communication as it is about code. Sharing knowledge isn't just giving back — it's how we all move forward."
     }
   ],
 

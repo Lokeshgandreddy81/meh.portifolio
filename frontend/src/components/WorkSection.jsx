@@ -30,7 +30,7 @@ const WorkSection = () => {
         <div className="w-full relative">
 
           {/* Sara.ai Section - Text Left, Decoration Right */}
-          <div className="flex flex-col-reverse md:grid md:grid-cols-2 border-b section-border min-h-screen relative overflow-hidden group">
+          <div className="flex flex-col-reverse md:grid md:grid-cols-2 border-b section-border relative overflow-hidden group">
 
 
 
@@ -86,25 +86,20 @@ const WorkSection = () => {
                 {siteConfig.workExperiences[0].title}
               </h2>
 
-              {/* Description / Case Study Section */}
-              <div className="text-muted text-lg leading-relaxed space-y-8 mb-12 md:mb-16">
-                {siteConfig.workExperiences[0].caseStudy.map((item, index) => (
-                  <div
+              {/* Description Section */}
+              <div className="text-muted text-lg leading-relaxed space-y-6 mb-12 md:mb-16">
+                {siteConfig.workExperiences[0].descriptions.map((desc, index) => (
+                  <p
                     key={index}
-                    className="flex flex-col md:flex-row gap-2 md:gap-6"
                     style={{
                       opacity: saraVisible ? 1 : 0,
                       transform: saraVisible ? 'translateY(0)' : 'translateY(16px)',
                       transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.6 + index * 0.1}s`
                     }}
+                    className="font-light text-foreground/90"
                   >
-                    <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-muted/60 md:w-24 shrink-0 pt-1">
-                      {item.label}
-                    </span>
-                    <p className="text-foreground/90 font-light">
-                      {item.text}
-                    </p>
-                  </div>
+                    {desc}
+                  </p>
                 ))}
               </div>
 
@@ -127,7 +122,7 @@ const WorkSection = () => {
           </div>
 
           {/* Vaagisha Section - Decoration Left, Text Right */}
-          <div className="flex flex-col md:grid md:grid-cols-2 border-b section-border min-h-screen relative overflow-hidden group">
+          <div className="flex flex-col md:grid md:grid-cols-2 border-b section-border relative overflow-hidden group">
 
 
 
