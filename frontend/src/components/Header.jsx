@@ -182,7 +182,7 @@ const Header = ({ onMenuClick }) => {
           />
 
           {/* Content row */}
-          <div className="relative z-10 flex items-center gap-3">
+          <div className="relative z-10 flex items-center gap-3 w-full">
 
             {/* Left: pulsing dot + name */}
             <div className="flex items-center gap-2.5">
@@ -214,11 +214,55 @@ const Header = ({ onMenuClick }) => {
               </div>
             </div>
 
-            {/* Hairline divider */}
-            <div
-              className="flex-shrink-0 h-4 w-[1px]"
-              style={{ background: 'linear-gradient(to bottom, transparent, rgba(255,255,255,0.18), transparent)' }}
-            />
+            {/* ══ Central Energy Core ══════════════════════════════════ */}
+            <div className="flex-1 flex items-center justify-center">
+              <div className="relative flex items-center justify-center" style={{ width: '28px', height: '28px' }}>
+
+                {/* Ripple ring 1 — fastest */}
+                <div
+                  className="absolute rounded-full pointer-events-none"
+                  style={{
+                    width: '28px', height: '28px',
+                    background: 'transparent',
+                    border: '1px solid rgba(59,130,246,0.5)',
+                    animation: 'coreRipple 2s cubic-bezier(0,0.5,0.5,1) infinite',
+                    animationDelay: '0s',
+                  }}
+                />
+                {/* Ripple ring 2 — medium */}
+                <div
+                  className="absolute rounded-full pointer-events-none"
+                  style={{
+                    width: '28px', height: '28px',
+                    background: 'transparent',
+                    border: '1px solid rgba(168,85,247,0.45)',
+                    animation: 'coreRipple 2s cubic-bezier(0,0.5,0.5,1) infinite',
+                    animationDelay: '0.65s',
+                  }}
+                />
+                {/* Ripple ring 3 — slowest */}
+                <div
+                  className="absolute rounded-full pointer-events-none"
+                  style={{
+                    width: '28px', height: '28px',
+                    background: 'transparent',
+                    border: '1px solid rgba(236,72,153,0.4)',
+                    animation: 'coreRipple 2s cubic-bezier(0,0.5,0.5,1) infinite',
+                    animationDelay: '1.3s',
+                  }}
+                />
+
+                {/* The Core Orb — spinning conic gradient */}
+                <div
+                  className="relative w-[7px] h-[7px] rounded-full z-10"
+                  style={{
+                    background: 'conic-gradient(from 0deg, #2a8af6, #a853ba, #e92a67, #2a8af6)',
+                    animation: 'islandSpin 2s linear infinite',
+                    boxShadow: '0 0 6px 2px rgba(168,85,247,0.7), 0 0 14px 4px rgba(99,102,241,0.4)',
+                  }}
+                />
+              </div>
+            </div>
 
             {/* Right: theme + menu */}
             <div className="flex items-center gap-1.5">
@@ -552,6 +596,10 @@ const Header = ({ onMenuClick }) => {
         @keyframes islandSpin {
           from { transform: rotate(0deg); }
           to   { transform: rotate(360deg); }
+        }
+        @keyframes coreRipple {
+          0%   { transform: scale(1);  opacity: 0.8; }
+          100% { transform: scale(4.5); opacity: 0; }
         }
         @keyframes nameShimmer {
           0%   { background-position: 200% center; }
