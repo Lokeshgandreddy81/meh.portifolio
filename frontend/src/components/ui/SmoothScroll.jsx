@@ -1,48 +1,47 @@
-import React, { useEffect, useRef } from 'react';
-import Lenis from 'lenis';
+import React, { useEffect } from 'react';
+import Lenis from '@studio-freight/lenis';
 
 const SmoothScroll = ({ children }) => {
-    const lenisRef = useRef(null);
-
     useEffect(() => {
-        // Initialize Lenis for buttery, un-janky scroll
+        // Initialize Lenis for industry-standard native smooth scrolling
         const lenis = new Lenis({
             duration: 1.2,
-            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom ease out expo
-            direction: 'vertical',
-            gestureDirection: 'vertical',
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Seamless easing
+            direction: 'vertical', // vertical, horizontal
+            gestureDirection: 'vertical', // vertical, horizontal, both
             smooth: true,
             mouseMultiplier: 1,
-            smoothTouch: false,
+            smoothTouch: false, // Leave mobile scrolling to native OS momentum
             touchMultiplier: 2,
             infinite: false,
         });
 
-        lenisRef.current = lenis;
-
-        // Listen to scroll and broadcast lerped value back to CSS for Parallax Sync
-        lenis.on('scroll', (e) => {
-            document.body.style.setProperty('--scroll-y', e.animatedScroll);
+        // Broadcast scroll position to CSS variable for parallax components
+        lenis.on('scroll', ({ scroll }) => {
+            document.body.style.setProperty('--scroll-y', scroll);
         });
 
-        // Native RAF loop for Lenis
+        // Initiate the requestAnimationFrame loop
         function raf(time) {
-            if (lenisRef.current) {
-                lenisRef.current.raf(time);
-            }
+            lenis.raf(time);
             requestAnimationFrame(raf);
         }
+
         requestAnimationFrame(raf);
 
+        // Reset scroll value on mount
+        document.body.style.setProperty('--scroll-y', window.scrollY);
+
+        // Cleanup
         return () => {
-            if (lenisRef.current) {
-                lenisRef.current.destroy();
-            }
+            lenis.destroy();
         };
     }, []);
 
+    // We no longer need a 'fixed' wrapper or a fake window height! 
+    // Lenis works directly with the native body scroll.
     return (
-        <div className="lenis-wrapper relative w-full h-full">
+        <div className="w-full relative">
             {children}
         </div>
     );
