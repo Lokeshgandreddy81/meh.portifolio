@@ -59,6 +59,7 @@ const CustomCursor = () => {
             document.removeEventListener('mouseover', onMouseOver);
             cancelAnimationFrame(requestRef.current);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // Empty dependency array — event listeners only need to be attached once
 
     if (!isVisible && position.x === -100) return null;
