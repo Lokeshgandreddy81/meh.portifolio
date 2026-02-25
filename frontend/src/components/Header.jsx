@@ -64,10 +64,11 @@ const Header = ({ onMenuClick }) => {
       {/* ══ Dynamic Island — jaw-drop edition ══════════════════════════ */}
       <header
         ref={headerRef}
-        className="fixed bottom-8 left-1/2 z-[100]"
+        className="fixed bottom-6 sm:bottom-8 left-1/2 z-[100]"
         style={{
           transform: `translateX(-50%) scale(${scrolled ? 1.015 : 1})`,
           transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)',
+          maxWidth: '94vw',
         }}
       >
         {/* ── Floating glow BEAM — sharp line directly below pill ── */}
@@ -205,7 +206,7 @@ const Header = ({ onMenuClick }) => {
                   : <Moon className="relative z-10 w-3 h-3 text-indigo-300 group-hover:-rotate-45 transition-transform duration-500 flex-shrink-0" />
                 }
                 <span
-                  className="relative z-10 font-mono text-[8px] uppercase tracking-wider flex-shrink-0"
+                  className="relative z-10 font-mono text-[8px] uppercase tracking-wider flex-shrink-0 hidden sm:inline"
                   style={{ color: theme === 'dark' ? 'rgba(250,204,21,0.75)' : 'rgba(164,154,255,0.85)' }}
                 >
                   {theme === 'dark' ? 'Light' : 'Dark'}

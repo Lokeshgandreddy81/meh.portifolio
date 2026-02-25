@@ -118,7 +118,6 @@ const ManifestoBreak = () => {
           <div className="flex-1 h-[1px]" style={{ background: dark ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.08)' }} />
         </div>
 
-        {/* ── Main quote — 3 separate lines ────────────────────── */}
         <div className="flex flex-col gap-2 md:gap-4 mb-16 md:mb-20">
 
           {/* Line 1: "Systems don't" */}
@@ -127,7 +126,7 @@ const ManifestoBreak = () => {
               className="block font-light leading-[1] tracking-tighter"
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
-                fontSize: 'clamp(3.5rem, 10vw, 11rem)',
+                fontSize: 'clamp(2.2rem, 10vw, 11rem)',
                 color: text,
               }}
             >
@@ -135,13 +134,13 @@ const ManifestoBreak = () => {
             </span>
           </div>
 
-          {/* Line 2: "just RUN —" — RUN in stroke outline */}
-          <div style={lineStyle(0.22)} className="flex items-baseline flex-wrap gap-x-6">
+          {/* Line 2: "just RUN —" */}
+          <div style={lineStyle(0.22)} className="flex items-baseline flex-wrap gap-x-4 md:gap-x-6">
             <span
               className="font-light leading-[1] tracking-tighter"
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
-                fontSize: 'clamp(3.5rem, 10vw, 11rem)',
+                fontSize: 'clamp(2.2rem, 10vw, 11rem)',
                 color: text,
               }}
             >
@@ -151,7 +150,7 @@ const ManifestoBreak = () => {
               className="font-light leading-[1] tracking-tighter italic"
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
-                fontSize: 'clamp(3.5rem, 10vw, 11rem)',
+                fontSize: 'clamp(2.2rem, 10vw, 11rem)',
                 color: 'transparent',
                 WebkitTextStroke: dark ? '2px rgba(0,0,0,0.55)' : '2px rgba(255,255,255,0.55)',
                 letterSpacing: '-0.02em',
@@ -163,7 +162,7 @@ const ManifestoBreak = () => {
               className="font-light leading-[1] tracking-tighter"
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
-                fontSize: 'clamp(3.5rem, 10vw, 11rem)',
+                fontSize: 'clamp(2.2rem, 10vw, 11rem)',
                 color: text,
                 opacity: 0.5,
               }}
@@ -172,13 +171,13 @@ const ManifestoBreak = () => {
             </span>
           </div>
 
-          {/* Line 3: "they THINK." — THINK filled gradient */}
-          <div style={lineStyle(0.35)} className="flex items-baseline flex-wrap gap-x-4">
+          {/* Line 3: "they think." */}
+          <div style={lineStyle(0.35)} className="flex items-baseline flex-wrap gap-x-2 md:gap-x-4">
             <span
               className="font-light leading-[1] tracking-tighter"
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
-                fontSize: 'clamp(3.5rem, 10vw, 11rem)',
+                fontSize: 'clamp(2.2rem, 10vw, 11rem)',
                 color: text,
               }}
             >
@@ -188,7 +187,7 @@ const ManifestoBreak = () => {
               className="font-light leading-[1] tracking-tighter italic"
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
-                fontSize: 'clamp(3.5rem, 10vw, 11rem)',
+                fontSize: 'clamp(2.2rem, 10vw, 11rem)',
                 color: dark ? '#818cf8' : '#6366f1',
                 letterSpacing: '-0.02em',
               }}
@@ -197,6 +196,7 @@ const ManifestoBreak = () => {
             </span>
           </div>
         </div>
+
 
         {/* ── Glowing divider ──────────────────────────────────── */}
         <div style={{ opacity: visible ? 1 : 0, transition: 'opacity 1s ease 0.6s' }}>
