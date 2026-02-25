@@ -55,11 +55,11 @@ const CustomCursor = () => {
         requestRef.current = requestAnimationFrame(updateTrailingCursor);
 
         return () => {
-            document.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mousemove', onMouseMove);
             document.removeEventListener('mouseover', onMouseOver);
             cancelAnimationFrame(requestRef.current);
         };
-    }, [position.x, position.y, isVisible]); // Removed trailingPos dependency to fix warning, using local currentX/currentY instead
+    }, []); // Empty dependency array — event listeners only need to be attached once
 
     if (!isVisible && position.x === -100) return null;
 
