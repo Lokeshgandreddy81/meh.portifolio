@@ -515,113 +515,155 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
                                 </div>
                             </div>
                         ) : (
-                            /* ===== GRANTED STAGE ===== */
-                            <div className="px-8 md:px-16 py-12 md:py-20 animate-[fade-in_1s_ease-out]">
-                                {/* Header */}
-                                <div className="mb-10 md:mb-14 flex justify-between items-start flex-wrap gap-6 border-b border-border pb-8">
-                                    <div>
-                                        <div className="flex items-center gap-3 mb-4">
-                                            <CheckCircle2 size={20} className="text-green-500" />
-                                            <span className="text-xs uppercase tracking-[0.2em] text-muted">Access Granted</span>
+                            /* ===== GRANTED STAGE: CINEMATIC REVEAL ===== */
+                            <div className="relative overflow-hidden">
+
+                                {/* Ambient green halo at top */}
+                                <div className="absolute top-0 left-0 right-0 h-[2px] z-10"
+                                    style={{ background: 'linear-gradient(90deg, transparent 0%, rgba(34,197,94,0.7) 30%, rgba(99,102,241,0.8) 70%, transparent 100%)' }} />
+                                <div className="absolute top-0 left-1/4 w-1/2 h-[200px] pointer-events-none"
+                                    style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(34,197,94,0.08) 0%, transparent 70%)' }} />
+
+                                <div className="px-8 md:px-12 pt-12 pb-10">
+
+                                    {/* ── Top bar: status + badge ─────────────────────── */}
+                                    <div className="flex items-center justify-between mb-8">
+                                        <div className="flex items-center gap-3">
+                                            {/* Animated green checkmark */}
+                                            <div className="relative w-5 h-5">
+                                                <div className="absolute inset-0 rounded-full bg-green-500/20 animate-ping" style={{ animationDuration: '2.5s' }} />
+                                                <div className="relative w-5 h-5 rounded-full bg-green-500/15 border border-green-500/40 flex items-center justify-center">
+                                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                                                        <path d="M2 5l2 2 4-4" stroke="rgba(34,197,94,1)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-green-400/80">Access Granted</span>
                                         </div>
+                                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full border border-green-500/20 bg-green-500/5">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                                            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-green-400/70">System Online</span>
+                                        </div>
+                                    </div>
+
+                                    {/* ── Project Name Hero lockup ────────────────────── */}
+                                    <div className="mb-10">
                                         <h1
-                                            className="text-4xl md:text-5xl font-light leading-[1.1] text-foreground mb-3"
+                                            className="text-5xl md:text-7xl font-light leading-[1] tracking-tight mb-3 relative inline-block"
                                             style={{ fontFamily: 'Cormorant Garamond, serif' }}
                                         >
-                                            {projectName} <span className="text-muted text-3xl hidden md:inline">|</span> <br className="md:hidden" />Live Preview
+                                            <span
+                                                className="text-transparent bg-clip-text"
+                                                style={{ backgroundImage: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.85) 50%, rgba(255,255,255,0.6) 100%)' }}
+                                            >
+                                                {projectName}
+                                            </span>
                                         </h1>
-                                        <p className="text-lg text-muted italic max-w-2xl">
+                                        <p className="text-sm text-white/40 italic font-light tracking-wide">
                                             "Production is where theory meets reality."
                                         </p>
                                     </div>
 
-                                    <div className="bg-accent/50 border border-white/5 backdrop-blur-md px-4 py-3 rounded-full flex items-center gap-3 self-start shadow-xl">
-                                        <div className="w-2 h-2 rounded-full bg-green-500 animate-[pulse_2s_ease-in-out_infinite]" />
-                                        <span className="text-xs tracking-widest uppercase font-mono text-foreground/80">System Online</span>
-                                    </div>
-                                </div>
-
-                                {/* Main Content: Browser Tab Preview */}
-                                <div className="mb-12 border border-white/10 bg-[#0a0a0a] rounded-xl overflow-hidden flex flex-col shadow-[0_20px_50px_rgba(0,0,0,0.5)] relative group transition-all duration-700 hover:shadow-[0_30px_60px_rgba(0,0,0,0.7)]">
-                                    {/* Detailed macOS-like header */}
-                                    <div className="bg-[#1e1e1e]/90 backdrop-blur-xl border-b border-white/5 px-4 py-3 flex items-center justify-between sticky top-0 z-20">
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-3 h-3 rounded-full bg-[#ff5f56] shadow-sm hover:bg-[#ff5f56]/80 transition-colors" />
-                                            <div className="w-3 h-3 rounded-full bg-[#ffbd2e] shadow-sm hover:bg-[#ffbd2e]/80 transition-colors" />
-                                            <div className="w-3 h-3 rounded-full bg-[#27c93f] shadow-sm hover:bg-[#27c93f]/80 transition-colors" />
+                                    {/* ── Browser Preview Card ─────────────────────────── */}
+                                    <div
+                                        className="relative rounded-2xl overflow-hidden mb-8 group"
+                                        style={{
+                                            background: 'rgba(255,255,255,0.035)',
+                                            border: '1px solid rgba(255,255,255,0.08)',
+                                            boxShadow: '0 32px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+                                        }}
+                                    >
+                                        {/* Browser chrome */}
+                                        <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.06]"
+                                            style={{ background: 'rgba(0,0,0,0.3)' }}>
+                                            <div className="flex items-center gap-1.5">
+                                                <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
+                                                <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
+                                                <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+                                            </div>
+                                            <div className="flex-1 flex justify-center">
+                                                <div className="flex items-center gap-2 bg-white/[0.06] border border-white/[0.06] rounded-md px-3 py-1">
+                                                    <div className="w-1.5 h-1.5 rounded-full bg-green-400" style={{ boxShadow: '0 0 4px rgba(34,197,94,0.8)' }} />
+                                                    <span className="font-mono text-[10px] text-white/50 tracking-wider">sara-ai.in</span>
+                                                </div>
+                                            </div>
+                                            <a href="http://sara-ai.in" target="_blank" rel="noopener noreferrer"
+                                                className="text-white/30 hover:text-white/80 transition-colors">
+                                                <ExternalLink size={14} />
+                                            </a>
                                         </div>
-                                        <div className="flex-1 flex justify-center px-4">
-                                            <div className="w-full max-w-md bg-black/40 border border-white/5 rounded-md px-4 py-1.5 flex items-center justify-center">
-                                                <span className="text-[11px] font-mono text-white/50 tracking-wider">
-                                                    sara-ai.in
-                                                </span>
+
+                                        {/* Iframe */}
+                                        <div className="relative" style={{ paddingBottom: '50%', minHeight: '300px' }}>
+                                            <iframe
+                                                src="http://sara-ai.in"
+                                                title="Sara.ai Live Preview"
+                                                className="absolute inset-0 w-full h-full border-none"
+                                                loading="lazy"
+                                            />
+                                            {/* Hover overlay */}
+                                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center z-10"
+                                                style={{ background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
+                                                <a
+                                                    href="http://sara-ai.in" target="_blank" rel="noopener noreferrer"
+                                                    className="flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium pointer-events-auto transition-all hover:scale-105"
+                                                    style={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', boxShadow: '0 8px 30px rgba(99,102,241,0.4)', color: '#fff' }}
+                                                >
+                                                    Open Full Experience <ArrowRight size={16} />
+                                                </a>
                                             </div>
                                         </div>
-                                        <div className="w-12 flex justify-end">
-                                            <a href="http://sara-ai.in" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-white transition-colors duration-300">
-                                                <ExternalLink size={16} />
-                                            </a>
-                                        </div>
                                     </div>
 
-                                    {/* Iframe Content */}
-                                    <div className="w-full bg-background relative" style={{ paddingBottom: '56.25%', minHeight: '350px' }}>
-                                        <iframe
-                                            src="http://sara-ai.in"
-                                            title="Sara.ai Preview"
-                                            className="absolute inset-0 w-full h-full border-none"
-                                            loading="lazy"
-                                        />
-
-                                        {/* Hover overlay hint */}
-                                        <div className="absolute inset-0 pointer-events-none flex items-center justify-center bg-background/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 backdrop-blur-[2px] z-10">
-                                            <a
-                                                href="http://sara-ai.in"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="px-6 py-3 bg-foreground text-background font-medium pointer-events-auto hover:bg-foreground/90 transition-all shadow-xl flex items-center gap-2"
-                                            >
-                                                Open Interactive Experience <ExternalLink size={16} />
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Actions - Spotlight Buttons */}
-                                <p className="text-[11px] text-muted/60 uppercase tracking-[0.2em] mb-6 font-medium">Resources & Links</p>
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                                    {/* 1. Website Spotlight Button */}
-                                    <SpotlightButton
+                                    {/* ── Primary CTA ─────────────────────────────────── */}
+                                    <a
                                         href="http://sara-ai.in"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group px-6 py-4 bg-foreground text-background text-center font-medium hover:opacity-95 hover:-translate-y-1 hover:shadow-xl transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center gap-2 rounded-xl"
+                                        target="_blank" rel="noopener noreferrer"
+                                        className="group flex items-center justify-center gap-3 w-full py-4 rounded-xl mb-4 font-medium text-white transition-all duration-500 hover:shadow-[0_12px_40px_rgba(99,102,241,0.5)] hover:-translate-y-0.5 relative overflow-hidden"
+                                        style={{ background: 'linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #ec4899 100%)', backgroundSize: '200% 200%' }}
                                     >
-                                        <span className="relative z-10">Visit Website</span>
-                                        <ArrowRight size={16} className="relative z-10 group-hover:translate-x-1 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                                    </SpotlightButton>
+                                        {/* Shimmer sweep */}
+                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/15 to-transparent translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-700" />
+                                        <span className="relative z-10 tracking-wide">Launch {projectName}</span>
+                                        <ArrowRight size={16} className="relative z-10 group-hover:translate-x-1 transition-transform duration-300" />
+                                    </a>
 
-                                    {/* 2. GitHub Spotlight Button */}
-                                    <SpotlightButton
-                                        href="https://github.com/Lokeshgandreddy81/Sara"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group px-6 py-4 border border-white/10 bg-accent/50 text-foreground hover:border-white/20 hover:bg-accent hover:-translate-y-1 hover:shadow-lg transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center gap-2 rounded-xl"
-                                    >
-                                        <Github size={18} className="relative z-10" />
-                                        <span className="relative z-10">Source Code</span>
-                                    </SpotlightButton>
+                                    {/* ── Secondary row: GitHub + LinkedIn ───────────── */}
+                                    <div className="grid grid-cols-2 gap-3 mb-8">
+                                        <a
+                                            href="https://github.com/Lokeshgandreddy81/Sara"
+                                            target="_blank" rel="noopener noreferrer"
+                                            className="group flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-mono text-white/60 hover:text-white/90 transition-all duration-300 hover:-translate-y-0.5"
+                                            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                                        >
+                                            <Github size={15} className="group-hover:text-white transition-colors" />
+                                            Source Code
+                                        </a>
+                                        <a
+                                            href={siteConfig.linkedIn}
+                                            target="_blank" rel="noopener noreferrer"
+                                            className="group flex items-center justify-center gap-2 py-3 rounded-xl text-sm font-mono text-white/60 hover:text-white/90 transition-all duration-300 hover:-translate-y-0.5"
+                                            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                                        >
+                                            <Linkedin size={15} className="group-hover:text-blue-400 transition-colors" />
+                                            Connect
+                                        </a>
+                                    </div>
 
-                                    {/* 3. LinkedIn Spotlight Button */}
-                                    <SpotlightButton
-                                        href={siteConfig.linkedIn}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="group px-6 py-4 border border-white/10 bg-accent/50 text-foreground hover:border-white/20 hover:bg-accent hover:-translate-y-1 hover:shadow-lg transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center gap-2 rounded-xl"
-                                    >
-                                        <Linkedin size={18} className="relative z-10" />
-                                        <span className="relative z-10">Developer Profile</span>
-                                    </SpotlightButton>
+                                    {/* ── Footer bar: session info ─────────────────────── */}
+                                    <div className="flex items-center justify-between pt-5 border-t border-white/[0.06]">
+                                        <div>
+                                            <p className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/25 mb-1">Session ID</p>
+                                            <p className="font-mono text-[10px] text-blue-400/70">{accessToken}</p>
+                                        </div>
+                                        <button
+                                            onClick={onClose}
+                                            className="font-mono text-[10px] uppercase tracking-[0.2em] text-white/30 hover:text-white/60 transition-colors"
+                                        >
+                                            Close
+                                        </button>
+                                    </div>
+
                                 </div>
                             </div>
                         )}
