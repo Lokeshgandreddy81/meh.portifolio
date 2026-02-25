@@ -78,9 +78,9 @@ const ManifestoBreak = () => {
       className="w-full relative overflow-hidden transition-colors duration-700 flex flex-col min-h-screen justify-center"
       style={{ background: bg }}
     >
-      {/* ── Jaw-Dropping Giant G Parallax Mask ────────────────────── */}
+      {/* ── Medium-Sized Jaw-Dropping G Parallax Mask ───────────────── */}
       <div
-        className="absolute right-0 top-1/2 -translate-y-1/2 w-[80vw] max-w-[1200px] h-full pointer-events-none hidden md:block select-none"
+        className="absolute right-[5%] top-1/2 -translate-y-[45%] w-[400px] h-full pointer-events-none hidden lg:flex items-center justify-center select-none z-0"
         style={{
           opacity: visible ? 1 : 0,
           transition: 'opacity 2.5s ease 0.3s',
@@ -88,29 +88,29 @@ const ManifestoBreak = () => {
       >
         {/* Layer 1: Ambient base glow behind the G */}
         <div
-          className="absolute right-[-10%] top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[100px] opacity-20"
+          className="absolute inset-0 rounded-full blur-[80px] opacity-[0.15]"
           style={{
             background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
-            transform: `translate(${(0.5 - mx) * 40}px, ${(0.5 - my) * 40}px)`,
+            transform: `translate(${(0.5 - mx) * 30}px, ${(0.5 - my) * 30}px)`,
             transition: 'transform 2s cubic-bezier(0.16,1,0.3,1)'
           }}
         />
 
         {/* Layer 2: The actual G containing spinning animations */}
         <div
-          className="absolute inset-0 flex items-center justify-end overflow-visible pr-[5%]"
+          className="absolute inset-0 flex items-center justify-center overflow-visible"
           style={{
-            transform: `translate(${(mx - 0.5) * -90}px, ${(my - 0.5) * -60}px)`,
+            transform: `translate(${(mx - 0.5) * -60}px, ${(my - 0.5) * -40}px)`,
             transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)'
           }}
         >
-          <div className="relative w-full h-full flex items-center justify-end mix-blend-screen isolate">
+          <div className="relative w-full h-full flex items-center justify-center mix-blend-screen isolate pt-8">
             <span
               style={{
                 fontFamily: 'Cormorant Garamond, serif',
-                fontSize: 'clamp(30rem, 80vw, 90rem)',
+                fontSize: 'clamp(20rem, 35vw, 42rem)',
                 fontWeight: 300,
-                lineHeight: 1,
+                lineHeight: 0.8,
                 letterSpacing: '-0.06em',
                 background: 'conic-gradient(from 0deg at 50% 50%, #3b82f6 0deg, transparent 60deg, #a853ba 120deg, transparent 180deg, #e92a67 240deg, transparent 300deg, #3b82f6 360deg)',
                 WebkitBackgroundClip: 'text',
@@ -123,7 +123,7 @@ const ManifestoBreak = () => {
               G
               {/* Internal spinning overlay on the text */}
               <div
-                className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-60"
+                className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-80"
                 style={{
                   background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
                   animation: 'heroSpin 15s linear infinite',
