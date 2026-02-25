@@ -120,7 +120,7 @@ const Header = ({ onMenuClick }) => {
           style={{
             borderRadius: '999px',
             padding: scrolled ? '10px 18px' : '9px 16px',
-            background: 'rgba(255,255,255,0.08)', // Base border color beneath the spin
+            background: 'transparent', // Fully transparent per user request
             backdropFilter: 'blur(48px)',
             WebkitBackdropFilter: 'blur(48px)',
             transition: 'all 0.9s cubic-bezier(0.16,1,0.3,1)',
@@ -132,26 +132,27 @@ const Header = ({ onMenuClick }) => {
                  0 0 0 0.5px rgba(255,255,255,0.06)`,
           }}
         >
-          {/* The Spinning Gradient Ring */}
+          {/* The Spinning Gradient Border Container (clips the center to leave only a 1px border) */}
           <div
-            className="absolute z-0 pointer-events-none"
+            className="absolute inset-0 z-0 pointer-events-none rounded-full"
             style={{
-              inset: '-100%',
-              background: 'conic-gradient(from 0deg, transparent 40%, rgba(59,130,246,0.8), rgba(168,85,247,1), rgba(236,72,153,0.8), transparent 60%)',
-              animation: 'islandSpin 3s linear infinite',
-              opacity: scrolled ? 1 : 0,
-              transition: 'opacity 0.6s ease',
+              padding: '1px',
+              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+              WebkitMaskComposite: 'xor',
+              maskComposite: 'exclude',
             }}
-          />
-
-          {/* Inner Dark Mask (leaves a 1px gap for the spinning border) */}
-          <div
-            className="absolute inset-[1px] rounded-full z-[1] pointer-events-none"
-            style={{
-              background: 'rgba(6,6,10,0.7)', // More transparent to let the spin pop
-              boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)',
-            }}
-          />
+          >
+            {/* The Spinning Conic Gradient */}
+            <div
+              className="absolute top-1/2 left-1/2 w-[300%] h-[300%] -translate-x-1/2 -translate-y-1/2"
+              style={{
+                background: 'conic-gradient(from 0deg, transparent 40%, rgba(59,130,246,0.8), rgba(168,85,247,1), rgba(236,72,153,0.8), transparent 60%)',
+                animation: 'islandSpin 3s linear infinite',
+                opacity: scrolled ? 1 : 0,
+                transition: 'opacity 0.6s ease',
+              }}
+            />
+          </div>
 
           {/* Scroll progress bar */}
           <div
