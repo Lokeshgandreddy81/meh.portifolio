@@ -10,7 +10,6 @@ const scrollTo = (id) => {
 const Header = ({ onMenuClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [mx, setMx] = useState(0.5);
   const [my, setMy] = useState(0.5);
   const [hoveredIdx, setHoveredIdx] = useState(null);
@@ -19,13 +18,25 @@ const Header = ({ onMenuClick }) => {
 
   /* ── Scroll tracking ─────────────────────────────────────────────── */
   useEffect(() => {
+    let ticking = false;
     const onScroll = () => {
-      const y = window.scrollY;
-      const h = document.documentElement.scrollHeight - window.innerHeight;
-      setScrolled(y > 80);
-      setScrollProgress(Math.min((y / h) * 100, 100));
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const y = window.scrollY;
+          const h = document.documentElement.scrollHeight - window.innerHeight;
+          setScrolled(y > 80);
+
+          // Pure CSS Variable mutation for scroll progress to bypass React 60fps render choke
+          if (headerRef.current) {
+            headerRef.current.style.setProperty('--sp', `${Math.min((y / h) * 100, 100)}%`);
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll(); // Init
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
@@ -144,11 +155,11 @@ const Header = ({ onMenuClick }) => {
             className="absolute top-0 left-0 pointer-events-none"
             style={{
               height: '1.5px', borderRadius: '0 2px 2px 0',
-              width: `${scrollProgress}%`,
+              width: 'var(--sp, 0%)',
               background: 'linear-gradient(90deg, #3b82f6, #a855f7 55%, #ec4899)',
               boxShadow: '0 0 6px rgba(99,102,241,0.7)',
-              opacity: scrollProgress > 2 ? 1 : 0,
-              transition: 'width 0.25s ease, opacity 0.4s ease',
+              opacity: scrolled ? 1 : 0,
+              transition: 'opacity 0.4s ease',
               zIndex: 20,
             }}
           />
