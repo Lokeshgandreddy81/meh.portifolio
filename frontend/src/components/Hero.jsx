@@ -183,20 +183,41 @@ const Hero = () => {
                 }}
               />
 
-              {/* Hover: spinning conic blob erupts behind text */}
+              {/* Outer counter-rotating ring — always visible at low opacity */}
               <div
-                className="absolute inset-[-20%] z-0 rounded-full blur-3xl opacity-0 group-hover:opacity-50 pointer-events-none"
+                className="absolute inset-[-35%] z-0 rounded-full blur-[80px] pointer-events-none"
                 style={{
-                  background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)',
-                  animation: 'heroSpin 10s linear infinite',
-                  transition: 'opacity 2s ease',
+                  background: 'conic-gradient(from 0deg at 50% 50%, #3b82f6 0deg, transparent 60deg, #a853ba 120deg, transparent 180deg, #e92a67 240deg, transparent 300deg, #3b82f6 360deg)',
+                  animation: 'heroSpinCCW 13s linear infinite',
+                  opacity: 0.10,
+                  transition: 'opacity 1.5s ease',
                 }}
               />
 
-              {/* ── Line 1: IDEAS BECOME — flowing chromatic gradient ── */}
-              <span className="overflow-hidden py-2 inline-block -ml-1 relative z-10">
+              {/* Inner spinning conic bloom — base visible, intensifies on hover */}
+              <div
+                className="absolute inset-[-20%] z-0 rounded-full blur-3xl pointer-events-none group-hover:scale-110"
+                style={{
+                  background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
+                  animation: 'heroSpin 7s linear infinite',
+                  opacity: 0.15,
+                  transition: 'opacity 1.8s ease, transform 1.8s ease',
+                }}
+              />
+              {/* Hover overlay to intensify */}
+              <div
+                className="absolute inset-[-20%] z-0 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-40"
+                style={{
+                  background: 'conic-gradient(from 0deg at 50% 50%, #e92a67 0deg, #a853ba 120deg, #2a8af6 240deg, #e92a67 360deg)',
+                  animation: 'heroSpinCCW 5s linear infinite',
+                  transition: 'opacity 1.5s ease',
+                }}
+              />
+
+              {/* ── Line 1: IDEAS BECOME ── */}
+              <span className="overflow-hidden py-1.5 inline-block -ml-1 relative z-10">
                 <span
-                  className="inline-block text-[10vw] md:text-[7rem] lg:text-[9rem] font-black uppercase tracking-tight leading-none"
+                  className="inline-block text-[7.5vw] md:text-[5.5rem] lg:text-[7rem] font-black uppercase tracking-tight leading-none"
                   style={{
                     fontFamily: 'Inter, sans-serif',
                     background: 'linear-gradient(105deg, #c7d2fe 0%, #818cf8 15%, #a78bfa 30%, #f472b6 50%, #fb923c 68%, #fbbf24 82%, #c7d2fe 100%)',
@@ -204,8 +225,8 @@ const Hero = () => {
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
-                    animation: 'heroGradientFlow 7s linear infinite',
-                    filter: 'drop-shadow(0 0 50px rgba(139,92,246,0.35))',
+                    animation: 'heroGradientFlow 5s linear infinite',
+                    filter: 'drop-shadow(0 0 45px rgba(139,92,246,0.45))',
                     transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
                     transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)',
                     transitionDelay: '0.1s',
@@ -215,10 +236,10 @@ const Hero = () => {
                 </span>
               </span>
 
-              {/* ── Line 2: INFRASTRUCTURE — counter-flowing, bigger, serif ── */}
-              <span className="overflow-hidden py-2 inline-block ml-4 md:ml-16 relative z-10">
+              {/* ── Line 2: INFRASTRUCTURE — counter-flowing, serif ── */}
+              <span className="overflow-hidden py-1.5 inline-block ml-3 md:ml-12 relative z-10">
                 <span
-                  className="inline-block text-[11vw] md:text-[8.5rem] lg:text-[11rem] font-light italic uppercase tracking-tighter leading-none"
+                  className="inline-block text-[9vw] md:text-[7rem] lg:text-[9rem] font-light italic uppercase tracking-tighter leading-none"
                   style={{
                     fontFamily: 'Cormorant Garamond, serif',
                     background: 'linear-gradient(105deg, #fbbf24 0%, #fb923c 18%, #f472b6 38%, #a78bfa 58%, #818cf8 78%, #fbbf24 100%)',
@@ -226,9 +247,9 @@ const Hero = () => {
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
-                    animation: 'heroGradientFlow 7s linear infinite reverse',
-                    animationDelay: '-3.5s',
-                    filter: 'drop-shadow(0 0 60px rgba(251,146,60,0.3))',
+                    animation: 'heroGradientFlow 5s linear infinite reverse',
+                    animationDelay: '-2.5s',
+                    filter: 'drop-shadow(0 0 55px rgba(251,146,60,0.4))',
                     transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
                     transition: 'transform 1.4s cubic-bezier(0.16,1,0.3,1)',
                     transitionDelay: '0.22s',
@@ -246,6 +267,10 @@ const Hero = () => {
                 @keyframes heroSpin {
                   from { transform: rotate(0deg); }
                   to   { transform: rotate(360deg); }
+                }
+                @keyframes heroSpinCCW {
+                  from { transform: rotate(0deg); }
+                  to   { transform: rotate(-360deg); }
                 }
                 @keyframes heroGradientFlow {
                   0%   { background-position: 0%   50%; }
