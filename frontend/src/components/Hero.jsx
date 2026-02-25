@@ -239,10 +239,10 @@ const Hero = () => {
 
         </div>
 
-        {/* Tactical Tagline / Ideology Block */}
-        <div className="mt-24 md:mt-40 max-w-2xl overflow-hidden relative z-20">
+        {/* Tactical Tagline / Ideology Block - Redesigned (Ultra-Clean Editorial) */}
+        <div className="mt-32 md:mt-48 max-w-3xl relative z-20">
           <div
-            className="p-8 md:p-12 border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] backdrop-blur-md rounded-2xl relative overflow-hidden group"
+            className="flex flex-col gap-6"
             style={{
               opacity: isMounted ? 1 : 0,
               transform: isMounted ? 'translateY(0)' : 'translateY(40px)',
@@ -250,22 +250,34 @@ const Hero = () => {
               transitionDelay: '0.6s'
             }}
           >
-            {/* Hover Glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-black/5 to-transparent dark:from-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+            {/* Minimalist Blue Label */}
+            <div className="flex items-center gap-4">
+              <div className="w-8 h-[2px] bg-blue-500 rounded-full" />
+              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-blue-500 font-bold">
+                The Architecture Directive
+              </p>
+            </div>
 
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-black/40 dark:text-white/40 mb-6 block">
-              The Architecture Directive
-            </p>
-            <p className="text-black/80 dark:text-white/80 text-xl md:text-3xl font-light leading-snug tracking-tight">
-              I architect intelligent systems that think, automate, and scale. This is where ideas become infrastructure.
+            {/* Core Ideology Typography */}
+            <h3 className="text-black/80 dark:text-white/80 text-3xl md:text-5xl lg:text-6xl font-light leading-[1.1] tracking-tighter" style={{ fontFamily: 'Inter, sans-serif' }}>
+              I architect intelligent systems that <br className="hidden md:block" />
+              <span className="font-semibold text-black dark:text-white">think, automate,</span> and <span className="font-semibold text-black dark:text-white">scale.</span>
+            </h3>
+
+            <p className="text-black/50 dark:text-white/50 text-base md:text-xl font-light max-w-xl leading-relaxed mt-2" style={{ fontFamily: 'Inter, sans-serif' }}>
+              This is where abstract ideas are engineered into robust,<br className="hidden md:block" /> high-performance infrastructure.
             </p>
 
-            {/* Signature / Name identity restored gracefully here */}
-            <div className="mt-12 flex items-center gap-4">
-              <div className="w-12 h-[1px] bg-black/20 dark:bg-white/20" />
-              <span className="font-medium text-sm tracking-widest uppercase text-black dark:text-white" style={{ fontFamily: 'Inter, sans-serif' }}>
-                {siteConfig.name}
-              </span>
+            {/* Signature Block */}
+            <div className="mt-8 md:mt-12 flex items-center gap-6">
+              <div className="flex flex-col">
+                <span className="font-bold text-sm md:text-base tracking-[0.2em] uppercase text-black dark:text-white" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  {siteConfig.name}
+                </span>
+                <span className="text-black/40 dark:text-white/40 text-[10px] font-mono uppercase tracking-[0.3em] mt-1">
+                  System Architect & Engineer
+                </span>
+              </div>
             </div>
           </div>
         </div>
