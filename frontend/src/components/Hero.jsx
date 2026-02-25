@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import siteConfig from '../config/siteConfig';
 
 const Hero = () => {
   const { theme } = useTheme();
