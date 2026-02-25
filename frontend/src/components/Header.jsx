@@ -13,8 +13,11 @@ const Header = ({ onMenuClick }) => {
   const [mx, setMx] = useState(0.5);
   const [my, setMy] = useState(0.5);
   const [hoveredIdx, setHoveredIdx] = useState(null);
+  const [activeId, setActiveId] = useState('hero');
   const headerRef = useRef(null);
   const { theme, toggleTheme } = useTheme();
+
+  const isDark = theme === 'dark';
 
   /* ── Scroll tracking ─────────────────────────────────────────────── */
   useEffect(() => {
@@ -22,34 +25,34 @@ const Header = ({ onMenuClick }) => {
     const onScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          // Read lerped smooth scroll value
-          const rawBodyScroll = getComputedStyle(document.body).getPropertyValue('--scroll-y');
-          const y = rawBodyScroll ? parseFloat(rawBodyScroll) : window.scrollY;
-
+          const y = window.scrollY;
           const h = document.documentElement.scrollHeight - window.innerHeight;
-          setScrolled(y > 80);
-
-          // Pure CSS Variable mutation for scroll progress to bypass React 60fps render choke
+          setScrolled(y > 60);
           if (headerRef.current) {
             headerRef.current.style.setProperty('--sp', `${Math.min((y / h) * 100, 100)}%`);
           }
+          // Track active section
+          ['hero', 'about', 'projects', 'contact'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+              const { top, bottom } = el.getBoundingClientRect();
+              if (top <= 120 && bottom > 120) setActiveId(id);
+            }
+          });
           ticking = false;
         });
         ticking = true;
       }
     };
     window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll(); // Init
+    onScroll();
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   /* ── Mouse parallax (menu open only) ────────────────────────────── */
   useEffect(() => {
     if (!isMenuOpen) return;
-    const onMove = (e) => {
-      setMx(e.clientX / window.innerWidth);
-      setMy(e.clientY / window.innerHeight);
-    };
+    const onMove = (e) => { setMx(e.clientX / window.innerWidth); setMy(e.clientY / window.innerHeight); };
     window.addEventListener('mousemove', onMove, { passive: true });
     return () => window.removeEventListener('mousemove', onMove);
   }, [isMenuOpen]);
@@ -61,312 +64,263 @@ const Header = ({ onMenuClick }) => {
   }, [isMenuOpen]);
 
   const closeMenu = () => setIsMenuOpen(false);
-  const handleMenuClick = () => {
-    setIsMenuOpen(prev => !prev);
-    onMenuClick?.();
-  };
+  const handleMenuClick = () => { setIsMenuOpen(prev => !prev); onMenuClick?.(); };
 
   const navItems = [
-    { label: 'Home', id: 'hero' },
-    { label: 'Architect', id: 'about' },
-    { label: 'Work', id: 'projects' },
-    { label: 'Connect', id: 'contact' },
+    { label: 'Home', id: 'hero', num: '01' },
+    { label: 'Architect', id: 'about', num: '02' },
+    { label: 'Work', id: 'projects', num: '03' },
+    { label: 'Connect', id: 'contact', num: '04' },
   ];
+
+  /* ── Pill surface tokens ─────────────────────────────────────────── */
+  const pillBg = isDark ? 'rgba(10,10,12,0.82)' : 'rgba(255,255,255,0.78)';
+  const pillBorder = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
+  const textPrimary = isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.85)';
+  const textSecondary = isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)';
+  const navHoverBg = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)';
 
   return (
     <>
-      {/* ══ Dynamic Island — jaw-drop edition ══════════════════════════ */}
+      {/* ══ Floating Command Bar ══════════════════════════════════════ */}
       <header
         ref={headerRef}
         className="fixed bottom-6 sm:bottom-8 left-1/2 z-[100]"
         style={{
-          transform: `translateX(-50%) scale(${scrolled ? 1.015 : 1})`,
+          transform: `translateX(-50%) scale(${scrolled ? 1.01 : 1})`,
           transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)',
-          maxWidth: '94vw',
+          maxWidth: '96vw',
         }}
       >
-        {/* ── Floating glow BEAM — sharp line directly below pill ── */}
-        <div
-          className="absolute pointer-events-none"
-          style={{
-            bottom: '-6px', left: '8%', right: '8%', height: '1px',
-            background: 'linear-gradient(90deg, transparent, #3b82f6 25%, #a855f7 55%, #ec4899 80%, transparent)',
-            filter: 'blur(2px)',
-            opacity: scrolled ? 0.9 : 0.5,
-            animation: 'islandBeam 3.5s ease-in-out infinite',
-            transition: 'opacity 1s ease',
-            zIndex: 0,
-          }}
-        />
+        {/* ── Bloom glow beneath ──────────────────────────────────── */}
+        <div className="absolute pointer-events-none" style={{
+          bottom: '-14px', left: '5%', right: '5%', height: '28px',
+          borderRadius: '50%',
+          background: 'linear-gradient(to bottom, rgba(99,102,241,0.5), rgba(168,85,247,0.2), transparent)',
+          filter: 'blur(16px)',
+          opacity: scrolled ? 0.75 : 0.35,
+          animation: 'navBloom 4s ease-in-out infinite',
+          transition: 'opacity 1s ease',
+          zIndex: 0,
+        }} />
+        {/* Beam line */}
+        <div className="absolute pointer-events-none" style={{
+          bottom: '-3px', left: '10%', right: '10%', height: '1px',
+          background: 'linear-gradient(90deg, transparent, #3b82f6 25%, #a855f7 55%, #ec4899 80%, transparent)',
+          filter: 'blur(1.5px)',
+          opacity: scrolled ? 0.9 : 0.45,
+          animation: 'navBeam 3.5s ease-in-out infinite',
+          transition: 'opacity 1s ease',
+          zIndex: 0,
+        }} />
 
-        {/* ── Wide ambient bloom beneath pill ──────────────────────── */}
+        {/* ── Pill ─────────────────────────────────────────────────── */}
         <div
-          className="absolute pointer-events-none"
-          style={{
-            bottom: '-18px', left: '-8%', right: '-8%', height: '36px',
-            borderRadius: '50%',
-            background: 'linear-gradient(to bottom, rgba(99,102,241,0.55), rgba(168,85,247,0.2), transparent)',
-            filter: 'blur(18px)',
-            opacity: scrolled ? 0.85 : 0.4,
-            animation: 'islandBloom 4s ease-in-out infinite',
-            transition: 'opacity 1s ease',
-            zIndex: 0,
-          }}
-        />
-
-        {/* Pill body */}
-        <div
-          className="relative overflow-hidden z-10"
+          className="relative z-10 overflow-hidden"
           style={{
             borderRadius: '999px',
-            padding: scrolled ? '10px 18px' : '9px 16px',
-            background: 'rgba(255,255,255,0.06)', // Slightly reduced base background to let the spin show through
-            backdropFilter: 'blur(48px)',
-            WebkitBackdropFilter: 'blur(48px)',
-            transition: 'all 0.9s cubic-bezier(0.16,1,0.3,1)',
+            padding: scrolled ? '8px 10px 8px 16px' : '7px 9px 7px 15px',
+            background: pillBg,
+            backdropFilter: 'blur(56px) saturate(200%)',
+            WebkitBackdropFilter: 'blur(56px) saturate(200%)',
+            border: `1px solid ${pillBorder}`,
+            transition: 'all 0.8s cubic-bezier(0.16,1,0.3,1)',
             boxShadow: scrolled
-              ? `0 0 0 0.5px rgba(168,85,247,0.25),
-                 0 2px 16px rgba(99,102,241,0.35),
-                 0 8px 40px rgba(0,0,0,0.6)`
-              : `0 2px 12px rgba(0,0,0,0.4),
-                 0 0 0 0.5px rgba(255,255,255,0.06)`,
+              ? `0 0 0 0.5px rgba(168,85,247,0.2), 0 2px 20px rgba(0,0,0,0.3), 0 8px 40px rgba(0,0,0,0.2)`
+              : `0 2px 16px rgba(0,0,0,0.12), 0 0 0 0.5px ${pillBorder}`,
           }}
         >
-          {/* Inner Spinning Kinetic Gradient (Matches Hero Section) */}
-          <div className="absolute inset-0 z-0 pointer-events-none rounded-full overflow-hidden mask-image-circle">
-            <div
-              className="absolute top-1/2 left-1/2 w-[200%] h-[200%] -translate-x-1/2 -translate-y-1/2 blur-[24px]"
-              style={{
-                background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)',
-                animation: 'islandSpin 8s linear infinite',
-                opacity: scrolled ? 0.4 : 0.15,
-                transition: 'opacity 0.6s ease',
-              }}
-            />
-          </div>
-
-          {/* The Spinning Gradient Border Container (clips the center to leave only a 1px border) */}
-          <div
-            className="absolute inset-0 z-0 pointer-events-none rounded-full"
-            style={{
-              padding: '1px',
-              WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-              WebkitMaskComposite: 'xor',
-              maskComposite: 'exclude',
-            }}
-          >
-            {/* The Spinning Conic Gradient */}
-            <div
-              className="absolute top-1/2 left-1/2 w-[300%] h-[300%] -translate-x-1/2 -translate-y-1/2"
-              style={{
-                background: 'conic-gradient(from 0deg, transparent 40%, rgba(59,130,246,0.8), rgba(168,85,247,1), rgba(236,72,153,0.8), transparent 60%)',
-                animation: 'islandSpin 3s linear infinite',
-                opacity: scrolled ? 1 : 0,
-                transition: 'opacity 0.6s ease',
-              }}
-            />
+          {/* Spinning chromatic border (visible on scroll) */}
+          <div className="absolute inset-0 z-0 pointer-events-none rounded-full" style={{
+            padding: '1px',
+            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+            WebkitMaskComposite: 'xor', maskComposite: 'exclude',
+          }}>
+            <div className="absolute top-1/2 left-1/2 w-[300%] h-[300%] -translate-x-1/2 -translate-y-1/2" style={{
+              background: 'conic-gradient(from 0deg, transparent 40%, rgba(59,130,246,0.9), rgba(168,85,247,1), rgba(236,72,153,0.9), transparent 60%)',
+              animation: 'navSpin 3s linear infinite',
+              opacity: scrolled ? 1 : 0,
+              transition: 'opacity 0.7s ease',
+            }} />
           </div>
 
           {/* Scroll progress bar */}
-          <div
-            className="absolute top-0 left-0 pointer-events-none"
-            style={{
-              height: '1.5px', borderRadius: '0 2px 2px 0',
-              width: 'var(--sp, 0%)',
-              background: 'linear-gradient(90deg, #3b82f6, #a855f7 55%, #ec4899)',
-              boxShadow: '0 0 6px rgba(99,102,241,0.7)',
-              opacity: scrolled ? 1 : 0,
-              transition: 'opacity 0.4s ease',
-              zIndex: 20,
-            }}
-          />
+          <div className="absolute top-0 left-0 pointer-events-none z-20" style={{
+            height: '1.5px', borderRadius: '0 2px 2px 0',
+            width: 'var(--sp, 0%)',
+            background: 'linear-gradient(90deg, #3b82f6, #a855f7 55%, #ec4899)',
+            boxShadow: '0 0 8px rgba(99,102,241,0.8)',
+            opacity: scrolled ? 1 : 0,
+            transition: 'opacity 0.4s ease',
+          }} />
 
-          {/* Content row */}
-          <div className="relative z-10 flex items-center gap-3 w-full">
+          {/* ── Row ───────────────────────────────────────────────── */}
+          <div className="relative z-10 flex items-center gap-0">
 
-            {/* Left: pulsing dot + name */}
-            <div className="flex items-center gap-2.5">
-              <div className="relative flex-shrink-0">
-                <div
-                  className="w-2 h-2 rounded-full bg-green-400"
-                  style={{ boxShadow: '0 0 8px rgba(74,222,128,0.7)' }}
-                />
-                <div className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-60" />
+            {/* LEFT: Identity mark ──────────────────────────────── */}
+            <div className="flex items-center gap-3 flex-shrink-0 pr-4" style={{
+              borderRight: `1px solid ${pillBorder}`,
+            }}>
+              {/* Live dot */}
+              <div className="relative w-2 h-2 flex-shrink-0">
+                <div className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-50" />
+                <div className="w-2 h-2 rounded-full bg-green-400" style={{ boxShadow: '0 0 6px rgba(74,222,128,0.8)' }} />
               </div>
-
-              {/* GANDREDDY → LOKESH crossfade */}
+              {/* Monogram — gradient on hover */}
               <div
-                className="group relative overflow-hidden cursor-default"
-                style={{ minWidth: '112px', height: '16px' }}
+                className="group cursor-default flex-shrink-0"
+                onClick={() => scrollTo('hero')}
+                style={{ cursor: 'pointer' }}
               >
                 <span
-                  className="absolute left-0 top-0 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.22em] transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-full"
-                  style={{ color: '#000', fontWeight: '600' }}
+                  className="font-mono text-[10px] uppercase tracking-[0.28em] font-semibold select-none"
+                  style={{
+                    color: textPrimary,
+                    transition: 'color 0.3s ease',
+                  }}
+                  onMouseEnter={e => {
+                    e.target.style.backgroundImage = 'linear-gradient(90deg, #3b82f6, #a855f7, #ec4899)';
+                    e.target.style.WebkitBackgroundClip = 'text';
+                    e.target.style.WebkitTextFillColor = 'transparent';
+                    e.target.style.backgroundClip = 'text';
+                  }}
+                  onMouseLeave={e => {
+                    e.target.style.backgroundImage = 'none';
+                    e.target.style.WebkitTextFillColor = textPrimary;
+                  }}
                 >
-                  GANDREDDY
-                </span>
-                <span
-                  className="absolute left-0 top-0 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.22em] translate-y-full opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0"
-                  style={{ color: '#000', fontWeight: '600' }}
-                >
-                  LOKESH
+                  G.L
                 </span>
               </div>
             </div>
 
-            {/* ══ Central Energy Core ══════════════════════════════════ */}
-            <div className="flex-1 flex items-center justify-center">
-              <div className="relative flex items-center justify-center" style={{ width: '28px', height: '28px' }}>
+            {/* CENTER: Nav links ────────────────────────────────── */}
+            <nav className="hidden sm:flex items-center px-2">
+              {navItems.map((item, i) => {
+                const isActive = activeId === item.id;
+                const isHovered = hoveredIdx === i;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollTo(item.id)}
+                    onMouseEnter={() => setHoveredIdx(i)}
+                    onMouseLeave={() => setHoveredIdx(null)}
+                    className="relative group px-3.5 py-2 rounded-full transition-all duration-300"
+                    style={{
+                      background: isHovered ? navHoverBg : 'transparent',
+                    }}
+                  >
+                    {/* Active dot */}
+                    {isActive && (
+                      <span className="absolute top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
+                        style={{ background: 'linear-gradient(90deg, #3b82f6, #a855f7)', boxShadow: '0 0 4px rgba(99,102,241,0.8)' }} />
+                    )}
+                    <span
+                      className="font-mono text-[10px] uppercase tracking-[0.2em] transition-all duration-300 block"
+                      style={{
+                        color: isActive
+                          ? (isDark ? '#fff' : '#000')
+                          : isHovered
+                            ? textPrimary
+                            : textSecondary,
+                        fontWeight: isActive ? '600' : '400',
+                        transform: isHovered ? 'translateY(-1px)' : 'translateY(0)',
+                      }}
+                    >
+                      {item.label}
+                    </span>
+                    {/* Hover underline sweep */}
+                    <span className="absolute bottom-1 left-3.5 right-3.5 h-[1px] rounded-full transition-all duration-400 origin-left"
+                      style={{
+                        background: 'linear-gradient(90deg, #3b82f6, #a855f7)',
+                        transform: isHovered ? 'scaleX(1)' : 'scaleX(0)',
+                        opacity: isHovered ? 0.8 : 0,
+                        boxShadow: '0 0 6px rgba(99,102,241,0.6)',
+                      }} />
+                  </button>
+                );
+              })}
+            </nav>
 
-                {/* Ripple ring 1 — fastest */}
-                <div
-                  className="absolute rounded-full pointer-events-none"
-                  style={{
-                    width: '28px', height: '28px',
-                    background: 'transparent',
-                    border: '1px solid rgba(59,130,246,0.5)',
-                    animation: 'coreRipple 2s cubic-bezier(0,0.5,0.5,1) infinite',
-                    animationDelay: '0s',
-                  }}
-                />
-                {/* Ripple ring 2 — medium */}
-                <div
-                  className="absolute rounded-full pointer-events-none"
-                  style={{
-                    width: '28px', height: '28px',
-                    background: 'transparent',
-                    border: '1px solid rgba(168,85,247,0.45)',
-                    animation: 'coreRipple 2s cubic-bezier(0,0.5,0.5,1) infinite',
-                    animationDelay: '0.65s',
-                  }}
-                />
-                {/* Ripple ring 3 — slowest */}
-                <div
-                  className="absolute rounded-full pointer-events-none"
-                  style={{
-                    width: '28px', height: '28px',
-                    background: 'transparent',
-                    border: '1px solid rgba(236,72,153,0.4)',
-                    animation: 'coreRipple 2s cubic-bezier(0,0.5,0.5,1) infinite',
-                    animationDelay: '1.3s',
-                  }}
-                />
-
-                {/* The Core Orb — spinning conic gradient */}
-                <div
-                  className="relative w-[7px] h-[7px] rounded-full z-10"
-                  style={{
-                    background: 'conic-gradient(from 0deg, #2a8af6, #a853ba, #e92a67, #2a8af6)',
-                    animation: 'islandSpin 2s linear infinite',
-                    boxShadow: '0 0 6px 2px rgba(168,85,247,0.7), 0 0 14px 4px rgba(99,102,241,0.4)',
-                  }}
-                />
-              </div>
-            </div>
-
-            {/* Right: theme + menu */}
-            <div className="flex items-center gap-1.5">
+            {/* RIGHT: Theme + Menu ─────────────────────────────── */}
+            <div className="flex items-center gap-2 flex-shrink-0 pl-3" style={{
+              borderLeft: `1px solid ${pillBorder}`,
+            }}>
 
               {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
                 aria-label="Toggle theme"
-                className="group relative flex items-center gap-1.5 px-2.5 h-7 rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 flex-shrink-0"
+                className="group relative flex items-center justify-center w-8 h-8 rounded-full transition-all duration-400 hover:scale-110 active:scale-95"
                 style={{
-                  background: theme === 'dark' ? 'rgba(250,204,21,0.1)' : 'rgba(99,102,241,0.12)',
-                  border: theme === 'dark' ? '1px solid rgba(250,204,21,0.3)' : '1px solid rgba(99,102,241,0.35)',
-                  boxShadow: theme === 'dark' ? '0 0 12px rgba(250,204,21,0.12)' : '0 0 12px rgba(99,102,241,0.15)',
+                  background: isDark ? 'rgba(250,204,21,0.1)' : 'rgba(99,102,241,0.10)',
+                  border: isDark ? '1px solid rgba(250,204,21,0.25)' : '1px solid rgba(99,102,241,0.25)',
                 }}
               >
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: theme === 'dark'
-                      ? 'linear-gradient(90deg,transparent,rgba(250,204,21,0.12),transparent)'
-                      : 'linear-gradient(90deg,transparent,rgba(99,102,241,0.18),transparent)',
-                  }}
-                />
-                {theme === 'dark'
-                  ? <Sun className="relative z-10 w-3 h-3 text-yellow-300 group-hover:rotate-90 transition-transform duration-700 flex-shrink-0" />
-                  : <Moon className="relative z-10 w-3 h-3 text-indigo-300 group-hover:-rotate-45 transition-transform duration-500 flex-shrink-0" />
+                {isDark
+                  ? <Sun className="w-3.5 h-3.5 text-yellow-300 group-hover:rotate-90 transition-transform duration-700" />
+                  : <Moon className="w-3.5 h-3.5 text-indigo-400 group-hover:-rotate-12 transition-transform duration-500" />
                 }
-                <span
-                  className="relative z-10 font-mono text-[8px] uppercase tracking-wider flex-shrink-0 hidden sm:inline"
-                  style={{ color: theme === 'dark' ? 'rgba(250,204,21,0.75)' : 'rgba(164,154,255,0.85)' }}
-                >
-                  {theme === 'dark' ? 'Light' : 'Dark'}
-                </span>
               </button>
 
-              {/* Menu button */}
+              {/* Menu button — pill with lines */}
               <button
                 onClick={handleMenuClick}
                 aria-label="Toggle menu"
-                className="relative flex items-center justify-center flex-shrink-0 transition-all duration-500 hover:scale-110 active:scale-95"
-                style={{ width: '32px', height: '32px' }}
+                className="group relative flex items-center gap-2 pl-3 pr-3.5 h-8 rounded-full transition-all duration-500 hover:scale-105 active:scale-95"
+                style={{
+                  background: isMenuOpen
+                    ? (isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)')
+                    : (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
+                  border: isMenuOpen
+                    ? `1px solid rgba(168,85,247,0.5)`
+                    : `1px solid ${pillBorder}`,
+                  boxShadow: isMenuOpen ? '0 0 16px rgba(168,85,247,0.25)' : 'none',
+                  transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
+                }}
               >
-                {/* Static gradient-border ring on menu button */}
-                <div
-                  className="absolute pointer-events-none"
-                  style={{
-                    inset: '-1.5px', borderRadius: '50%',
-                    background: isMenuOpen
-                      ? 'none'
-                      : 'linear-gradient(135deg, #3b82f6 0%, #a855f7 50%, #ec4899 100%)',
-                    opacity: 0.75,
-                    transition: 'opacity 0.4s ease',
-                  }}
-                />
-                {/* Inner mask — creates the border effect */}
-                <div
-                  className="absolute"
-                  style={{
-                    inset: '1px', borderRadius: '50%',
-                    background: isMenuOpen ? '#ffffff' : '#0a0a0a',
-                    transition: 'background 0.4s ease',
-                    boxShadow: isMenuOpen
-                      ? '0 0 20px rgba(255,255,255,0.35)'
-                      : '0 0 12px rgba(99,102,241,0.2)',
-                  }}
-                />
-                {/* Hamburger → X */}
-                <div className="relative z-10 flex flex-col justify-center items-center gap-[4.5px]" style={{ width: '14px' }}>
+                {/* Animated hamburger lines */}
+                <div className="flex flex-col justify-center items-center gap-[4.5px]" style={{ width: '14px' }}>
                   <span style={{
                     display: 'block', height: '1.5px', borderRadius: '2px', width: '14px',
-                    background: isMenuOpen ? '#000' : 'rgba(255,255,255,0.92)',
+                    background: isMenuOpen ? 'linear-gradient(90deg,#3b82f6,#ec4899)' : textPrimary,
                     transform: isMenuOpen ? 'translateY(6px) rotate(45deg)' : 'none',
-                    transition: 'all 0.45s cubic-bezier(0.16,1,0.3,1)',
+                    transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
                   }} />
                   <span style={{
-                    display: 'block', height: '1.5px', borderRadius: '2px',
-                    width: '10px', alignSelf: 'flex-start',
-                    background: isMenuOpen ? '#000' : 'rgba(255,255,255,0.6)',
+                    display: 'block', height: '1.5px', borderRadius: '2px', width: '10px', alignSelf: 'flex-start',
+                    background: textSecondary,
                     opacity: isMenuOpen ? 0 : 1,
                     transform: isMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
                     transition: 'all 0.3s ease',
                   }} />
                   <span style={{
                     display: 'block', height: '1.5px', borderRadius: '2px', width: '14px',
-                    background: isMenuOpen ? '#000' : 'rgba(255,255,255,0.92)',
+                    background: isMenuOpen ? 'linear-gradient(90deg,#ec4899,#3b82f6)' : textPrimary,
                     transform: isMenuOpen ? 'translateY(-6px) rotate(-45deg)' : 'none',
-                    transition: 'all 0.45s cubic-bezier(0.16,1,0.3,1)',
+                    transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
                   }} />
                 </div>
+                <span className="font-mono text-[8px] uppercase tracking-[0.2em] hidden sm:block" style={{ color: textSecondary }}>
+                  {isMenuOpen ? 'Close' : 'Menu'}
+                </span>
               </button>
             </div>
+
           </div>
         </div>
       </header>
 
-      {/* ══ Full-screen Menu Overlay ═══════════════════════════════════ */}
+      {/* ══ Full-screen Menu Overlay ══════════════════════════════════ */}
       <div
         className="fixed inset-0 z-[90] overflow-hidden"
         style={{ pointerEvents: isMenuOpen ? 'auto' : 'none' }}
       >
-        {/* Curtain backdrop */}
+        {/* Dark curtain */}
         <div
           className="absolute inset-0"
           style={{
-            background: 'rgba(3,3,6,0.98)',
+            background: 'rgba(3,3,6,0.97)',
             backdropFilter: 'blur(32px)',
             clipPath: isMenuOpen ? 'inset(0% 0% 0% 0%)' : 'inset(0% 0% 100% 0%)',
             transition: 'clip-path 0.8s cubic-bezier(0.85,0,0.15,1)',
@@ -390,28 +344,18 @@ const Header = ({ onMenuClick }) => {
             filter: 'blur(70px)', opacity: 0.20, mixBlendMode: 'screen',
             transition: 'transform 1.4s cubic-bezier(0.16,1,0.3,1)',
           }} />
-          <div className="absolute rounded-full" style={{
-            width: '22vw', height: '22vw', top: '40%', left: '40%',
-            transform: `translate(${(mx - 0.5) * -180}px, ${(my - 0.5) * -180}px)`,
-            background: 'radial-gradient(circle, #06b6d4 0%, #3b82f6 55%, transparent 80%)',
-            filter: 'blur(50px)', opacity: 0.14, mixBlendMode: 'screen',
-            transition: 'transform 1s cubic-bezier(0.16,1,0.3,1)',
-          }} />
           <div className="absolute inset-0 opacity-[0.025]" style={{
             backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,1) 1px,transparent 1px)',
             backgroundSize: '80px 80px',
           }} />
         </div>
 
-        {/* Content wrapper */}
-        <div
-          className="relative z-10 h-full flex flex-col"
-          style={{
-            opacity: isMenuOpen ? 1 : 0,
-            transition: 'opacity 0.3s ease',
-            transitionDelay: isMenuOpen ? '0.2s' : '0s',
-          }}
-        >
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col" style={{
+          opacity: isMenuOpen ? 1 : 0,
+          transition: 'opacity 0.3s ease',
+          transitionDelay: isMenuOpen ? '0.2s' : '0s',
+        }}>
           {/* Top strip */}
           <div className="flex items-center justify-between px-8 md:px-14 pt-8 pb-6"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
@@ -436,10 +380,9 @@ const Header = ({ onMenuClick }) => {
             </div>
           </div>
 
-          {/* Split body */}
+          {/* Nav body */}
           <div className="flex-1 flex overflow-hidden">
-
-            {/* LEFT — nav links */}
+            {/* LEFT nav links */}
             <div className="flex-1 flex flex-col justify-center px-8 md:px-14 py-8">
               <nav className="flex flex-col gap-0">
                 {navItems.map((item, i) => (
@@ -457,19 +400,18 @@ const Header = ({ onMenuClick }) => {
                       transition: `opacity 0.6s ease ${0.3 + i * 0.07}s, clip-path 0.7s cubic-bezier(0.16,1,0.3,1) ${0.25 + i * 0.07}s`,
                     }}
                   >
-                    {/* Blue sweep underline */}
+                    {/* Sweep underline */}
                     <div className="absolute bottom-0 left-0 h-[1px] transition-all duration-500"
                       style={{
                         width: hoveredIdx === i ? '100%' : '0%',
                         background: 'linear-gradient(90deg, #3b82f6, #a855f7)',
                         boxShadow: '0 0 8px rgba(59,130,246,0.5)',
-                      }}
-                    />
+                      }} />
                     <div className="flex items-center justify-between pr-2">
                       <div className="flex items-baseline gap-5 md:gap-8">
                         <span className="font-mono text-[10px] tracking-widest w-6 transition-all duration-400"
                           style={{ color: hoveredIdx === i ? '#60a5fa' : 'rgba(255,255,255,0.15)' }}>
-                          0{i + 1}
+                          {item.num}
                         </span>
                         <span
                           className="font-light leading-none transition-all duration-500"
@@ -502,17 +444,16 @@ const Header = ({ onMenuClick }) => {
               </nav>
             </div>
 
-            {/* RIGHT — ghost number panel */}
+            {/* RIGHT ghost number */}
             <div className="hidden md:flex w-[38%] flex-shrink-0 flex-col justify-between py-8 px-10 lg:px-14"
               style={{ borderLeft: '1px solid rgba(255,255,255,0.05)' }}>
               <div className="flex-1 flex items-center justify-center overflow-hidden relative">
                 <span
-                  className="absolute font-light select-none pointer-events-none transition-all duration-700"
+                  className="absolute font-light select-none pointer-events-none"
                   style={{
                     fontFamily: 'Cormorant Garamond, serif',
                     fontSize: 'clamp(10rem, 22vw, 26rem)',
-                    fontWeight: 300, lineHeight: 1,
-                    letterSpacing: '-0.06em',
+                    fontWeight: 300, lineHeight: 1, letterSpacing: '-0.06em',
                     color: 'transparent',
                     WebkitTextStroke: '1px rgba(255,255,255,0.07)',
                     transform: `translate(${(mx - 0.5) * 20}px, ${(my - 0.5) * 20}px)`,
@@ -522,21 +463,6 @@ const Header = ({ onMenuClick }) => {
                 >
                   0{hoveredIdx !== null ? hoveredIdx + 1 : 1}
                 </span>
-                <div className="absolute bottom-8 left-0 right-0">
-                  {navItems.map((item, i) => (
-                    <p key={item.id}
-                      className="font-mono text-[10px] uppercase tracking-[0.3em] text-white/30 text-center absolute inset-x-0 transition-all duration-500"
-                      style={{
-                        opacity: hoveredIdx === i ? 1 : 0,
-                        transform: hoveredIdx === i ? 'translateY(0)' : 'translateY(6px)',
-                      }}>
-                      {item.id === 'hero' && '// Start of sequence'}
-                      {item.id === 'about' && '// System architecture'}
-                      {item.id === 'projects' && '// Deployed systems'}
-                      {item.id === 'contact' && '// Open channel'}
-                    </p>
-                  ))}
-                </div>
               </div>
               <div className="flex-shrink-0">
                 <div className="flex items-center gap-2.5 mb-4">
@@ -585,25 +511,17 @@ const Header = ({ onMenuClick }) => {
       </div>
 
       <style>{`
-        @keyframes islandBeam {
-          0%, 100% { opacity: 0.45; transform: scaleX(0.9); }
-          50%       { opacity: 0.9;  transform: scaleX(1.05); }
-        }
-        @keyframes islandBloom {
+        @keyframes navBloom {
           0%, 100% { opacity: 0.35; transform: scaleY(0.7) scaleX(0.92); }
           50%       { opacity: 0.7;  transform: scaleY(1)   scaleX(1.04); }
         }
-        @keyframes islandSpin {
+        @keyframes navBeam {
+          0%, 100% { opacity: 0.45; transform: scaleX(0.9); }
+          50%       { opacity: 0.9;  transform: scaleX(1.05); }
+        }
+        @keyframes navSpin {
           from { transform: rotate(0deg); }
           to   { transform: rotate(360deg); }
-        }
-        @keyframes coreRipple {
-          0%   { transform: scale(1);  opacity: 0.8; }
-          100% { transform: scale(4.5); opacity: 0; }
-        }
-        @keyframes nameShimmer {
-          0%   { background-position: 200% center; }
-          100% { background-position: -200% center; }
         }
       `}</style>
     </>
