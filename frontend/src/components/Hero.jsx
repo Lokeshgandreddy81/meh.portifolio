@@ -55,7 +55,8 @@ const Hero = () => {
         style={{
           top: '50%', left: '50%',
           width: '200vw', height: '200vw',
-          animation: 'heroAuroraRotate 40s linear infinite',
+          transform: `translate(-50%, -50%) rotate(${(mouse.x - 0.5) * 200 + (mouse.y - 0.5) * 80}deg)`,
+          transition: 'transform 2s cubic-bezier(0.16, 1, 0.3, 1)',
           background: 'conic-gradient(from 0deg at 50% 50%, #04050d 0deg, #0a1230 50deg, #0e0328 100deg, #040913 150deg, #0a1230 200deg, #0c0325 260deg, #04050d 310deg, #070d24 360deg)',
           opacity: 0.85,
           zIndex: 0,
@@ -179,40 +180,46 @@ const Hero = () => {
                 className="absolute -inset-8 z-0 pointer-events-none"
                 style={{
                   background: 'radial-gradient(ellipse 85% 65% at 38% 50%, rgba(99,102,241,0.14) 0%, rgba(168,85,247,0.08) 55%, transparent 80%)',
-                  animation: 'heroAura 6s ease-in-out infinite',
+                  transform: `translate(${(mouse.x - 0.5) * -30}px, ${(mouse.y - 0.5) * -30}px)`,
+                  transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)',
                 }}
               />
 
-              {/* Outer counter-rotating ring — majestic slow spin */}
-              <div
-                className="absolute inset-[-35%] z-0 rounded-full blur-[80px] pointer-events-none"
-                style={{
-                  background: 'conic-gradient(from 0deg at 50% 50%, #3b82f6 0deg, transparent 60deg, #a853ba 120deg, transparent 180deg, #e92a67 240deg, transparent 300deg, #3b82f6 360deg)',
-                  animation: 'heroSpinCCW 24s linear infinite',
-                  opacity: 0.45,
-                  transition: 'opacity 1.5s ease',
-                }}
-              />
+              {/* Outer counter-rotating ring — majestic mouse parallax */}
+              <div className="absolute inset-[-35%] z-0 rounded-full blur-[80px] pointer-events-none transition-opacity duration-[1500ms]" style={{ opacity: 0.45 }}>
+                <div
+                  className="absolute inset-0 rounded-full"
+                  style={{
+                    background: 'conic-gradient(from 0deg at 50% 50%, #3b82f6 0deg, transparent 60deg, #a853ba 120deg, transparent 180deg, #e92a67 240deg, transparent 300deg, #3b82f6 360deg)',
+                    transform: `rotate(${(0.5 - mouse.x) * 280}deg) translate(${(0.5 - mouse.x) * 60}px, ${(0.5 - mouse.y) * 60}px) scale(1.1)`,
+                    transition: 'transform 1.8s cubic-bezier(0.16,1,0.3,1)',
+                  }}
+                />
+              </div>
 
-              {/* Inner spinning conic bloom — base visible, intensifies on hover */}
-              <div
-                className="absolute inset-[-20%] z-0 rounded-full blur-[60px] pointer-events-none group-hover:scale-110 group-hover:blur-[80px]"
-                style={{
-                  background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
-                  animation: 'heroSpin 18s linear infinite',
-                  opacity: 0.70,
-                  transition: 'opacity 2s ease, transform 2s ease, filter 2s ease',
-                }}
-              />
-              {/* Hover overlay to intensify */}
-              <div
-                className="absolute inset-[-20%] z-0 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-80"
-                style={{
-                  background: 'conic-gradient(from 0deg at 50% 50%, #e92a67 0deg, #a853ba 120deg, #2a8af6 240deg, #e92a67 360deg)',
-                  animation: 'heroSpinCCW 5s linear infinite',
-                  transition: 'opacity 1.5s ease',
-                }}
-              />
+              {/* Inner tracking conic bloom — base visible, intensifies on hover */}
+              <div className="absolute inset-[-20%] z-0 rounded-full blur-[60px] pointer-events-none group-hover:scale-110 group-hover:blur-[80px] transition-all duration-[2000ms] opacity-70">
+                <div
+                  className="absolute inset-0 rounded-full"
+                  style={{
+                    background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
+                    transform: `rotate(${(mouse.x - 0.5) * 360}deg) translate(${(mouse.x - 0.5) * -70}px, ${(mouse.y - 0.5) * -70}px) scale(1.2)`,
+                    transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)',
+                  }}
+                />
+              </div>
+
+              {/* Hover overlay to intensify tracking */}
+              <div className="absolute inset-[-20%] z-0 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-80 transition-opacity duration-[1500ms]">
+                <div
+                  className="absolute inset-0 rounded-full"
+                  style={{
+                    background: 'conic-gradient(from 0deg at 50% 50%, #e92a67 0deg, #a853ba 120deg, #2a8af6 240deg, #e92a67 360deg)',
+                    transform: `rotate(${(mouse.x - 0.5) * -180}deg) scale(1.15)`,
+                    transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1)',
+                  }}
+                />
+              </div>
 
               {/* ── Line 1: IDEAS BECOME ── */}
               <span className="overflow-visible py-1 inline-block -ml-1 relative z-10">
