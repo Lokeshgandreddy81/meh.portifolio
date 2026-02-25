@@ -8,11 +8,8 @@ const scrollTo = (id) => {
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
 
-const Header = ({ onMenuClick }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+const Header = () => {
   const [scrolled, setScrolled] = useState(false);
-  const [mx, setMx] = useState(0.5);
-  const [my, setMy] = useState(0.5);
   const [hoveredIdx, setHoveredIdx] = useState(null);
   const [activeId, setActiveId] = useState('home');
   const headerRef = useRef(null);
@@ -60,22 +57,6 @@ const Header = ({ onMenuClick }) => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  /* ── Mouse parallax (menu open only) ────────────────────────────── */
-  useEffect(() => {
-    if (!isMenuOpen) return;
-    const onMove = (e) => { setMx(e.clientX / window.innerWidth); setMy(e.clientY / window.innerHeight); };
-    window.addEventListener('mousemove', onMove, { passive: true });
-    return () => window.removeEventListener('mousemove', onMove);
-  }, [isMenuOpen]);
-
-  /* ── Body scroll lock ────────────────────────────────────────────── */
-  useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [isMenuOpen]);
-
-  const closeMenu = () => setIsMenuOpen(false);
-  const handleMenuClick = () => { setIsMenuOpen(prev => !prev); onMenuClick?.(); };
 
   const navItems = [
     { label: 'Home', id: 'home', num: '01' },
@@ -318,250 +299,15 @@ const Header = ({ onMenuClick }) => {
                 }
               </button>
 
-              {/* Menu button */}
-              <button
-                onClick={handleMenuClick}
-                aria-label="Toggle menu"
-                className="group relative flex items-center gap-2 pl-3 pr-3.5 h-8 rounded-full transition-all duration-500 hover:scale-105 active:scale-95"
-                style={{
-                  background: isMenuOpen
-                    ? 'rgba(168,85,247,0.15)'
-                    : (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.12)'),
-                  border: isMenuOpen
-                    ? '1px solid rgba(168,85,247,0.45)'
-                    : `1px solid ${pillBorder}`,
-                  boxShadow: isMenuOpen ? '0 0 16px rgba(168,85,247,0.25)' : 'none',
-                  transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
-                }}
-              >
-                <div className="flex flex-col justify-center items-center gap-[4.5px]" style={{ width: '14px' }}>
-                  <span style={{
-                    display: 'block', height: '1.5px', borderRadius: '2px', width: '14px',
-                    background: isMenuOpen ? 'linear-gradient(90deg,#3b82f6,#ec4899)' : textPrimary,
-                    transform: isMenuOpen ? 'translateY(6px) rotate(45deg)' : 'none',
-                    transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
-                  }} />
-                  <span style={{
-                    display: 'block', height: '1.5px', borderRadius: '2px', width: '10px', alignSelf: 'flex-start',
-                    background: textSecondary,
-                    opacity: isMenuOpen ? 0 : 1,
-                    transform: isMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
-                    transition: 'all 0.3s ease',
-                  }} />
-                  <span style={{
-                    display: 'block', height: '1.5px', borderRadius: '2px', width: '14px',
-                    background: isMenuOpen ? 'linear-gradient(90deg,#ec4899,#3b82f6)' : textPrimary,
-                    transform: isMenuOpen ? 'translateY(-6px) rotate(-45deg)' : 'none',
-                    transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
-                  }} />
-                </div>
-                <span className="font-mono text-[8px] uppercase tracking-[0.2em] hidden sm:block" style={{ color: textSecondary }}>
-                  {isMenuOpen ? 'Close' : 'Menu'}
-                </span>
-              </button>
             </div>
           </div>
         </div>
-      </header>
+      </header >
 
-      {/* ══ Full-screen Menu Overlay ══════════════════════════════════ */}
-      <div
-        className="fixed inset-0 z-[90] overflow-hidden"
-        style={{ pointerEvents: isMenuOpen ? 'auto' : 'none' }}
-      >
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'rgba(3,3,6,0.97)',
-            backdropFilter: 'blur(32px)',
-            clipPath: isMenuOpen ? 'inset(0% 0% 0% 0%)' : 'inset(0% 0% 100% 0%)',
-            transition: 'clip-path 0.8s cubic-bezier(0.85,0,0.15,1)',
-          }}
-          onClick={closeMenu}
-        />
 
-        {/* Ambient orbs */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute rounded-full" style={{
-            width: '65vw', height: '65vw', top: '-15%', right: '-10%',
-            transform: `translate(${(mx - 0.5) * -80}px, ${(my - 0.5) * -80}px)`,
-            background: 'radial-gradient(circle, #1d4ed8 0%, #2a8af6 35%, #a853ba 65%, transparent 80%)',
-            filter: 'blur(90px)', opacity: 0.28, mixBlendMode: 'screen',
-            transition: 'transform 2s cubic-bezier(0.16,1,0.3,1)',
-          }} />
-          <div className="absolute rounded-full" style={{
-            width: '42vw', height: '42vw', bottom: '5%', left: '-5%',
-            transform: `translate(${(mx - 0.5) * -120}px, ${(my - 0.5) * -120}px)`,
-            background: 'radial-gradient(circle, #e92a67 0%, #a853ba 55%, transparent 78%)',
-            filter: 'blur(70px)', opacity: 0.20, mixBlendMode: 'screen',
-            transition: 'transform 1.4s cubic-bezier(0.16,1,0.3,1)',
-          }} />
-          <div className="absolute inset-0 opacity-[0.025]" style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,1) 1px,transparent 1px)',
-            backgroundSize: '80px 80px',
-          }} />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 h-full flex flex-col" style={{
-          opacity: isMenuOpen ? 1 : 0,
-          transition: 'opacity 0.3s ease',
-          transitionDelay: isMenuOpen ? '0.2s' : '0s',
-        }}>
-          {/* Top strip */}
-          <div className="flex items-center justify-between px-8 md:px-14 pt-8 pb-6"
-            style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-            <div className="flex items-center gap-4">
-              <div className="w-6 h-[1px] bg-white/20" />
-              <span className="font-mono text-[9px] uppercase tracking-[0.5em] text-white/25">Navigation</span>
-            </div>
-            <div className="flex items-center gap-6">
-              <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/20 hidden md:block">
-                G.L // {new Date().getFullYear()}
-              </span>
-              <button onClick={closeMenu} className="group flex items-center gap-3 hover:gap-4 transition-all duration-300">
-                <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-white/30 group-hover:text-white/60 transition-colors duration-300">Close</span>
-                <div className="flex items-center justify-center w-9 h-9 rounded-full transition-all duration-500 group-hover:bg-white group-hover:scale-110 active:scale-95"
-                  style={{ border: '1px solid rgba(255,255,255,0.2)', background: 'rgba(255,255,255,0.06)' }}>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
-                      className="text-white/60 group-hover:text-black transition-colors duration-300" />
-                  </svg>
-                </div>
-              </button>
-            </div>
-          </div>
-
-          {/* Nav body */}
-          <div className="flex-1 flex overflow-hidden">
-            <div className="flex-1 flex flex-col justify-center px-8 md:px-14 py-8">
-              <nav className="flex flex-col gap-0">
-                {navItems.map((item, i) => (
-                  <button
-                    key={item.id}
-                    onClick={() => { closeMenu(); setTimeout(() => handleNavClick(item), 500); }}
-                    onMouseEnter={() => setHoveredIdx(i)}
-                    onMouseLeave={() => setHoveredIdx(null)}
-                    className="group relative text-left w-full overflow-hidden"
-                    style={{
-                      padding: '12px 0',
-                      borderBottom: '1px solid rgba(255,255,255,0.05)',
-                      opacity: isMenuOpen ? 1 : 0,
-                      clipPath: isMenuOpen ? 'inset(0% 0% 0% 0%)' : 'inset(0% 0% 100% 0%)',
-                      transition: `opacity 0.6s ease ${0.3 + i * 0.07}s, clip-path 0.7s cubic-bezier(0.16,1,0.3,1) ${0.25 + i * 0.07}s`,
-                    }}
-                  >
-                    <div className="absolute bottom-0 left-0 h-[1px] transition-all duration-500"
-                      style={{
-                        width: hoveredIdx === i ? '100%' : '0%',
-                        background: 'linear-gradient(90deg, #3b82f6, #a855f7)',
-                        boxShadow: '0 0 8px rgba(59,130,246,0.5)',
-                      }} />
-                    <div className="flex items-center justify-between pr-2">
-                      <div className="flex items-baseline gap-5 md:gap-8">
-                        <span className="font-mono text-[10px] tracking-widest w-6 transition-all duration-400"
-                          style={{ color: hoveredIdx === i ? '#60a5fa' : 'rgba(255,255,255,0.15)' }}>
-                          {item.num}
-                        </span>
-                        <span
-                          className="font-light leading-none transition-all duration-500"
-                          style={{
-                            fontFamily: 'Cormorant Garamond, serif',
-                            fontSize: 'clamp(2.8rem, 7.5vw, 9rem)',
-                            letterSpacing: '-0.03em',
-                            color: hoveredIdx === null ? 'rgba(255,255,255,0.88)'
-                              : hoveredIdx === i ? '#ffffff' : 'rgba(255,255,255,0.09)',
-                            transform: hoveredIdx === i ? 'translateX(18px)' : 'translateX(0)',
-                            fontStyle: hoveredIdx === i ? 'italic' : 'normal',
-                            textShadow: hoveredIdx === i ? '0 0 60px rgba(255,255,255,0.15)' : 'none',
-                          }}
-                        >
-                          {item.label}
-                        </span>
-                      </div>
-                      <div className="transition-all duration-500 flex-shrink-0"
-                        style={{
-                          opacity: hoveredIdx === i ? 1 : 0,
-                          transform: hoveredIdx === i ? 'translateX(0) rotate(0)' : 'translateX(-16px) rotate(-45deg)',
-                        }}>
-                        <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
-                          <path d="M8 28L28 8M28 8H14M28 8V22" stroke="rgba(255,255,255,0.6)" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </nav>
-            </div>
-
-            {/* RIGHT ghost number */}
-            <div className="hidden md:flex w-[38%] flex-shrink-0 flex-col justify-between py-8 px-10 lg:px-14"
-              style={{ borderLeft: '1px solid rgba(255,255,255,0.05)' }}>
-              <div className="flex-1 flex items-center justify-center overflow-hidden relative">
-                <span
-                  className="absolute font-light select-none pointer-events-none"
-                  style={{
-                    fontFamily: 'Cormorant Garamond, serif',
-                    fontSize: 'clamp(10rem, 22vw, 26rem)',
-                    fontWeight: 300, lineHeight: 1, letterSpacing: '-0.06em',
-                    color: 'transparent',
-                    WebkitTextStroke: '1px rgba(255,255,255,0.07)',
-                    transform: `translate(${(mx - 0.5) * 20}px, ${(my - 0.5) * 20}px)`,
-                    transition: 'transform 2s cubic-bezier(0.16,1,0.3,1)',
-                    userSelect: 'none',
-                  }}
-                >
-                  0{hoveredIdx !== null ? hoveredIdx + 1 : 1}
-                </span>
-              </div>
-              <div className="flex-shrink-0">
-                <div className="flex items-center gap-2.5 mb-4">
-                  <div className="relative w-1.5 h-1.5">
-                    <div className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-60" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                  </div>
-                  <span className="font-mono text-[9px] uppercase tracking-[0.35em] text-white/35">Available for projects</span>
-                </div>
-                <p className="font-mono text-[9px] text-white/15 uppercase tracking-widest">
-                  System Architect · Full-Stack · 2025
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom strip */}
-          <div className="flex items-center justify-between px-8 md:px-14 py-6"
-            style={{
-              borderTop: '1px solid rgba(255,255,255,0.05)',
-              opacity: isMenuOpen ? 1 : 0,
-              transform: isMenuOpen ? 'translateY(0)' : 'translateY(8px)',
-              transition: 'all 0.7s ease 0.55s',
-            }}>
-            <div className="flex items-center gap-6 md:gap-10">
-              {[
-                { label: 'Email', href: 'mailto:gandreddylokesh7@gmail.com' },
-                { label: 'LinkedIn', href: 'https://linkedin.com/in/lokeshh-hhh' },
-                { label: 'GitHub', href: 'https://github.com/Lokeshgandreddy81' },
-              ].map((l) => (
-                <a key={l.label} href={l.href}
-                  target={l.href.startsWith('mailto') ? '_self' : '_blank'}
-                  rel="noopener noreferrer"
-                  className="group flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.3em] text-white/25 hover:text-white/70 transition-colors duration-300"
-                >
-                  {l.label}
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">↗</span>
-                </a>
-              ))}
-            </div>
-            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/12 hidden md:block">
-              Gandreddy Lokesh
-            </span>
-          </div>
-        </div>
-      </div>
 
       {/* ── CSS Keyframes ─────────────────────────────────────────────── */}
-      <style>{`
+      < style > {`
         @keyframes navBloom {
           0%, 100% { opacity: 0.35; transform: scaleY(0.7) scaleX(0.92); }
           50%       { opacity: 0.7;  transform: scaleY(1)   scaleX(1.04); }
@@ -582,7 +328,7 @@ const Header = ({ onMenuClick }) => {
           0%, 100% { transform: translate(0, 0) scale(1); }
           50%       { transform: translate(15%, 10%) scale(1.1); }
         }
-      `}</style>
+      `}</style >
     </>
   );
 };
