@@ -12,15 +12,15 @@ export const useTheme = () => {
 
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    // Check localStorage first, default to dark
+    // Check localStorage first, default to light
     const savedTheme = localStorage.getItem('portfolio-theme');
-    return savedTheme || 'dark';
+    return savedTheme || 'light';
   });
 
   useEffect(() => {
     // Save to localStorage
     localStorage.setItem('portfolio-theme', theme);
-    
+
     // Update document class
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');

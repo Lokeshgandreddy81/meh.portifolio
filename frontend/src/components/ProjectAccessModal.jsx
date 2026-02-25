@@ -207,80 +207,175 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
                     <div className="overflow-y-auto max-h-[90vh] custom-scrollbar">
                         {stage === 'loading' ? (
                             /* ===== LOADING STAGE ===== */
-                            <div className="px-8 md:px-16 py-12 md:py-20">
+                            <div className="px-6 md:px-10 py-8 md:py-12">
                                 {/* Header */}
-                                <div className="mb-12 md:mb-16">
-                                    <div className="flex items-center gap-3 mb-6">
-                                        <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-                                        <span className="text-xs uppercase tracking-[0.2em] text-muted">Processing Request</span>
+                                <div className="mb-8">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <div className="relative w-2 h-2">
+                                            <div className="absolute inset-0 rounded-full bg-blue-500 animate-ping opacity-60" />
+                                            <div className="w-2 h-2 rounded-full bg-blue-500" />
+                                        </div>
+                                        <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/30">// Secure Channel Initializing</span>
                                     </div>
-                                    <h2
-                                        className="text-4xl md:text-6xl font-light leading-[1.1] text-foreground mb-4"
-                                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                                    >
+                                    <h2 className="text-4xl md:text-6xl font-light leading-tight text-foreground mb-2"
+                                        style={{ fontFamily: 'Cormorant Garamond, serif' }}>
                                         Accessing Project
                                     </h2>
-                                    <p className="text-xl text-muted">
-                                        <span className="text-foreground italic">{projectName}</span>
-                                    </p>
+                                    <p className="font-mono text-sm text-white/40 italic">{projectName}</p>
                                 </div>
 
-                                {/* Cinematic CRT Terminal */}
-                                <div className="bg-[#0a0a0a] border border-white/5 p-6 md:p-8 relative overflow-hidden group shadow-2xl rounded-sm">
-                                    {/* CRT Scanline Overlay */}
-                                    <div className="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] z-10 opacity-50 mix-blend-overlay"></div>
-                                    <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(0,0,0,0.9)] z-20"></div>
+                                {/* ── Premium Terminal Window ─────────────────────────── */}
+                                <div className="rounded-xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.06)] mb-6">
 
-                                    <div className="space-y-4 font-mono text-sm min-h-[320px] relative z-30 text-[#00ff41] text-shadow-[0_0_5px_rgba(0,255,65,0.4)]">
-                                        {terminalLines.map((line, idx) => (
-                                            <div
-                                                key={idx}
-                                                className="flex items-start gap-3 opacity-0"
-                                                style={{
-                                                    animation: 'decryptionEntry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards'
-                                                }}
-                                            >
-                                                <StatusIcon status={line.status} />
-                                                <span className={
-                                                    line.status === 'error'
-                                                        ? 'text-red-500 font-medium'
-                                                        : line.status === 'success'
-                                                            ? 'text-green-500/90'
-                                                            : 'text-muted'
-                                                }>
-                                                    {line.text}
-                                                </span>
-                                            </div>
-                                        ))}
-
-                                        {currentLine.text && (
-                                            <div className="flex items-start gap-3">
-                                                <StatusIcon status={currentLine.status} />
-                                                <span className={
-                                                    currentLine.status === 'error'
-                                                        ? 'text-red-500 font-medium'
-                                                        : currentLine.status === 'success'
-                                                            ? 'text-green-500/90'
-                                                            : 'text-muted'
-                                                }>
-                                                    {currentLine.text}
-                                                    <span className="inline-block w-1.5 h-4 bg-blue-500 ml-1 animate-pulse" />
-                                                </span>
-                                            </div>
-                                        )}
+                                    {/* macOS-style title bar */}
+                                    <div className="flex items-center justify-between px-4 py-3"
+                                        style={{ background: '#1a1a1a', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                                        <div className="flex items-center gap-2">
+                                            <div className="w-3 h-3 rounded-full bg-[#ff5f56] hover:brightness-110 transition-all cursor-default" />
+                                            <div className="w-3 h-3 rounded-full bg-[#ffbd2e] hover:brightness-110 transition-all cursor-default" />
+                                            <div className="w-3 h-3 rounded-full bg-[#27c93f] hover:brightness-110 transition-all cursor-default" />
+                                        </div>
+                                        <div className="flex items-center gap-2 px-4 py-1 rounded-md"
+                                            style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                                            <span className="font-mono text-[10px] text-white/30">
+                                                root@gandreddy-systems:~/projects/{projectName.toLowerCase().replace(/\s/g, '-')}
+                                            </span>
+                                        </div>
+                                        <div className="flex items-center gap-1.5">
+                                            <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse" />
+                                            <span className="font-mono text-[9px] text-green-400/70 uppercase tracking-widest">live</span>
+                                        </div>
                                     </div>
 
-                                    {/* Progress indicator */}
-                                    <div className="mt-8 flex items-center gap-3 text-xs text-muted">
-                                        <div className="flex gap-1">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '0s' }} />
-                                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '0.1s' }} />
-                                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-bounce" style={{ animationDelay: '0.2s' }} />
+                                    {/* Split layout: terminal left, stats right */}
+                                    <div className="flex" style={{ background: '#080808' }}>
+
+                                        {/* LEFT — main terminal */}
+                                        <div className="flex-1 relative overflow-hidden" style={{ minHeight: '340px' }}>
+                                            {/* CRT scanlines */}
+                                            <div className="absolute inset-0 pointer-events-none z-10 opacity-30"
+                                                style={{
+                                                    background: 'repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.4) 2px,rgba(0,0,0,0.4) 4px)',
+                                                }} />
+                                            {/* Vignette */}
+                                            <div className="absolute inset-0 pointer-events-none z-10"
+                                                style={{ boxShadow: 'inset 0 0 80px rgba(0,0,0,0.7)' }} />
+
+                                            <div className="relative z-20 p-6 font-mono text-[13px] space-y-2.5">
+                                                {/* Init prompt */}
+                                                <div className="flex items-center gap-2 mb-4 pb-3"
+                                                    style={{ borderBottom: '1px solid rgba(0,255,65,0.1)' }}>
+                                                    <span style={{ color: '#3b82f6' }}>┌──(</span>
+                                                    <span style={{ color: '#a78bfa' }}>root</span>
+                                                    <span style={{ color: '#3b82f6' }}>@</span>
+                                                    <span style={{ color: '#34d399' }}>gandreddy-systems</span>
+                                                    <span style={{ color: '#3b82f6' }}>)-[</span>
+                                                    <span style={{ color: '#fbbf24' }}>~</span>
+                                                    <span style={{ color: '#3b82f6' }}>]</span>
+                                                </div>
+
+                                                {/* Completed lines */}
+                                                {terminalLines.map((line, idx) => (
+                                                    <div key={idx} className="flex items-start gap-3"
+                                                        style={{ animation: 'termLineIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards' }}>
+                                                        <span className="flex-shrink-0 select-none" style={{ color: '#3b82f6' }}>└─$</span>
+                                                        <span style={{
+                                                            color: line.status === 'error'
+                                                                ? '#f87171'
+                                                                : line.status === 'success'
+                                                                    ? '#4ade80'
+                                                                    : '#94a3b8',
+                                                            textShadow: line.status === 'success'
+                                                                ? '0 0 8px rgba(74,222,128,0.4)'
+                                                                : line.status === 'error'
+                                                                    ? '0 0 8px rgba(248,113,113,0.4)'
+                                                                    : 'none',
+                                                        }}>
+                                                            {line.status === 'success' && <span style={{ color: '#4ade80' }}>✓ </span>}
+                                                            {line.status === 'error' && <span style={{ color: '#f87171' }}>✗ </span>}
+                                                            {line.status === 'loading' && <span style={{ color: '#60a5fa' }}>⟳ </span>}
+                                                            {line.text}
+                                                        </span>
+                                                    </div>
+                                                ))}
+
+                                                {/* Current typing line */}
+                                                {currentLine.text && (
+                                                    <div className="flex items-start gap-3">
+                                                        <span className="flex-shrink-0 select-none" style={{ color: '#3b82f6' }}>└─$</span>
+                                                        <span style={{
+                                                            color: currentLine.status === 'error' ? '#f87171'
+                                                                : currentLine.status === 'success' ? '#4ade80'
+                                                                    : '#e2e8f0',
+                                                        }}>
+                                                            {currentLine.text}
+                                                            {/* Block cursor */}
+                                                            <span className="inline-block w-[9px] h-[14px] ml-0.5 align-middle"
+                                                                style={{
+                                                                    background: '#00ff41',
+                                                                    boxShadow: '0 0 6px rgba(0,255,65,0.7)',
+                                                                    animation: 'termBlink 1s step-end infinite',
+                                                                }} />
+                                                        </span>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
-                                        <span className="uppercase tracking-wider">Analyzing</span>
+
+                                        {/* RIGHT — stats panel */}
+                                        <div className="w-52 flex-shrink-0 flex flex-col gap-0 hidden md:flex"
+                                            style={{ background: '#0d0d0d', borderLeft: '1px solid rgba(255,255,255,0.05)' }}>
+                                            {/* Panel header */}
+                                            <div className="px-4 py-3"
+                                                style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">System Info</span>
+                                            </div>
+                                            {[
+                                                { label: 'Request ID', value: accessToken, color: '#60a5fa' },
+                                                { label: 'Protocol', value: 'TLS 1.3', color: '#4ade80' },
+                                                { label: 'Cipher', value: 'AES-256-GCM', color: '#4ade80' },
+                                                { label: 'Status', value: 'PROCESSING', color: '#fbbf24' },
+                                                { label: 'Attempts', value: stats.totalAttempts, color: '#a78bfa' },
+                                                { label: 'Today', value: stats.todayAttempts, color: '#a78bfa' },
+                                                { label: 'Timestamp', value: new Date().toLocaleTimeString(), color: '#94a3b8' },
+                                            ].map((item) => (
+                                                <div key={item.label} className="px-4 py-3"
+                                                    style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
+                                                    <div className="font-mono text-[9px] uppercase tracking-widest text-white/20 mb-1">{item.label}</div>
+                                                    <div className="font-mono text-[11px] break-all" style={{ color: item.color }}>{item.value}</div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    {/* Progress bar footer */}
+                                    <div className="px-0 py-0"
+                                        style={{ background: '#0d0d0d', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                                        <div className="w-full h-[3px]">
+                                            <div
+                                                className="h-full transition-all duration-700"
+                                                style={{
+                                                    width: `${Math.min((terminalLines.length / 6) * 100, 100)}%`,
+                                                    background: 'linear-gradient(90deg, #3b82f6, #a855f7, #ec4899)',
+                                                    boxShadow: '0 0 8px rgba(168,85,247,0.6)',
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="flex items-center justify-between px-4 py-2">
+                                            <div className="flex items-center gap-2">
+                                                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                                                <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/30">
+                                                    Verifying credentials
+                                                </span>
+                                            </div>
+                                            <span className="font-mono text-[9px] text-white/20">
+                                                {Math.min(Math.round((terminalLines.length / 6) * 100), 100)}%
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
                         ) : stage === 'denied' ? (
                             /* ===== DENIED STAGE ===== */
                             <div className="px-8 md:px-16 py-12 md:py-20">
@@ -605,7 +700,16 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
           transform: translateY(-2px);
         }
 
-        /* Custom scrollbar - theme aware */
+        @keyframes termLineIn {
+          from { opacity: 0; transform: translateX(-8px); filter: blur(2px); }
+          to   { opacity: 1; transform: translateX(0);    filter: blur(0); }
+        }
+
+        @keyframes termBlink {
+          0%, 100% { opacity: 1; }
+          50%       { opacity: 0; }
+        }
+
         .custom-scrollbar::-webkit-scrollbar {
           width: 8px;
         }

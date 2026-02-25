@@ -1,17 +1,100 @@
 import React, { useState } from 'react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import siteConfig from '../config/siteConfig';
-import LotusFlower from './decorative/LotusFlower';
-import BotanicalLeaf from './decorative/BotanicalLeaf';
 import ProjectAccessModal from './ProjectAccessModal';
-import useScrollReveal from '../hooks/useScrollReveal';
-import MagneticButton from './ui/MagneticButton';
+
+const ExpandingCard = ({ project, index, isHovered, onHover, onLeave, onOpen }) => {
+  return (
+    <div
+      className={`relative h-[60vh] md:h-[75vh] overflow-hidden rounded-[2rem] md:rounded-[3rem] transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer group bg-[#070707] dark:bg-[#08081a] border border-black/10 dark:border-[rgba(99,102,241,0.12)] ${isHovered ? 'flex-[4] md:flex-[5]' : 'flex-[1]'
+        }`}
+      onMouseEnter={() => onHover(index)}
+      onMouseLeave={onLeave}
+      onClick={() => onOpen(project.company)}
+    >
+      {/* Persistent idle ambient — very subtle indigo tint on dark */}
+      <div
+        className="absolute inset-0 z-0 pointer-events-none opacity-100 dark:opacity-100 hidden dark:block"
+        style={{
+          background: 'radial-gradient(ellipse at 50% 120%, rgba(79,70,229,0.15) 0%, rgba(67,56,202,0.06) 50%, transparent 75%)',
+        }}
+      />
+      {/* Dynamic Background Spinning Aura (hover) */}
+      <div
+        className="absolute inset-[-50%] z-0 rounded-full blur-[50px] opacity-0 transition-opacity duration-1000 mix-blend-screen pointer-events-none group-hover:opacity-[0.35]"
+        style={{
+          background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)',
+          animation: 'spin 15s linear infinite'
+        }}
+      />
+      <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-10 pointer-events-none" />
+
+      {/* Massive Vertical Watermark (Visible when collapsed) */}
+      <div
+        className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-700 delay-300 ${isHovered ? 'opacity-0' : 'opacity-20'}`}
+      >
+        <span
+          className="text-6xl md:text-8xl font-bold text-black dark:text-white whitespace-nowrap rotate-[-90deg] tracking-tighter mix-blend-difference"
+          style={{ fontFamily: 'Inter, sans-serif' }}
+        >
+          0{index + 1}
+        </span>
+      </div>
+
+      {/* Expanded Content overlay */}
+      <div
+        className={`absolute inset-0 z-20 flex flex-col justify-between p-8 md:p-12 lg:p-16 w-full h-full bg-gradient-to-t from-black via-black/40 to-transparent transition-opacity duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isHovered ? 'opacity-100 delay-300' : 'opacity-0 delay-0 pointer-events-none'}`}
+      >
+        {/* Top Header Row */}
+        <div className="flex justify-between items-start w-full transform transition-transform duration-1000">
+          <div className="flex flex-col gap-2">
+            <span className="font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase text-white/70">
+              System 0{index + 1}
+            </span>
+            <span className="font-mono text-[10px] md:text-xs tracking-[0.2em] uppercase text-blue-500">
+              {project.duration}
+            </span>
+          </div>
+
+          <div className="font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase text-white/50 text-right hidden md:block">
+            Deployed <br /> Infrastructure
+          </div>
+        </div>
+
+        {/* Bottom Content Row */}
+        <div className="flex flex-col md:flex-row justify-between items-end gap-12 w-full">
+
+          <div className="flex flex-col max-w-2xl transform transition-transform duration-1000 delay-100 translate-y-0">
+            <h2
+              className="text-3xl md:text-5xl lg:text-6xl font-light text-white tracking-tighter leading-[1.1] mb-6 transition-colors duration-500 hover:text-blue-200 line-clamp-2"
+              style={{ fontFamily: 'Cormorant Garamond, serif' }}
+            >
+              {project.title}
+            </h2>
+
+            <div className="space-y-4 font-mono text-[10px] md:text-xs leading-relaxed text-white/70 hidden md:block">
+              {project.descriptions?.slice(0, 2).map((desc, i) => (
+                <p key={i} className="line-clamp-2">{desc}</p>
+              ))}
+            </div>
+          </div>
+
+          <div
+            className="shrink-0 flex items-center justify-center w-16 h-16 md:w-24 md:h-24 rounded-full border border-white/20 bg-white/10 backdrop-blur-md hover:bg-white transition-all duration-700"
+          >
+            <ArrowUpRight className="w-6 h-6 md:w-8 md:h-8 text-white group-hover:text-black group-hover:rotate-45 transition-all duration-500" />
+          </div>
+
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const WorkSection = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState('');
-  const [saraRef, saraVisible] = useScrollReveal({ threshold: 0.3, delay: 0 });
-  const [vaagishaRef, vaagishaVisible] = useScrollReveal({ threshold: 0.3, delay: 0 });
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const handleProjectClick = (projectName) => {
     setSelectedProject(projectName);
@@ -26,198 +109,69 @@ const WorkSection = () => {
         projectName={selectedProject}
       />
 
-      <section className="py-0">
-        <div className="w-full relative">
+      <section
+        id="work"
+        className="w-full bg-transparent dark:bg-[#060614] relative z-40 section-border border-t pt-32 pb-48 transition-colors duration-500 overflow-hidden"
+      >
+        {/* Dark mode ambient light source at top of section */}
+        <div className="absolute inset-x-0 top-0 h-[50vh] pointer-events-none hidden dark:block"
+          style={{
+            background: 'radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,0.12) 0%, rgba(99,102,241,0.06) 40%, transparent 70%)',
+          }}
+        />
 
-          {/* Sara.ai Section - Text Left, Decoration Right */}
-          <div className="flex flex-col-reverse md:grid md:grid-cols-2 border-b section-border relative overflow-hidden group">
-
-
-
-            <div
-              ref={saraRef}
-              className="px-6 py-12 md:px-16 md:py-24 flex flex-col justify-center section-border md:border-r border-t md:border-t-0 relative z-10"
-            >
-              {/* Premium Company Logo */}
-              <div
-                className="group w-24 h-24 rounded-3xl flex items-center justify-center mb-8 md:mb-12 relative overflow-hidden cursor-pointer"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(147, 51, 234, 0.1) 100%)',
-                  border: '2px solid var(--border)',
-                  opacity: saraVisible ? 1 : 0,
-                  transform: saraVisible ? 'scale(1) rotate(0deg)' : 'scale(0.5) rotate(-20deg)',
-                  transition: 'all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s'
-                }}
-              >
-                {/* Glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
-
-                {/* Rotating border effect */}
-                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.3), rgba(147, 51, 234, 0.3))',
-                    animation: 'spin 3s linear infinite',
-                    filter: 'blur(8px)'
-                  }}
-                />
-
-                {/* Letter */}
-                <span
-                  className="relative z-10 text-5xl font-bold text-foreground group-hover:scale-110 transition-all duration-500"
-                  style={{
-                    fontFamily: 'Cormorant Garamond, serif',
-                    textShadow: '0 0 20px rgba(59, 130, 246, 0.3)'
-                  }}
-                >
-                  {siteConfig.workExperiences[0].logo}
-                </span>
-              </div>
-
-              {/* Title */}
+        <div className="container mx-auto px-6 md:px-12 max-w-[1600px] mb-16 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-end gap-8">
+            <div>
+              <span className="font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase text-black/50 dark:text-white/40 mb-6 block">
+                Selected Works
+              </span>
+              {/* "The Archive" — gradient in dark mode */}
               <h2
-                className="text-4xl md:text-5xl font-light leading-tight mb-6 md:mb-8 text-foreground"
+                className="text-7xl md:text-9xl font-light tracking-tighter leading-none"
                 style={{
                   fontFamily: 'Cormorant Garamond, serif',
-                  opacity: saraVisible ? 1 : 0,
-                  transform: saraVisible ? 'translateY(0)' : 'translateY(20px)',
-                  transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s'
+                  background: 'var(--archive-gradient, currentColor)',
+                  WebkitBackgroundClip: 'text',
                 }}
               >
-                {siteConfig.workExperiences[0].title}
-              </h2>
-
-              {/* Description Section */}
-              <div className="text-muted text-lg leading-relaxed space-y-6 mb-12 md:mb-16">
-                {siteConfig.workExperiences[0].descriptions.map((desc, index) => (
-                  <p
-                    key={index}
-                    style={{
-                      opacity: saraVisible ? 1 : 0,
-                      transform: saraVisible ? 'translateY(0)' : 'translateY(16px)',
-                      transition: `all 0.6s cubic-bezier(0.16, 1, 0.3, 1) ${0.6 + index * 0.1}s`
-                    }}
-                    className="font-light text-foreground/90"
-                  >
-                    {desc}
-                  </p>
-                ))}
-              </div>
-
-              {/* Advanced Magnetic CTA Button */}
-              <MagneticButton
-                onClick={() => handleProjectClick(siteConfig.workExperiences[0].company)}
-                className="w-20 h-20 rounded-full border border-border bg-background transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-foreground group/btn self-start"
-                style={{
-                  opacity: saraVisible ? 1 : 0,
-                  transform: saraVisible ? 'scale(1)' : 'scale(0.8)',
-                  transition: 'opacity 0.6s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.9s'
-                }}
-              >
-                <ArrowRight className="w-6 h-6 text-muted group-hover/btn:text-background group-hover/btn:translate-x-1 group-hover/btn:-rotate-45 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-              </MagneticButton>
-            </div>
-            <div className="px-6 py-12 md:px-16 md:py-24 flex items-center justify-center relative z-10">
-              <LotusFlower className="decorative-svg w-3/4 h-3/4 md:w-full md:h-full transition-transform duration-[2s] group-hover:scale-110 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-            </div>
-          </div>
-
-          {/* Vaagisha Section - Decoration Left, Text Right */}
-          <div className="flex flex-col md:grid md:grid-cols-2 border-b section-border relative overflow-hidden group">
-
-
-
-            <div className="px-6 py-12 md:px-16 md:py-24 flex items-center justify-center section-border md:border-r border-b md:border-b-0 relative z-10">
-              <BotanicalLeaf className="decorative-svg w-3/4 h-3/4 md:w-full md:h-full transition-transform duration-[2s] group-hover:scale-110 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-            </div>
-            <div
-              ref={vaagishaRef}
-              className="px-6 py-12 md:px-16 md:py-24 flex flex-col justify-center relative z-10"
-            >
-              {/* Premium Company Logo - Dual Letter */}
-              <div
-                className="group w-24 h-24 rounded-3xl flex items-center justify-center mb-8 md:mb-12 relative overflow-hidden cursor-pointer"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(236, 72, 153, 0.1) 0%, rgba(251, 146, 60, 0.1) 100%)',
-                  border: '2px solid var(--border)',
-                  opacity: vaagishaVisible ? 1 : 0,
-                  transform: vaagishaVisible ? 'scale(1) rotate(0deg)' : 'scale(0.5) rotate(20deg)',
-                  transition: 'all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.2s'
-                }}
-              >
-                {/* Glow effect */}
-                <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-orange-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl" />
-
-                {/* Rotating border effect */}
-                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background: 'linear-gradient(45deg, rgba(236, 72, 153, 0.3), rgba(251, 146, 60, 0.3))',
-                    animation: 'spin 3s linear infinite',
-                    filter: 'blur(8px)'
-                  }}
-                />
-
-                {/* Letters */}
+                <span className="block dark:hidden text-black">The Archive</span>
                 <span
-                  className="relative z-10 text-3xl font-bold text-foreground group-hover:scale-110 transition-all duration-500"
+                  className="hidden dark:block"
                   style={{
-                    fontFamily: 'Cormorant Garamond, serif',
-                    letterSpacing: '0.05em',
-                    textShadow: '0 0 20px rgba(236, 72, 153, 0.3)'
+                    background: 'linear-gradient(135deg, #ffffff 0%, #a5b4fc 45%, #e0e7ff 75%, #ffffff 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
                   }}
                 >
-                  {siteConfig.workExperiences[1].logo}
+                  The Archive
                 </span>
-              </div>
-
-              {/* Title */}
-              <h2
-                className="text-4xl md:text-5xl font-light leading-tight mb-6 md:mb-8 text-foreground"
-                style={{
-                  fontFamily: 'Cormorant Garamond, serif',
-                  opacity: vaagishaVisible ? 1 : 0,
-                  transform: vaagishaVisible ? 'translateY(0)' : 'translateY(20px)',
-                  transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s'
-                }}
-              >
-                {siteConfig.workExperiences[1].title}
               </h2>
-
-              {/* Description */}
-              <p
-                className="text-muted text-lg leading-relaxed mb-8 md:mb-12"
-                style={{
-                  opacity: vaagishaVisible ? 1 : 0,
-                  transform: vaagishaVisible ? 'translateX(0)' : 'translateX(-20px)',
-                  transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s'
-                }}
-              >
-                {siteConfig.workExperiences[1].description}
-              </p>
-
-              {/* Advanced Magnetic CTA Button */}
-              <MagneticButton
-                onClick={() => handleProjectClick(siteConfig.workExperiences[1].company)}
-                className="w-20 h-20 rounded-full border border-border bg-background transition-colors duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-foreground group/btn self-start"
-                style={{
-                  opacity: vaagishaVisible ? 1 : 0,
-                  transform: vaagishaVisible ? 'scale(1)' : 'scale(0.8)',
-                  transition: 'opacity 0.6s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.8s'
-                }}
-              >
-                <ArrowRight className="w-6 h-6 text-muted group-hover/btn:text-background group-hover/btn:translate-x-1 group-hover/btn:-rotate-45 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-              </MagneticButton>
+            </div>
+            <div className="font-mono text-xs uppercase tracking-widest text-black/40 dark:text-white/40 mb-4 max-w-xs text-right hidden md:block">
+              Interact to expand sub-systems.
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Premium animations */}
-      <style>{`
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-      `}</style>
+        {/* Expanding Flex Gallery */}
+        <div className="container mx-auto px-4 md:px-12 max-w-[1600px]">
+          <div className="flex flex-col md:flex-row w-full gap-4 md:gap-6">
+            {siteConfig.workExperiences.map((project, index) => (
+              <ExpandingCard
+                key={index}
+                project={project}
+                index={index}
+                isHovered={hoveredIndex === index || (hoveredIndex === null && index === 0 && window.innerWidth > 768)} // Default expand first on desktop
+                onHover={setHoveredIndex}
+                onLeave={() => setHoveredIndex(null)}
+                onOpen={handleProjectClick}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
     </>
   );
 };

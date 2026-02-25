@@ -1,181 +1,111 @@
-import React from 'react';
-import { Code2, Headphones, BookOpen } from 'lucide-react';
+import React, { useRef, useState, useEffect } from 'react';
 import siteConfig from '../config/siteConfig';
 import useScrollReveal from '../hooks/useScrollReveal';
 
-const InterestsSection = () => {
-  const [buildingRef, buildingVisible] = useScrollReveal({ threshold: 0.3, delay: 0 });
-  const [learningRef, learningVisible] = useScrollReveal({ threshold: 0.3, delay: 150 });
-  const [readingRef, readingVisible] = useScrollReveal({ threshold: 0.3, delay: 300 });
+const FloatingItem = ({ item, index, total, mousePos }) => {
+  const isBuilding = siteConfig.interests.building.includes(item);
+  const isLearning = siteConfig.interests.learning.includes(item);
+
+  // Distribute items pseudo-randomly but deterministically
+  const seed = index * 137.5;
+  const radius = 30 + (index % 3) * 20; // 30% to 70%
+  const xPos = 50 + radius * Math.cos(seed * Math.PI / 180);
+  const yPos = 50 + radius * Math.sin(seed * Math.PI / 180);
+
+  // Parallax logic based on "depth"
+  const depth = 1 + (index % 3); // 1, 2, or 3
+  const moveX = mousePos.x * depth * 2;
+  const moveY = mousePos.y * depth * 2;
+
+  // Font size varies by depth
+  const fontSize = depth === 3 ? 'text-3xl md:text-5xl' : depth === 2 ? 'text-xl md:text-3xl' : 'text-sm md:text-xl';
+  const opacity = depth === 3 ? 'opacity-100' : depth === 2 ? 'opacity-60' : 'opacity-30';
+
+  const color = isBuilding ? 'text-blue-200' : isLearning ? 'text-purple-200' : 'text-orange-200';
 
   return (
-    <section className="py-0">
-      <div className="w-full border-b section-border">
-        {/* Interests Grid */}
-        <div className="grid grid-cols-3">
-          {/* Building */}
-          <div
-            ref={buildingRef}
-            className="px-16 py-24 border-r section-border"
-            style={{
-              opacity: buildingVisible ? 1 : 0,
-              transform: buildingVisible ? 'translateY(0)' : 'translateY(30px)',
-              transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
-            }}
-          >
-            <div className="icon-wrapper group">
-              <Code2
-                className="w-16 h-16 text-foreground mb-8 transition-all duration-500 group-hover:scale-110"
-                strokeWidth={1}
-                style={{
-                  opacity: buildingVisible ? 1 : 0,
-                  transform: buildingVisible ? 'rotate(0deg) scale(1)' : 'rotate(-20deg) scale(0.5)',
-                  transition: 'all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s'
-                }}
-              />
-            </div>
-            <h3
-              className="text-2xl font-semibold mb-6 text-foreground"
-              style={{
-                opacity: buildingVisible ? 1 : 0,
-                transform: buildingVisible ? 'translateX(0)' : 'translateX(-20px)',
-                transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s'
-              }}
-            >
-              Building:
-            </h3>
-            <ul className="space-y-3 text-muted text-lg">
-              {siteConfig.interests.building.map((item, index) => (
-                <li
-                  key={index}
-                  style={{
-                    opacity: buildingVisible ? 1 : 0,
-                    transform: buildingVisible ? 'translateX(0)' : 'translateX(-15px)',
-                    transition: `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${0.7 + index * 0.1}s`
-                  }}
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
+    <div
+      className={`absolute whitespace-nowrap font-light ${fontSize} ${opacity} pointer-events-none transition-transform duration-[2s] ease-out`}
+      style={{
+        left: `${xPos}%`,
+        top: `${yPos}%`,
+        transform: `translate(-50%, -50%) translate3d(${moveX}px, ${moveY}px, 0)`,
+        fontFamily: depth > 1 ? 'Cormorant Garamond, serif' : 'system-ui, sans-serif'
+      }}
+    >
+      {item}
+    </div>
+  );
+};
 
-          {/* Learning */}
-          <div
-            ref={learningRef}
-            className="px-16 py-24 border-r section-border"
-            style={{
-              opacity: learningVisible ? 1 : 0,
-              transform: learningVisible ? 'translateY(0)' : 'translateY(30px)',
-              transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
-            }}
-          >
-            <div className="icon-wrapper group">
-              <Headphones
-                className="w-16 h-16 text-foreground mb-8 transition-all duration-500 group-hover:scale-110"
-                strokeWidth={1}
-                style={{
-                  opacity: learningVisible ? 1 : 0,
-                  transform: learningVisible ? 'rotate(0deg) scale(1)' : 'rotate(20deg) scale(0.5)',
-                  transition: 'all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s'
-                }}
-              />
-            </div>
-            <h3
-              className="text-2xl font-semibold mb-6 text-foreground"
-              style={{
-                opacity: learningVisible ? 1 : 0,
-                transform: learningVisible ? 'translateX(0)' : 'translateX(-20px)',
-                transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s'
-              }}
-            >
-              Learning:
-            </h3>
-            <ul className="space-y-3 text-muted text-lg">
-              {siteConfig.interests.learning.map((item, index) => (
-                <li
-                  key={index}
-                  style={{
-                    opacity: learningVisible ? 1 : 0,
-                    transform: learningVisible ? 'translateX(0)' : 'translateX(-15px)',
-                    transition: `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${0.7 + index * 0.1}s`
-                  }}
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
+const InterestsSection = () => {
+  const [ref, visible] = useScrollReveal({ threshold: 0.1 });
+  const containerRef = useRef(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-          {/* Reading */}
-          <div
-            ref={readingRef}
-            className="px-16 py-24"
-            style={{
-              opacity: readingVisible ? 1 : 0,
-              transform: readingVisible ? 'translateY(0)' : 'translateY(30px)',
-              transition: 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)'
-            }}
-          >
-            <div className="icon-wrapper group">
-              <BookOpen
-                className="w-16 h-16 text-foreground mb-8 transition-all duration-500 group-hover:scale-110"
-                strokeWidth={1}
-                style={{
-                  opacity: readingVisible ? 1 : 0,
-                  transform: readingVisible ? 'rotate(0deg) scale(1)' : 'rotate(-20deg) scale(0.5)',
-                  transition: 'all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s'
-                }}
-              />
-            </div>
-            <h3
-              className="text-2xl font-semibold mb-6 text-foreground"
-              style={{
-                opacity: readingVisible ? 1 : 0,
-                transform: readingVisible ? 'translateX(0)' : 'translateX(-20px)',
-                transition: 'all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s'
-              }}
-            >
-              Reading:
-            </h3>
-            <ul className="space-y-3 text-muted text-lg">
-              {siteConfig.interests.reading.map((item, index) => (
-                <li
-                  key={index}
-                  style={{
-                    opacity: readingVisible ? 1 : 0,
-                    transform: readingVisible ? 'translateX(0)' : 'translateX(-15px)',
-                    transition: `all 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${0.7 + index * 0.1}s`
-                  }}
-                >
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+  const allInterests = [
+    ...siteConfig.interests.building,
+    ...siteConfig.interests.learning,
+    ...siteConfig.interests.reading
+  ];
+
+  const handleMouseMove = (e) => {
+    if (!containerRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    // Normalize to -1 to 1
+    const x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+    const y = ((e.clientY - rect.top) / rect.height) * 2 - 1;
+    setMousePos({ x, y });
+  };
+
+  return (
+    <section
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      className="relative min-h-[80vh] w-full border-b section-border overflow-hidden bg-background flex flex-col items-center justify-center p-6"
+    >
+      {/* Background Ambient Glows */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-blue-500/5 rounded-full blur-[100px] mix-blend-screen transition-transform duration-[3s] ease-out"
+          style={{ transform: `translate(${mousePos.x * -30}px, ${mousePos.y * -30}px)` }}
+        />
+        <div
+          className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-purple-500/5 rounded-full blur-[100px] mix-blend-screen transition-transform duration-[3s] ease-out"
+          style={{ transform: `translate(${mousePos.x * 40}px, ${mousePos.y * 40}px)` }}
+        />
       </div>
 
-      {/* Icon hover animations */}
-      <style>{`
-        .icon-wrapper {
-          position: relative;
-          display: inline-block;
-        }
+      <div
+        ref={ref}
+        className="text-center z-10 mb-12 pointer-events-none"
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: visible ? 'translateY(0)' : 'translateY(20px)',
+          transition: 'all 1s cubic-bezier(0.16,1,0.3,1)'
+        }}
+      >
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] opacity-40 mb-4 block">The Subconscious</span>
+        <h2 className="text-4xl md:text-5xl font-light text-foreground" style={{ fontFamily: 'Cormorant Garamond, serif' }}>
+          Nodes of Interest
+        </h2>
+      </div>
 
-        .icon-wrapper:hover svg {
-          filter: drop-shadow(0 0 8px currentColor);
-        }
-
-        @keyframes iconPulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-        }
-
-        .icon-wrapper svg {
-          animation: iconPulse 3s ease-in-out infinite;
-        }
-      `}</style>
+      {/* The Cloud */}
+      <div
+        className="relative w-full max-w-[1200px] h-[60vh] mx-auto opacity-0 transition-opacity duration-1000 delay-500"
+        style={{ opacity: visible ? 1 : 0 }}
+      >
+        {allInterests.map((item, index) => (
+          <FloatingItem
+            key={index}
+            item={item}
+            index={index}
+            total={allInterests.length}
+            mousePos={mousePos}
+          />
+        ))}
+      </div>
     </section>
   );
 };

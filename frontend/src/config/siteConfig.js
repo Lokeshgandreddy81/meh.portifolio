@@ -13,6 +13,7 @@ export const siteConfig = {
   profileImage: "https://customer-assets.emergentagent.com/job_daniel-autry/artifacts/vpfro1p6_WhatsApp%20Image%202026-01-13%20at%2019.29.21.jpeg",
   // Add your closing portrait image here (displayed at the end before footer)
   closingImage: "https://customer-assets.emergentagent.com/job_daniel-autry/artifacts/vpfro1p6_WhatsApp%20Image%202026-01-13%20at%2019.29.21.jpeg",
+  architectImage: "/images/lokesh_architect.jpg",
 
   // ===== CONTACT & SOCIAL LINKS =====
   email: "gandreddylokesh7@gmail.com",
@@ -54,14 +55,6 @@ export const siteConfig = {
     {
       title: "I started in the engine room",
       description: "Backend systems, cloud architecture, and the gritty details of what makes systems reliable at scale. The real learning began in production."
-    },
-    {
-      title: "I built an open-source framework for multi-agent automation",
-      description: "Because I believe the future of work is collaborative — between humans and AI, not one replacing the other. It's a toolkit for orchestrating intelligence."
-    },
-    {
-      title: "I guide engineers transitioning into AI systems roles",
-      description: "The hardest part isn't the algorithm — it's the discipline of building something that won't break at 3 a.m."
     },
     {
       title: "Outside the terminal, I'm a student of systems thinking",
