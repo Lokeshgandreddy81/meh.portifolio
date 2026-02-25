@@ -126,23 +126,18 @@ const WorkSection = () => {
               <span className="font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase text-black/50 dark:text-white/40 mb-6 block">
                 Selected Works
               </span>
-              {/* "The Archive" — gradient in dark mode */}
+              {/* "The Archive" — crisp white with luminous glow in dark mode */}
               <h2
                 className="text-7xl md:text-9xl font-light tracking-tighter leading-none"
-                style={{
-                  fontFamily: 'Cormorant Garamond, serif',
-                  background: 'var(--archive-gradient, currentColor)',
-                  WebkitBackgroundClip: 'text',
-                }}
+                style={{ fontFamily: 'Cormorant Garamond, serif' }}
               >
+                {/* Light mode: crisp black */}
                 <span className="block dark:hidden text-black">The Archive</span>
+                {/* Dark mode: luminous white with purple glow */}
                 <span
-                  className="hidden dark:block"
+                  className="hidden dark:block text-white"
                   style={{
-                    background: 'linear-gradient(135deg, #ffffff 0%, #a5b4fc 45%, #e0e7ff 75%, #ffffff 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
+                    textShadow: '0 0 80px rgba(168,85,247,0.4), 0 0 160px rgba(99,102,241,0.2)',
                   }}
                 >
                   The Archive
