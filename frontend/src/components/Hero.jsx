@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import siteConfig from '../config/siteConfig';
+import { useTheme } from '../context/ThemeContext';
 
 const Hero = () => {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const [scrollY, setScrollY] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -232,7 +234,9 @@ const Hero = () => {
                     letterSpacing: '-0.02em',
                     textTransform: 'uppercase',
                     lineHeight: '1',
-                    background: 'linear-gradient(135deg, #000000 0%, #000000 100%)',
+                    background: isDark
+                      ? 'linear-gradient(135deg, #ffffff 0%, #ffffff 100%)'
+                      : 'linear-gradient(135deg, #000000 0%, #000000 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
@@ -258,7 +262,9 @@ const Hero = () => {
                     letterSpacing: '0.01em',
                     textTransform: 'uppercase',
                     lineHeight: '1',
-                    background: 'linear-gradient(135deg, #000000 0%, #000000 100%)',
+                    background: isDark
+                      ? 'linear-gradient(135deg, #ffffff 0%, #ffffff 100%)'
+                      : 'linear-gradient(135deg, #000000 0%, #000000 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
