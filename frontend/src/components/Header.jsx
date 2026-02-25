@@ -134,7 +134,7 @@ const Header = ({ onMenuClick }) => {
           <div
             className="absolute inset-[1px] rounded-full z-[1] pointer-events-none"
             style={{
-              background: 'rgba(6,6,10,0.92)',
+              background: 'rgba(6,6,10,0.7)', // More transparent to let the spin pop
               boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)',
             }}
           />
