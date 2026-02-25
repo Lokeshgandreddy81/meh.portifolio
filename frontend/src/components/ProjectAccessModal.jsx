@@ -206,178 +206,107 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
                     {/* Content */}
                     <div className="overflow-y-auto max-h-[90vh] custom-scrollbar">
                         {stage === 'loading' ? (
-                            /* ===== LOADING STAGE ===== */
-                            <div className="px-6 md:px-10 py-8 md:py-12">
-                                {/* Header */}
-                                <div className="mb-8">
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <div className="relative w-2 h-2">
-                                            <div className="absolute inset-0 rounded-full bg-blue-500 animate-ping opacity-60" />
-                                            <div className="w-2 h-2 rounded-full bg-blue-500" />
-                                        </div>
-                                        <span className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/30">// Secure Channel Initializing</span>
-                                    </div>
-                                    <h2 className="text-4xl md:text-6xl font-light leading-tight text-foreground mb-2"
-                                        style={{ fontFamily: 'Cormorant Garamond, serif' }}>
-                                        Accessing Project
-                                    </h2>
-                                    <p className="font-mono text-sm text-white/40 italic">{projectName}</p>
+                            /* ===== LOADING STAGE: CRYPTOGRAPHIC UNLOCK (Google-Tier UI) ===== */
+                            <div className="px-6 md:px-12 py-16 md:py-24 flex flex-col items-center justify-center min-h-[500px] relative overflow-hidden">
+
+                                {/* Background Ambient Bloom */}
+                                <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-40">
+                                    <div className="w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] mix-blend-screen animate-pulse" style={{ animationDuration: '4s' }} />
+                                    <div className="absolute w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] mix-blend-screen animate-pulse" style={{ animationDuration: '3s', animationDelay: '1s' }} />
                                 </div>
 
-                                {/* ── Premium Terminal Window ─────────────────────────── */}
-                                <div className="rounded-xl overflow-hidden shadow-[0_32px_80px_rgba(0,0,0,0.8),0_0_0_1px_rgba(255,255,255,0.06)] mb-6">
+                                <div className="relative z-10 flex flex-col items-center w-full max-w-lg mx-auto text-center">
 
-                                    {/* macOS-style title bar */}
-                                    <div className="flex items-center justify-between px-4 py-3"
-                                        style={{ background: '#1a1a1a', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-                                        <div className="flex items-center gap-2">
-                                            <div className="w-3 h-3 rounded-full bg-[#ff5f56] hover:brightness-110 transition-all cursor-default" />
-                                            <div className="w-3 h-3 rounded-full bg-[#ffbd2e] hover:brightness-110 transition-all cursor-default" />
-                                            <div className="w-3 h-3 rounded-full bg-[#27c93f] hover:brightness-110 transition-all cursor-default" />
-                                        </div>
-                                        <div className="flex items-center gap-2 px-4 py-1 rounded-md"
-                                            style={{ background: 'rgba(0,0,0,0.4)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                                            <span className="font-mono text-[10px] text-white/30">
-                                                root@gandreddy-systems:~/projects/{projectName.toLowerCase().replace(/\s/g, '-')}
-                                            </span>
-                                        </div>
-                                        <div className="flex items-center gap-1.5">
-                                            <div className="w-1 h-1 rounded-full bg-green-500 animate-pulse" />
-                                            <span className="font-mono text-[9px] text-green-400/70 uppercase tracking-widest">live</span>
-                                        </div>
-                                    </div>
-
-                                    {/* Split layout: terminal left, stats right */}
-                                    <div className="flex" style={{ background: '#080808' }}>
-
-                                        {/* LEFT — main terminal */}
-                                        <div className="flex-1 relative overflow-hidden" style={{ minHeight: '340px' }}>
-                                            {/* CRT scanlines */}
-                                            <div className="absolute inset-0 pointer-events-none z-10 opacity-30"
-                                                style={{
-                                                    background: 'repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.4) 2px,rgba(0,0,0,0.4) 4px)',
-                                                }} />
-                                            {/* Vignette */}
-                                            <div className="absolute inset-0 pointer-events-none z-10"
-                                                style={{ boxShadow: 'inset 0 0 80px rgba(0,0,0,0.7)' }} />
-
-                                            <div className="relative z-20 p-6 font-mono text-[13px] space-y-2.5">
-                                                {/* Init prompt */}
-                                                <div className="flex items-center gap-2 mb-4 pb-3"
-                                                    style={{ borderBottom: '1px solid rgba(0,255,65,0.1)' }}>
-                                                    <span style={{ color: '#3b82f6' }}>┌──(</span>
-                                                    <span style={{ color: '#a78bfa' }}>root</span>
-                                                    <span style={{ color: '#3b82f6' }}>@</span>
-                                                    <span style={{ color: '#34d399' }}>gandreddy-systems</span>
-                                                    <span style={{ color: '#3b82f6' }}>)-[</span>
-                                                    <span style={{ color: '#fbbf24' }}>~</span>
-                                                    <span style={{ color: '#3b82f6' }}>]</span>
-                                                </div>
-
-                                                {/* Completed lines */}
-                                                {terminalLines.map((line, idx) => (
-                                                    <div key={idx} className="flex items-start gap-3"
-                                                        style={{ animation: 'termLineIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards' }}>
-                                                        <span className="flex-shrink-0 select-none" style={{ color: '#3b82f6' }}>└─$</span>
-                                                        <span style={{
-                                                            color: line.status === 'error'
-                                                                ? '#f87171'
-                                                                : line.status === 'success'
-                                                                    ? '#4ade80'
-                                                                    : '#94a3b8',
-                                                            textShadow: line.status === 'success'
-                                                                ? '0 0 8px rgba(74,222,128,0.4)'
-                                                                : line.status === 'error'
-                                                                    ? '0 0 8px rgba(248,113,113,0.4)'
-                                                                    : 'none',
-                                                        }}>
-                                                            {line.status === 'success' && <span style={{ color: '#4ade80' }}>✓ </span>}
-                                                            {line.status === 'error' && <span style={{ color: '#f87171' }}>✗ </span>}
-                                                            {line.status === 'loading' && <span style={{ color: '#60a5fa' }}>⟳ </span>}
-                                                            {line.text}
-                                                        </span>
-                                                    </div>
-                                                ))}
-
-                                                {/* Current typing line */}
-                                                {currentLine.text && (
-                                                    <div className="flex items-start gap-3">
-                                                        <span className="flex-shrink-0 select-none" style={{ color: '#3b82f6' }}>└─$</span>
-                                                        <span style={{
-                                                            color: currentLine.status === 'error' ? '#f87171'
-                                                                : currentLine.status === 'success' ? '#4ade80'
-                                                                    : '#e2e8f0',
-                                                        }}>
-                                                            {currentLine.text}
-                                                            {/* Block cursor */}
-                                                            <span className="inline-block w-[9px] h-[14px] ml-0.5 align-middle"
-                                                                style={{
-                                                                    background: '#00ff41',
-                                                                    boxShadow: '0 0 6px rgba(0,255,65,0.7)',
-                                                                    animation: 'termBlink 1s step-end infinite',
-                                                                }} />
-                                                        </span>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        {/* RIGHT — stats panel */}
-                                        <div className="w-52 flex-shrink-0 flex flex-col gap-0 hidden md:flex"
-                                            style={{ background: '#0d0d0d', borderLeft: '1px solid rgba(255,255,255,0.05)' }}>
-                                            {/* Panel header */}
-                                            <div className="px-4 py-3"
-                                                style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                                                <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">System Info</span>
-                                            </div>
-                                            {[
-                                                { label: 'Request ID', value: accessToken, color: '#60a5fa' },
-                                                { label: 'Protocol', value: 'TLS 1.3', color: '#4ade80' },
-                                                { label: 'Cipher', value: 'AES-256-GCM', color: '#4ade80' },
-                                                { label: 'Status', value: 'PROCESSING', color: '#fbbf24' },
-                                                { label: 'Attempts', value: stats.totalAttempts, color: '#a78bfa' },
-                                                { label: 'Today', value: stats.todayAttempts, color: '#a78bfa' },
-                                                { label: 'Timestamp', value: new Date().toLocaleTimeString(), color: '#94a3b8' },
-                                            ].map((item) => (
-                                                <div key={item.label} className="px-4 py-3"
-                                                    style={{ borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
-                                                    <div className="font-mono text-[9px] uppercase tracking-widest text-white/20 mb-1">{item.label}</div>
-                                                    <div className="font-mono text-[11px] break-all" style={{ color: item.color }}>{item.value}</div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-
-                                    {/* Progress bar footer */}
-                                    <div className="px-0 py-0"
-                                        style={{ background: '#0d0d0d', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-                                        <div className="w-full h-[3px]">
-                                            <div
-                                                className="h-full transition-all duration-700"
-                                                style={{
-                                                    width: `${Math.min((terminalLines.length / 6) * 100, 100)}%`,
-                                                    background: 'linear-gradient(90deg, #3b82f6, #a855f7, #ec4899)',
-                                                    boxShadow: '0 0 8px rgba(168,85,247,0.6)',
-                                                }}
+                                    {/* The Cryptographic Ring */}
+                                    <div className="relative w-32 h-32 mb-12 flex items-center justify-center">
+                                        {/* Outer track */}
+                                        <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
+                                            <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
+                                            {/* Animated Progress Ring */}
+                                            <circle
+                                                cx="50" cy="50" r="48" fill="none"
+                                                stroke="url(#gradient)" strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeDasharray="301.59"
+                                                strokeDashoffset={301.59 - (301.59 * (terminalLines.length / 5))}
+                                                className="transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
                                             />
-                                        </div>
-                                        <div className="flex items-center justify-between px-4 py-2">
-                                            <div className="flex items-center gap-2">
-                                                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                                                <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-white/30">
-                                                    Verifying credentials
-                                                </span>
-                                            </div>
-                                            <span className="font-mono text-[9px] text-white/20">
-                                                {Math.min(Math.round((terminalLines.length / 6) * 100), 100)}%
+                                            <defs>
+                                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                    <stop offset="0%" stopColor="#3b82f6" />
+                                                    <stop offset="50%" stopColor="#8b5cf6" />
+                                                    <stop offset="100%" stopColor="#ec4899" />
+                                                </linearGradient>
+                                            </defs>
+                                        </svg>
+
+                                        {/* Inner percentage / Counter */}
+                                        <div className="absolute flex flex-col items-center justify-center">
+                                            <span className="text-3xl font-light text-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>
+                                                {Math.round((terminalLines.length / 5) * 100)}<span className="text-sm text-foreground/40 font-mono">%</span>
                                             </span>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
+                                    {/* Project Name & Identifier */}
+                                    <div className="mb-8">
+                                        <h2
+                                            className="text-3xl md:text-5xl font-light leading-tight text-foreground tracking-tight"
+                                            style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                                        >
+                                            {projectName}
+                                        </h2>
+                                        <div className="flex items-center justify-center gap-3 mt-3">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
+                                            <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/40">
+                                                Authenticating Request
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    {/* Sleek Status Readout (Replaces generic terminal) */}
+                                    <div className="w-full relative h-[60px] flex items-center justify-center overflow-hidden">
+                                        {currentLine.text ? (
+                                            <p
+                                                key={currentLine.text}
+                                                className="absolute font-mono text-xs md:text-sm text-foreground/70 tracking-wide text-center"
+                                                style={{ animation: 'statusFadeUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards' }}
+                                            >
+                                                {currentLine.text}
+                                            </p>
+                                        ) : terminalLines.length > 0 ? (
+                                            <p
+                                                key={terminalLines[terminalLines.length - 1].text}
+                                                className="absolute font-mono text-xs md:text-sm text-foreground/40 tracking-wide text-center opacity-50"
+                                            >
+                                                {terminalLines[terminalLines.length - 1].text}
+                                                {terminalLines[terminalLines.length - 1].status === 'success' && <span className="ml-2 text-green-400">✓</span>}
+                                                {terminalLines[terminalLines.length - 1].status === 'error' && <span className="ml-2 text-red-400">✗</span>}
+                                            </p>
+                                        ) : null}
+                                    </div>
+
+                                    {/* Security Metadata Footer */}
+                                    <div className="mt-12 w-full pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
+                                        <div className="flex flex-col">
+                                            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/30 mb-1">Session ID</span>
+                                            <span className="font-mono text-[10px] text-blue-400/80">{accessToken}</span>
+                                        </div>
+                                        <div className="flex flex-col md:text-right">
+                                            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/30 mb-1">Encryption Protocol</span>
+                                            <span className="font-mono text-[10px] text-foreground/60">AES-256-GCM / TLS 1.3</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <style>{`
+                                    @keyframes statusFadeUp {
+                                        0% { opacity: 0; transform: translateY(10px); }
+                                        100% { opacity: 1; transform: translateY(0); }
+                                    }
+                                `}</style>
+                            </div>
                         ) : stage === 'denied' ? (
-                            /* ===== DENIED STAGE ===== */
                             <div className="px-8 md:px-16 py-12 md:py-20">
                                 {/* Header */}
                                 <div className="mb-12 md:mb-16">
@@ -631,9 +560,9 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
                                 </div>
                             </div>
                         )}
-                    </div>
-                </div>
-            </div>
+                    </div >
+                </div >
+            </div >
 
             <style>{`
         @keyframes backdropFade {
