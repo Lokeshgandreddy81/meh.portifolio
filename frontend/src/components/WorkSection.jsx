@@ -6,7 +6,7 @@ import ProjectAccessModal from './ProjectAccessModal';
 const ExpandingCard = ({ project, index, isHovered, onHover, onLeave, onOpen }) => {
   return (
     <div
-      className={`relative h-[60vh] md:h-[75vh] overflow-hidden rounded-[2rem] md:rounded-[3rem] transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer group bg-[#070707] dark:bg-black border border-black/10 dark:border-[rgba(99,102,241,0.12)] ${isHovered ? 'flex-[4] md:flex-[5]' : 'flex-[1]'
+      className={`relative h-[60vh] md:h-[75vh] overflow-hidden rounded-[2rem] md:rounded-[3rem] transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer group bg-black border border-[rgba(255,255,255,0.08)] ${isHovered ? 'flex-[4] md:flex-[5]' : 'flex-[1]'
         }`}
       onMouseEnter={() => onHover(index)}
       onMouseLeave={onLeave}
@@ -14,7 +14,7 @@ const ExpandingCard = ({ project, index, isHovered, onHover, onLeave, onOpen }) 
     >
       {/* Persistent idle ambient — very subtle indigo tint on dark */}
       <div
-        className="absolute inset-0 z-0 pointer-events-none opacity-100 dark:opacity-100 hidden dark:block"
+        className="absolute inset-0 z-0 pointer-events-none opacity-100 block"
         style={{
           background: 'radial-gradient(ellipse at 50% 120%, rgba(79,70,229,0.15) 0%, rgba(67,56,202,0.06) 50%, transparent 75%)',
         }}
@@ -34,7 +34,7 @@ const ExpandingCard = ({ project, index, isHovered, onHover, onLeave, onOpen }) 
         className={`absolute inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-700 delay-300 ${isHovered ? 'opacity-0' : 'opacity-20'}`}
       >
         <span
-          className="text-6xl md:text-8xl font-bold text-black dark:text-white whitespace-nowrap rotate-[-90deg] tracking-tighter mix-blend-difference"
+          className="text-6xl md:text-8xl font-bold text-white whitespace-nowrap rotate-[-90deg] tracking-tighter mix-blend-difference"
           style={{ fontFamily: 'Inter, sans-serif' }}
         >
           0{index + 1}
@@ -111,7 +111,7 @@ const WorkSection = () => {
 
       <section
         id="work"
-        className="w-full bg-transparent dark:bg-black relative z-40 section-border border-t pt-32 pb-48 transition-colors duration-500 overflow-hidden"
+        className="w-full bg-black relative z-40 section-border border-t pt-32 pb-48 transition-colors duration-500 overflow-hidden"
       >
         {/* Dark mode ambient light source at top of section */}
         <div className="absolute inset-x-0 top-0 h-[50vh] pointer-events-none hidden dark:block"
@@ -123,7 +123,7 @@ const WorkSection = () => {
         <div className="container mx-auto px-6 md:px-12 max-w-[1600px] mb-16 relative z-10">
           <div className="flex flex-col md:flex-row justify-between items-end gap-8">
             <div>
-              <span className="font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase text-black/50 dark:text-white/40 mb-6 block">
+              <span className="font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase text-white/40 mb-6 block">
                 Selected Works
               </span>
               {/* "The Archive" — crisp white with luminous glow in dark mode */}
@@ -131,11 +131,9 @@ const WorkSection = () => {
                 className="text-7xl md:text-9xl font-light tracking-tighter leading-none"
                 style={{ fontFamily: 'Cormorant Garamond, serif' }}
               >
-                {/* Light mode: crisp black */}
-                <span className="block dark:hidden text-black">The Archive</span>
-                {/* Dark mode: luminous white with purple glow */}
+                {/* Always luminous white text for The Archive */}
                 <span
-                  className="hidden dark:block text-white"
+                  className="block text-white"
                   style={{
                     textShadow: '0 0 80px rgba(168,85,247,0.4), 0 0 160px rgba(99,102,241,0.2)',
                   }}
@@ -144,7 +142,7 @@ const WorkSection = () => {
                 </span>
               </h2>
             </div>
-            <div className="font-mono text-xs uppercase tracking-widest text-black/40 dark:text-white/40 mb-4 max-w-xs text-right hidden md:block">
+            <div className="font-mono text-xs uppercase tracking-widest text-white/40 mb-4 max-w-xs text-right hidden md:block">
               Interact to expand sub-systems.
             </div>
           </div>
