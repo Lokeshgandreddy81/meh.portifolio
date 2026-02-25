@@ -26,8 +26,6 @@ const ContactSection = () => {
   const dark = theme === 'dark';
   const sectionRef = useRef(null);
   const [visible, setVisible] = useState(false);
-  const [mouseX, setMouseX] = useState(0.5);
-  const [mouseY, setMouseY] = useState(0.5);
   const [nameHovered, setNameHovered] = useState(false);
   const [videoModal, setVideoModal] = useState({ open: false, videoId: '', title: '', siteUrl: '' });
 
@@ -46,9 +44,18 @@ const ContactSection = () => {
   }, []);
 
   useEffect(() => {
+    let ticking = false;
     const handleMouse = (e) => {
-      setMouseX(e.clientX / window.innerWidth);
-      setMouseY(e.clientY / window.innerHeight);
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          if (sectionRef.current) {
+            sectionRef.current.style.setProperty('--mx', e.clientX / window.innerWidth);
+            sectionRef.current.style.setProperty('--my', e.clientY / window.innerHeight);
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener('mousemove', handleMouse, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouse);
@@ -94,7 +101,7 @@ const ContactSection = () => {
           {/* Layer 1 — blue/purple core */}
           <div className="absolute rounded-full mix-blend-screen" style={{
             width: '80vw', height: '80vw', top: '20%', left: '20%',
-            transform: `translate(${(mouseX - 0.5) * -40}px, ${(mouseY - 0.5) * -40}px)`,
+            transform: 'translate(calc((var(--mx, 0.5) - 0.5) * -40px), calc((var(--my, 0.5) - 0.5) * -40px))',
             background: 'radial-gradient(circle at center, #2a8af6 0%, #a853ba 50%, transparent 75%)',
             filter: 'blur(90px)', opacity: visible ? 0.18 : 0,
             transition: 'opacity 2s ease, transform 2s cubic-bezier(0.16,1,0.3,1)',
@@ -103,7 +110,7 @@ const ContactSection = () => {
           {/* Layer 2 — pink */}
           <div className="absolute rounded-full mix-blend-screen" style={{
             width: '45vw', height: '45vw', top: '50%', left: '60%',
-            transform: `translate(${(mouseX - 0.5) * -90}px, ${(mouseY - 0.5) * -90}px)`,
+            transform: 'translate(calc((var(--mx, 0.5) - 0.5) * -90px), calc((var(--my, 0.5) - 0.5) * -90px))',
             background: 'radial-gradient(circle at center, #e92a67 0%, #a853ba 60%, transparent 80%)',
             filter: 'blur(70px)', opacity: visible ? 0.14 : 0,
             transition: 'opacity 2s ease, transform 1.4s cubic-bezier(0.16,1,0.3,1)',
@@ -111,7 +118,7 @@ const ContactSection = () => {
           {/* Layer 3 — cyan */}
           <div className="absolute rounded-full mix-blend-screen" style={{
             width: '30vw', height: '30vw', top: '10%', left: '70%',
-            transform: `translate(${(mouseX - 0.5) * -140}px, ${(mouseY - 0.5) * -140}px)`,
+            transform: 'translate(calc((var(--mx, 0.5) - 0.5) * -140px), calc((var(--my, 0.5) - 0.5) * -140px))',
             background: 'radial-gradient(circle at center, #06b6d4 0%, #3b82f6 60%, transparent 80%)',
             filter: 'blur(50px)', opacity: visible ? 0.15 : 0,
             transition: 'opacity 2s ease, transform 0.9s cubic-bezier(0.16,1,0.3,1)',
@@ -119,14 +126,14 @@ const ContactSection = () => {
           {/* Layer 4 — gold */}
           <div className="absolute rounded-full mix-blend-screen" style={{
             width: '25vw', height: '25vw', top: '70%', left: '10%',
-            transform: `translate(${(mouseX - 0.5) * -70}px, ${(mouseY - 0.5) * -70}px)`,
+            transform: 'translate(calc((var(--mx, 0.5) - 0.5) * -70px), calc((var(--my, 0.5) - 0.5) * -70px))',
             background: 'radial-gradient(circle at center, #f59e0b 0%, #8b5cf6 60%, transparent 80%)',
             filter: 'blur(60px)', opacity: visible ? 0.10 : 0,
             transition: 'opacity 2s ease, transform 1.2s cubic-bezier(0.16,1,0.3,1)',
           }} />
           {/* SVG star field + crosses */}
           <svg className="absolute inset-0 w-full h-full" style={{
-            transform: `translate(${(mouseX - 0.5) * -8}px, ${(mouseY - 0.5) * -8}px)`,
+            transform: 'translate(calc((var(--mx, 0.5) - 0.5) * -8px), calc((var(--my, 0.5) - 0.5) * -8px))',
             transition: 'transform 3s cubic-bezier(0.16,1,0.3,1)', opacity: visible ? 0.15 : 0,
           }}>
             {Array.from({ length: 28 }).map((_, i) => (

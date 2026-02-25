@@ -3,7 +3,6 @@ import siteConfig from '../config/siteConfig';
 
 const Hero = () => {
   const [isMounted, setIsMounted] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const profileRef = useRef(null);
   const sectionRef = useRef(null);
 
@@ -38,7 +37,8 @@ const Hero = () => {
       const rect = profileRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
-      setMousePos({ x: x * 0.1, y: y * 0.1 });
+      profileRef.current.style.setProperty('--mx', x * 0.1);
+      profileRef.current.style.setProperty('--my', y * 0.1);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -195,18 +195,20 @@ const Hero = () => {
           {/* Massive Personality Anchor - True God-Tier Scale */}
           <div
             ref={profileRef}
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-full md:w-[55%] lg:w-[45%] h-[80dvh] md:h-[110dvh] overflow-visible group pointer-events-none z-0 mix-blend-normal"
+            className="absolute right-0 top-1/2 -translate-y-1/2 w-full md:w-[55%] lg:w-[45%] h-[80dvh] md:h-[110dvh] overflow-hidden group pointer-events-none z-0 mix-blend-normal"
             style={{
-              transform: `perspective(2000px) rotateX(${mousePos.y * -0.2}deg) rotateY(${mousePos.x * -0.2}deg)`,
-              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+              transform: 'perspective(2000px) rotateX(calc(var(--my, 0) * -0.2deg)) rotateY(calc(var(--mx, 0) * -0.2deg))',
+              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+              maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
             }}
           >
             {/* Ambient Image Glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-purple-500/10 to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-0" />
 
-            {/* Scroll-parallax wrapper (No CSS transition, instantaneous to match Lenis smooth scroll) */}
+            {/* Scroll-parallax wrapper with extra height bleeding room to ensure it never exposes emptiness */}
             <div
-              className="relative w-full h-full will-change-transform"
+              className="absolute inset-x-0 -top-[15%] -bottom-[15%] will-change-transform"
               style={{
                 transform: 'translate3d(0, calc(var(--sy, 0) * -0.12px), 0)', // 0.15 Image parallax * -0.8 multiplier
               }}
@@ -218,11 +220,9 @@ const Hero = () => {
                 className="w-full h-full object-cover object-bottom filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform scale-110 drop-shadow-2xl"
                 style={{
                   transform: isMounted
-                    ? `scale(1) translate3d(${mousePos.x * -0.8}px, ${mousePos.y * -0.8}px, 0)`
+                    ? 'scale(1) translate3d(calc(var(--mx, 0) * -0.8px), calc(var(--my, 0) * -0.8px), 0)'
                     : 'scale(1.1) translateY(40px)',
-                  transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 1.5s ease',
-                  maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
+                  transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 1.5s ease'
                 }}
               />
             </div>
