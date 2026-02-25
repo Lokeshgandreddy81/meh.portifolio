@@ -32,7 +32,7 @@ const Header = ({ onMenuClick }) => {
             headerRef.current.style.setProperty('--sp', `${Math.min((y / h) * 100, 100)}%`);
           }
           // Track active section
-          ['hero', 'about', 'projects', 'contact'].forEach(id => {
+          ['home', 'about', 'work', 'contact'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
               const { top, bottom } = el.getBoundingClientRect();
@@ -67,9 +67,9 @@ const Header = ({ onMenuClick }) => {
   const handleMenuClick = () => { setIsMenuOpen(prev => !prev); onMenuClick?.(); };
 
   const navItems = [
-    { label: 'Home', id: 'hero', num: '01' },
+    { label: 'Home', id: 'home', num: '01' },
     { label: 'Architect', id: 'about', num: '02' },
-    { label: 'Work', id: 'projects', num: '03' },
+    { label: 'Work', id: 'work', num: '03' },
     { label: 'Connect', id: 'contact', num: '04' },
   ];
 
@@ -157,7 +157,7 @@ const Header = ({ onMenuClick }) => {
           {/* ── Row ───────────────────────────────────────────────── */}
           <div className="relative z-10 flex items-center gap-0">
 
-            {/* LEFT: Identity mark ──────────────────────────────── */}
+            {/* LEFT: Spinning Chromatic Orb — navbar identity anchor */}
             <div className="flex items-center gap-3 flex-shrink-0 pr-4" style={{
               borderRight: `1px solid ${pillBorder}`,
             }}>
@@ -166,31 +166,38 @@ const Header = ({ onMenuClick }) => {
                 <div className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-50" />
                 <div className="w-2 h-2 rounded-full bg-green-400" style={{ boxShadow: '0 0 6px rgba(74,222,128,0.8)' }} />
               </div>
-              {/* Monogram — gradient on hover */}
+
+              {/* Orbital Spinner — 3-ring mini galaxy */}
               <div
-                className="group cursor-default flex-shrink-0"
-                onClick={() => scrollTo('hero')}
-                style={{ cursor: 'pointer' }}
+                className="relative flex items-center justify-center flex-shrink-0 cursor-pointer"
+                style={{ width: '34px', height: '34px' }}
+                onClick={() => scrollTo('home')}
+                title="Home"
               >
-                <span
-                  className="font-mono text-[10px] uppercase tracking-[0.28em] font-semibold select-none"
-                  style={{
-                    color: textPrimary,
-                    transition: 'color 0.3s ease',
-                  }}
-                  onMouseEnter={e => {
-                    e.target.style.backgroundImage = 'linear-gradient(90deg, #3b82f6, #a855f7, #ec4899)';
-                    e.target.style.WebkitBackgroundClip = 'text';
-                    e.target.style.WebkitTextFillColor = 'transparent';
-                    e.target.style.backgroundClip = 'text';
-                  }}
-                  onMouseLeave={e => {
-                    e.target.style.backgroundImage = 'none';
-                    e.target.style.WebkitTextFillColor = textPrimary;
-                  }}
-                >
-                  G.L
-                </span>
+                {/* Outer slow ring */}
+                <div className="absolute rounded-full" style={{
+                  width: '34px', height: '34px',
+                  border: `1px solid ${isDark ? 'rgba(139,92,246,0.35)' : 'rgba(99,102,241,0.3)'}`,
+                  animation: 'orbSpinCCW 8s linear infinite',
+                }}>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full"
+                    style={{ background: 'rgba(236,72,153,0.9)', boxShadow: '0 0 5px rgba(236,72,153,0.9)' }} />
+                </div>
+                {/* Mid ring */}
+                <div className="absolute rounded-full" style={{
+                  width: '24px', height: '24px',
+                  border: `1px solid ${isDark ? 'rgba(59,130,246,0.4)' : 'rgba(59,130,246,0.35)'}`,
+                  animation: 'orbSpinCW 5s linear infinite',
+                }}>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full"
+                    style={{ background: 'rgba(59,130,246,0.9)', boxShadow: '0 0 5px rgba(59,130,246,0.9)' }} />
+                </div>
+                {/* Core orb — spinning conic gradient */}
+                <div className="relative w-[9px] h-[9px] rounded-full z-10" style={{
+                  background: 'conic-gradient(from 0deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b, #3b82f6)',
+                  animation: 'orbSpinCW 3s linear infinite',
+                  boxShadow: `0 0 8px 2px rgba(139,92,246,0.6), 0 0 16px 4px rgba(99,102,241,0.3)`,
+                }} />
               </div>
             </div>
 
@@ -522,6 +529,14 @@ const Header = ({ onMenuClick }) => {
         @keyframes navSpin {
           from { transform: rotate(0deg); }
           to   { transform: rotate(360deg); }
+        }
+        @keyframes orbSpinCW {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+        @keyframes orbSpinCCW {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(-360deg); }
         }
       `}</style>
     </>
