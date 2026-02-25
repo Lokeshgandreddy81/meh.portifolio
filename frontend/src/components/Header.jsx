@@ -188,26 +188,14 @@ const Header = ({ onMenuClick }) => {
               >
                 <span
                   className="absolute left-0 top-0 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.22em] transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-full"
-                  style={{
-                    ...(scrolled
-                      ? {
-                        backgroundImage: 'linear-gradient(90deg, #fff 0%, #a5b4fc 45%, #fff 80%)',
-                        backgroundSize: '200% 100%',
-                        WebkitBackgroundClip: 'text',
-                        backgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                        color: 'transparent',
-                        animation: 'nameShimmer 3s ease infinite',
-                      }
-                      : {
-                        color: 'rgba(255,255,255,0.88)',
-                        background: 'none',
-                      }),
-                  }}
+                  style={{ color: '#000', fontWeight: '600' }}
                 >
                   GANDREDDY
                 </span>
-                <span className="absolute left-0 top-0 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.22em] text-white translate-y-full opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0">
+                <span
+                  className="absolute left-0 top-0 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.22em] translate-y-full opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0"
+                  style={{ color: '#000', fontWeight: '600' }}
+                >
                   LOKESH
                 </span>
               </div>
