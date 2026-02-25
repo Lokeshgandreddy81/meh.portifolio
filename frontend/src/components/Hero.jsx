@@ -183,25 +183,25 @@ const Hero = () => {
                 }}
               />
 
-              {/* Outer counter-rotating ring — always visible at low opacity */}
+              {/* Outer counter-rotating ring — majestic slow spin */}
               <div
                 className="absolute inset-[-35%] z-0 rounded-full blur-[80px] pointer-events-none"
                 style={{
                   background: 'conic-gradient(from 0deg at 50% 50%, #3b82f6 0deg, transparent 60deg, #a853ba 120deg, transparent 180deg, #e92a67 240deg, transparent 300deg, #3b82f6 360deg)',
-                  animation: 'heroSpinCCW 13s linear infinite',
-                  opacity: 0.10,
+                  animation: 'heroSpinCCW 24s linear infinite',
+                  opacity: 0.12,
                   transition: 'opacity 1.5s ease',
                 }}
               />
 
               {/* Inner spinning conic bloom — base visible, intensifies on hover */}
               <div
-                className="absolute inset-[-20%] z-0 rounded-full blur-3xl pointer-events-none group-hover:scale-110"
+                className="absolute inset-[-20%] z-0 rounded-full blur-[60px] pointer-events-none group-hover:scale-110 group-hover:blur-[80px]"
                 style={{
                   background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
-                  animation: 'heroSpin 7s linear infinite',
-                  opacity: 0.15,
-                  transition: 'opacity 1.8s ease, transform 1.8s ease',
+                  animation: 'heroSpin 18s linear infinite',
+                  opacity: 0.18,
+                  transition: 'opacity 2s ease, transform 2s ease, filter 2s ease',
                 }}
               />
               {/* Hover overlay to intensify */}
@@ -215,18 +215,23 @@ const Hero = () => {
               />
 
               {/* ── Line 1: IDEAS BECOME ── */}
-              <span className="overflow-hidden py-1.5 inline-block -ml-1 relative z-10">
+              <span className="overflow-visible py-1 inline-block -ml-1 relative z-10">
                 <span
-                  className="inline-block text-[7.5vw] md:text-[5.5rem] lg:text-[7rem] font-black uppercase tracking-tight leading-none"
+                  className="inline-block"
                   style={{
-                    fontFamily: 'Inter, sans-serif',
+                    fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+                    fontSize: 'clamp(3rem, 6.2vw, 6.5rem)',
+                    fontWeight: 800,
+                    letterSpacing: '-0.02em',
+                    textTransform: 'uppercase',
+                    lineHeight: '1',
                     background: 'linear-gradient(105deg, #ffffff 0%, #ffffff 15%, #c7d2fe 25%, #a78bfa 40%, #f472b6 55%, #fb923c 70%, #ffffff 85%, #ffffff 100%)',
                     backgroundSize: '280% 100%',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
-                    animation: 'heroGradientFlow 5s linear infinite',
-                    filter: 'drop-shadow(0 0 45px rgba(255,255,255,0.4))',
+                    animation: 'heroGradientFlow 6s ease-in-out infinite alternate',
+                    filter: 'drop-shadow(0 12px 32px rgba(0,0,0,0.4)) drop-shadow(0 0 45px rgba(255,255,255,0.25))',
                     transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
                     transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)',
                     transitionDelay: '0.1s',
@@ -237,19 +242,25 @@ const Hero = () => {
               </span>
 
               {/* ── Line 2: INFRASTRUCTURE — counter-flowing, serif ── */}
-              <span className="overflow-hidden py-1.5 inline-block ml-3 md:ml-12 relative z-10">
+              <span className="overflow-visible py-1 inline-block ml-3 md:ml-12 relative z-10 mt-[-0.5rem]">
                 <span
-                  className="inline-block text-[9vw] md:text-[7rem] lg:text-[9rem] font-light italic uppercase tracking-tighter leading-none"
+                  className="inline-block"
                   style={{
-                    fontFamily: 'Cormorant Garamond, serif',
+                    fontFamily: '"Playfair Display", "Cormorant Garamond", serif',
+                    fontSize: 'clamp(4rem, 8.5vw, 9rem)',
+                    fontWeight: 400,
+                    fontStyle: 'italic',
+                    letterSpacing: '0.01em',
+                    textTransform: 'uppercase',
+                    lineHeight: '1',
                     background: 'linear-gradient(105deg, #ffffff 0%, #ffffff 15%, #fbbf24 30%, #fb923c 45%, #f472b6 60%, #a78bfa 75%, #ffffff 90%, #ffffff 100%)',
                     backgroundSize: '280% 100%',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
-                    animation: 'heroGradientFlow 5s linear infinite reverse',
+                    animation: 'heroGradientFlow 6s ease-in-out infinite alternate-reverse',
                     animationDelay: '-2.5s',
-                    filter: 'drop-shadow(0 0 55px rgba(255,255,255,0.4))',
+                    filter: 'drop-shadow(0 12px 40px rgba(0,0,0,0.5)) drop-shadow(0 0 55px rgba(255,255,255,0.25))',
                     transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
                     transition: 'transform 1.4s cubic-bezier(0.16,1,0.3,1)',
                     transitionDelay: '0.22s',
