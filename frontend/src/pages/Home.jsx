@@ -78,69 +78,63 @@ const ManifestoBreak = () => {
       className="w-full relative overflow-hidden transition-colors duration-700 flex flex-col min-h-screen justify-center"
       style={{ background: bg }}
     >
-      {/* ── Ghost background letter ──────────────────────────────── */}
+      {/* ── Jaw-Dropping Giant G Parallax Mask ────────────────────── */}
       <div
-        className="absolute pointer-events-none select-none"
-        style={{
-          fontFamily: 'Cormorant Garamond, serif',
-          fontSize: 'clamp(18rem, 45vw, 60rem)',
-          fontWeight: 300,
-          lineHeight: 1,
-          color: 'transparent',
-          WebkitTextStroke: dark ? '1px rgba(0,0,0,0.06)' : '1px rgba(255,255,255,0.06)',
-          top: '50%',
-          right: '-8%',
-          transform: `translate(${(mx - 0.5) * -30}px, calc(-50% + ${(my - 0.5) * -20}px))`,
-          transition: 'transform 2.5s cubic-bezier(0.16,1,0.3,1)',
-          userSelect: 'none',
-          letterSpacing: '-0.04em',
-        }}
-      >
-        G
-      </div>
-
-      {/* ── Mini Spinning Hero Orbs (Right Side Parallax) ─────────── */}
-      <div
-        className="absolute right-[5%] top-1/2 -translate-y-1/2 w-[300px] h-[300px] pointer-events-none hidden lg:block z-0"
+        className="absolute right-0 top-1/2 -translate-y-1/2 w-[80vw] max-w-[1200px] h-full pointer-events-none hidden md:block select-none"
         style={{
           opacity: visible ? 1 : 0,
-          transition: 'opacity 2s ease 0.5s',
+          transition: 'opacity 2.5s ease 0.3s',
         }}
       >
-        {/* Outer counter-rotating ring */}
+        {/* Layer 1: Ambient base glow behind the G */}
         <div
-          className="absolute inset-0 z-0 rounded-full blur-[40px] transition-all duration-[1500ms]"
+          className="absolute right-[-10%] top-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[100px] opacity-20"
           style={{
-            opacity: dark ? 0.4 : 0.25,
-            transform: `translate(${(0.5 - mx) * 60}px, ${(0.5 - my) * 60}px) scale(1)`,
-            transition: 'transform 1.8s cubic-bezier(0.16,1,0.3,1)'
+            background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
+            transform: `translate(${(0.5 - mx) * 40}px, ${(0.5 - my) * 40}px)`,
+            transition: 'transform 2s cubic-bezier(0.16,1,0.3,1)'
           }}
-        >
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              background: 'conic-gradient(from 0deg at 50% 50%, #3b82f6 0deg, transparent 60deg, #a853ba 120deg, transparent 180deg, #e92a67 240deg, transparent 300deg, #3b82f6 360deg)',
-              animation: 'heroSpinCCW 30s linear infinite',
-            }}
-          />
-        </div>
+        />
 
-        {/* Inner tracking conic bloom */}
+        {/* Layer 2: The actual G containing spinning animations */}
         <div
-          className="absolute inset-[10%] z-0 rounded-full blur-[35px] transition-all duration-[2000ms]"
+          className="absolute inset-0 flex items-center justify-end overflow-visible pr-[5%]"
           style={{
-            opacity: dark ? 0.6 : 0.45,
-            transform: `translate(${(mx - 0.5) * -80}px, ${(my - 0.5) * -80}px) scale(1)`,
+            transform: `translate(${(mx - 0.5) * -90}px, ${(my - 0.5) * -60}px)`,
             transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)'
           }}
         >
-          <div
-            className="absolute inset-0 rounded-full"
-            style={{
-              background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
-              animation: 'heroSpin 20s linear infinite',
-            }}
-          />
+          <div className="relative w-full h-full flex items-center justify-end mix-blend-screen isolate">
+            <span
+              style={{
+                fontFamily: 'Cormorant Garamond, serif',
+                fontSize: 'clamp(30rem, 80vw, 90rem)',
+                fontWeight: 300,
+                lineHeight: 1,
+                letterSpacing: '-0.06em',
+                background: 'conic-gradient(from 0deg at 50% 50%, #3b82f6 0deg, transparent 60deg, #a853ba 120deg, transparent 180deg, #e92a67 240deg, transparent 300deg, #3b82f6 360deg)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                display: 'inline-block',
+                position: 'relative',
+              }}
+            >
+              G
+              {/* Internal spinning overlay on the text */}
+              <div
+                className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-60"
+                style={{
+                  background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
+                  animation: 'heroSpin 15s linear infinite',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                G
+              </div>
+            </span>
+          </div>
         </div>
       </div>
 
