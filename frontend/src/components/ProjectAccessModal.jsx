@@ -206,103 +206,168 @@ const ProjectAccessModal = ({ isOpen, onClose, projectName = 'Unknown Project' }
                     {/* Content */}
                     <div className="overflow-y-auto max-h-[90vh] custom-scrollbar">
                         {stage === 'loading' ? (
-                            /* ===== LOADING STAGE: CRYPTOGRAPHIC UNLOCK (Google-Tier UI) ===== */
-                            <div className="px-6 md:px-12 py-16 md:py-24 flex flex-col items-center justify-center min-h-[500px] relative overflow-hidden">
+                            /* ===== LOADING STAGE: ORBITAL AUTHORIZATION SEQUENCE ===== */
+                            <div className="relative flex flex-col items-center justify-center min-h-[560px] overflow-hidden">
 
-                                {/* Background Ambient Bloom */}
-                                <div className="absolute inset-0 z-0 pointer-events-none flex items-center justify-center opacity-40">
-                                    <div className="w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] mix-blend-screen animate-pulse" style={{ animationDuration: '4s' }} />
-                                    <div className="absolute w-64 h-64 bg-purple-500/20 rounded-full blur-[80px] mix-blend-screen animate-pulse" style={{ animationDuration: '3s', animationDelay: '1s' }} />
+                                {/* ── Deep Atmosphere / Multi-Layer Ambient Bloom ─────── */}
+                                <div className="absolute inset-0 pointer-events-none select-none">
+                                    {/* Core halo */}
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[380px] h-[380px] rounded-full"
+                                        style={{ background: 'radial-gradient(circle, rgba(99,102,241,0.18) 0%, rgba(139,92,246,0.10) 40%, transparent 70%)', animation: 'bloomPulse 4s ease-in-out infinite' }} />
+                                    {/* Outer aurora */}
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[560px] h-[560px] rounded-full"
+                                        style={{ background: 'radial-gradient(circle, rgba(59,130,246,0.08) 0%, rgba(236,72,153,0.06) 50%, transparent 70%)', animation: 'bloomPulse 6s ease-in-out infinite', animationDelay: '2s' }} />
                                 </div>
 
-                                <div className="relative z-10 flex flex-col items-center w-full max-w-lg mx-auto text-center">
+                                {/* ── Content ─────────────────────────────────────────── */}
+                                <div className="relative z-10 flex flex-col items-center w-full px-8 md:px-16">
 
-                                    {/* The Cryptographic Ring */}
-                                    <div className="relative w-32 h-32 mb-12 flex items-center justify-center">
-                                        {/* Outer track */}
-                                        <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 100 100">
-                                            <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
-                                            {/* Animated Progress Ring */}
-                                            <circle
-                                                cx="50" cy="50" r="48" fill="none"
-                                                stroke="url(#gradient)" strokeWidth="2"
-                                                strokeLinecap="round"
-                                                strokeDasharray="301.59"
-                                                strokeDashoffset={301.59 - (301.59 * (terminalLines.length / 5))}
-                                                className="transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                                            />
+                                    {/* Triple Ring Orbital System */}
+                                    <div className="relative flex items-center justify-center mb-10" style={{ width: '240px', height: '240px' }}>
+
+                                        {/* Track ring (static) */}
+                                        <svg className="absolute inset-0 w-full h-full" viewBox="0 0 240 240">
+                                            <circle cx="120" cy="120" r="116" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+                                            <circle cx="120" cy="120" r="96" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+                                            <circle cx="120" cy="120" r="76" fill="none" stroke="rgba(255,255,255,0.04)" strokeWidth="1" />
+                                        </svg>
+
+                                        {/* Outer progress arc — blue/pink */}
+                                        <svg className="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 240 240">
                                             <defs>
-                                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <linearGradient id="outerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                                                     <stop offset="0%" stopColor="#3b82f6" />
-                                                    <stop offset="50%" stopColor="#8b5cf6" />
                                                     <stop offset="100%" stopColor="#ec4899" />
                                                 </linearGradient>
                                             </defs>
+                                            <circle
+                                                cx="120" cy="120" r="116"
+                                                fill="none" stroke="url(#outerGrad)" strokeWidth="2.5"
+                                                strokeLinecap="round"
+                                                strokeDasharray="729.0"
+                                                strokeDashoffset={729.0 - (729.0 * Math.min(terminalLines.length / 6, 1))}
+                                                style={{ transition: 'stroke-dashoffset 1.2s cubic-bezier(0.16,1,0.3,1)', filter: 'drop-shadow(0 0 6px rgba(99,102,241,0.6))' }}
+                                            />
                                         </svg>
 
-                                        {/* Inner percentage / Counter */}
-                                        <div className="absolute flex flex-col items-center justify-center">
-                                            <span className="text-3xl font-light text-foreground" style={{ fontFamily: 'Inter, sans-serif' }}>
-                                                {Math.round((terminalLines.length / 5) * 100)}<span className="text-sm text-foreground/40 font-mono">%</span>
+                                        {/* Mid spinning ring — purple, counter-clockwise */}
+                                        <div className="absolute rounded-full border border-purple-500/30"
+                                            style={{
+                                                width: '192px', height: '192px', animation: 'spinCCW 8s linear infinite',
+                                                borderImage: 'linear-gradient(to right, rgba(168,85,247,0.6), transparent 50%) 1'
+                                            }}>
+                                            {/* Dot on ring */}
+                                            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-purple-400"
+                                                style={{ boxShadow: '0 0 8px rgba(168,85,247,0.9)' }} />
+                                        </div>
+
+                                        {/* Inner spinning ring — blue, clockwise */}
+                                        <div className="absolute rounded-full border border-blue-500/25"
+                                            style={{ width: '152px', height: '152px', animation: 'spinCW 5s linear infinite' }}>
+                                            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 rounded-full bg-blue-400"
+                                                style={{ boxShadow: '0 0 8px rgba(59,130,246,0.9)' }} />
+                                        </div>
+
+                                        {/* Center numerical display */}
+                                        <div className="absolute flex flex-col items-center justify-center select-none">
+                                            <span
+                                                className="font-light tabular-nums leading-none"
+                                                style={{ fontFamily: 'Inter, sans-serif', fontSize: '52px', letterSpacing: '-0.04em', color: 'rgba(255,255,255,0.95)' }}
+                                            >
+                                                {Math.round(Math.min(terminalLines.length / 6, 1) * 100)}
+                                            </span>
+                                            <span className="font-mono text-[10px] tracking-[0.35em] uppercase mt-1" style={{ color: 'rgba(255,255,255,0.3)' }}>
+                                                percent
                                             </span>
                                         </div>
                                     </div>
 
-                                    {/* Project Name & Identifier */}
-                                    <div className="mb-8">
-                                        <h2
-                                            className="text-3xl md:text-5xl font-light leading-tight text-foreground tracking-tight"
-                                            style={{ fontFamily: 'Cormorant Garamond, serif' }}
-                                        >
-                                            {projectName}
-                                        </h2>
-                                        <div className="flex items-center justify-center gap-3 mt-3">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-                                            <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-foreground/40">
-                                                Authenticating Request
-                                            </p>
-                                        </div>
+                                    {/* Project Name */}
+                                    <h2
+                                        className="text-3xl md:text-4xl font-light tracking-tight text-white/90 mb-1"
+                                        style={{ fontFamily: 'Cormorant Garamond, serif' }}
+                                    >
+                                        {projectName}
+                                    </h2>
+                                    <p className="font-mono text-[9px] uppercase tracking-[0.45em] text-white/30 mb-8">
+                                        Authorization Sequence
+                                    </p>
+
+                                    {/* Step-by-step Diagnostic Feed */}
+                                    <div className="w-full max-w-md space-y-2 mb-8">
+                                        {[
+                                            'Initializing secure channel',
+                                            'Authenticating credentials',
+                                            'Verifying access permissions',
+                                            'Scanning authorization levels',
+                                            'Checking project visibility',
+                                            'Finalizing handshake'
+                                        ].map((label, i) => {
+                                            const done = i < terminalLines.length;
+                                            const active = i === terminalLines.length;
+                                            return (
+                                                <div key={i} className="flex items-center gap-3 transition-all duration-500"
+                                                    style={{ opacity: done ? 0.5 : active ? 1 : 0.2 }}>
+                                                    {/* Step indicator */}
+                                                    <div className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center"
+                                                        style={{
+                                                            background: done ? 'rgba(34,197,94,0.15)' : active ? 'rgba(99,102,241,0.2)' : 'rgba(255,255,255,0.05)',
+                                                            border: `1px solid ${done ? 'rgba(34,197,94,0.5)' : active ? 'rgba(99,102,241,0.6)' : 'rgba(255,255,255,0.08)'}`,
+                                                            boxShadow: active ? '0 0 10px rgba(99,102,241,0.4)' : 'none',
+                                                        }}>
+                                                        {done ? (
+                                                            <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                                                                <path d="M2 5l2 2 4-4" stroke="rgba(34,197,94,0.9)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                                            </svg>
+                                                        ) : active ? (
+                                                            <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+                                                        ) : (
+                                                            <div className="w-1 h-1 rounded-full bg-white/20" />
+                                                        )}
+                                                    </div>
+                                                    {/* Label */}
+                                                    <span className="font-mono text-[11px] tracking-wide"
+                                                        style={{ color: done ? 'rgba(255,255,255,0.45)' : active ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.2)' }}>
+                                                        {label}
+                                                        {active && currentLine.text && (
+                                                            <span className="ml-2 text-indigo-400/80">— {currentLine.text.slice(-40)}</span>
+                                                        )}
+                                                    </span>
+                                                    {/* Done timestamp */}
+                                                    {done && (
+                                                        <span className="ml-auto font-mono text-[9px] text-green-500/60">✓</span>
+                                                    )}
+                                                </div>
+                                            );
+                                        })}
                                     </div>
 
-                                    {/* Sleek Status Readout (Replaces generic terminal) */}
-                                    <div className="w-full relative h-[60px] flex items-center justify-center overflow-hidden">
-                                        {currentLine.text ? (
-                                            <p
-                                                key={currentLine.text}
-                                                className="absolute font-mono text-xs md:text-sm text-foreground/70 tracking-wide text-center"
-                                                style={{ animation: 'statusFadeUp 0.6s cubic-bezier(0.16,1,0.3,1) forwards' }}
-                                            >
-                                                {currentLine.text}
-                                            </p>
-                                        ) : terminalLines.length > 0 ? (
-                                            <p
-                                                key={terminalLines[terminalLines.length - 1].text}
-                                                className="absolute font-mono text-xs md:text-sm text-foreground/40 tracking-wide text-center opacity-50"
-                                            >
-                                                {terminalLines[terminalLines.length - 1].text}
-                                                {terminalLines[terminalLines.length - 1].status === 'success' && <span className="ml-2 text-green-400">✓</span>}
-                                                {terminalLines[terminalLines.length - 1].status === 'error' && <span className="ml-2 text-red-400">✗</span>}
-                                            </p>
-                                        ) : null}
-                                    </div>
-
-                                    {/* Security Metadata Footer */}
-                                    <div className="mt-12 w-full pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-                                        <div className="flex flex-col">
-                                            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/30 mb-1">Session ID</span>
-                                            <span className="font-mono text-[10px] text-blue-400/80">{accessToken}</span>
+                                    {/* Footer metadata */}
+                                    <div className="w-full max-w-md flex items-center justify-between pt-5 border-t border-white/[0.06]">
+                                        <div>
+                                            <p className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/25 mb-1">Session</p>
+                                            <p className="font-mono text-[10px] text-blue-400/70">{accessToken}</p>
                                         </div>
-                                        <div className="flex flex-col md:text-right">
-                                            <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-foreground/30 mb-1">Encryption Protocol</span>
-                                            <span className="font-mono text-[10px] text-foreground/60">AES-256-GCM / TLS 1.3</span>
+                                        <div className="text-right">
+                                            <p className="font-mono text-[8px] uppercase tracking-[0.3em] text-white/25 mb-1">Protocol</p>
+                                            <p className="font-mono text-[10px] text-white/50">AES-256-GCM</p>
                                         </div>
                                     </div>
 
                                 </div>
+
                                 <style>{`
-                                    @keyframes statusFadeUp {
-                                        0% { opacity: 0; transform: translateY(10px); }
-                                        100% { opacity: 1; transform: translateY(0); }
+                                    @keyframes bloomPulse {
+                                        0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+                                        50% { transform: translate(-50%, -50%) scale(1.08); opacity: 0.7; }
+                                    }
+                                    @keyframes spinCW {
+                                        from { transform: rotate(0deg); }
+                                        to   { transform: rotate(360deg); }
+                                    }
+                                    @keyframes spinCCW {
+                                        from { transform: rotate(0deg); }
+                                        to   { transform: rotate(-360deg); }
                                     }
                                 `}</style>
                             </div>
