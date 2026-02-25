@@ -4,310 +4,414 @@ import siteConfig from '../config/siteConfig';
 const Hero = () => {
   const [scrollY, setScrollY] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const profileRef = useRef(null);
+  const [mouse, setMouse] = useState({ x: 0.5, y: 0.5 });
 
   useEffect(() => {
-    // Trigger mount animations after a tiny delay for smoothness
-    const timer = setTimeout(() => setIsMounted(true), 100);
+    const t = setTimeout(() => setIsMounted(true), 80);
 
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
+    const onScroll = () => setScrollY(window.scrollY);
+    const onMouse = (e) =>
+      setMouse({ x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight });
 
-    const handleMouseMove = (e) => {
-      if (!profileRef.current) return;
-      const rect = profileRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
-      setMousePos({ x: x * 0.1, y: y * 0.1 });
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    window.addEventListener('mousemove', handleMouseMove);
-
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('mousemove', onMouse, { passive: true });
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(t);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('mousemove', onMouse);
     };
   }, []);
 
-  // Parallax physics calculations
-  const textTranslateY = scrollY * 0.4;
-  const imageTranslateY = scrollY * 0.15;
-  const opacityFade = Math.max(0, 1 - (scrollY / (window.innerHeight * 0.8)));
+  const vh = typeof window !== 'undefined' ? window.innerHeight : 900;
+  const fade = Math.max(0, 1 - scrollY / (vh * 0.7));
+  const fadeImg = Math.max(0, 1 - scrollY / (vh * 0.9));
 
-  // Split name for staggered reveal
-  const nameParts = siteConfig.name.split(' ');
-  const firstName = nameParts[0];
-  const lastName = nameParts[1] || '';
-
+  /* ─────────────────────────────────────────────────────────────────── */
   return (
     <section
       id="home"
-      className="min-h-[120vh] w-full relative z-50 bg-[#f8f9fa] dark:bg-[#0a0a0a] transition-colors duration-500 ease-out flex flex-col justify-center overflow-hidden"
+      className="relative w-full overflow-hidden"
+      style={{ minHeight: '100vh', background: '#07080d' }}
     >
-      {/* High-End Ambient Aura (Light Mode) */}
+
+      {/* ═══════════════════════════════════════════════════════════════
+          LAYER 0 — Rotating Aurora Conic (the spine of the scene)
+      ═══════════════════════════════════════════════════════════════ */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-40 mix-blend-multiply block dark:hidden will-change-transform"
+        className="absolute pointer-events-none"
         style={{
-          background: 'radial-gradient(circle at 70% 30%, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0) 50%)',
-          transform: `translateY(${scrollY * 0.2}px)`
-        }}
-      />
-      <div
-        className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply block dark:hidden will-change-transform"
-        style={{
-          background: 'radial-gradient(circle at 30% 80%, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0) 60%)',
-          transform: `translateY(${scrollY * -0.1}px)`
+          top: '50%', left: '50%',
+          width: '200vw', height: '200vw',
+          transform: 'translate(-50%, -50%)',
+          animation: 'auroraRotate 35s linear infinite',
+          background: 'conic-gradient(from 0deg at 50% 50%, #050917 0deg, #0d1a3a 40deg, #13053a 90deg, #0a0019 130deg, #06162e 180deg, #0e0430 220deg, #050917 260deg, #0b1832 310deg, #050917 360deg)',
+          opacity: 0.9,
+          zIndex: 0,
         }}
       />
 
-      {/* ── Rich Dark Mode Ambient Orbs ─────────────────────────── */}
-      {/* Blue orb — top right */}
-      <div
-        className="absolute pointer-events-none mix-blend-screen hidden dark:block will-change-transform rounded-full"
-        style={{
-          width: '70vw', height: '70vw',
-          top: '-20%', right: '-15%',
-          background: 'radial-gradient(circle, #1e40af 0%, #1d4ed8 30%, #312e81 60%, transparent 80%)',
-          filter: 'blur(90px)',
-          opacity: 0.3,
-          transform: `translateY(${scrollY * 0.15}px)`,
-        }}
-      />
-      {/* Violet orb — bottom left */}
-      <div
-        className="absolute pointer-events-none mix-blend-screen hidden dark:block will-change-transform rounded-full"
-        style={{
-          width: '55vw', height: '55vw',
-          bottom: '-10%', left: '-10%',
-          background: 'radial-gradient(circle, #5b21b6 0%, #6d28d9 40%, #4c1d95 65%, transparent 82%)',
-          filter: 'blur(80px)',
-          opacity: 0.22,
-          transform: `translateY(${scrollY * -0.08}px)`,
-        }}
-      />
-      {/* Pink accent orb — center fade */}
-      <div
-        className="absolute pointer-events-none mix-blend-screen hidden dark:block rounded-full"
-        style={{
-          width: '30vw', height: '30vw',
-          top: '55%', left: '45%',
-          background: 'radial-gradient(circle, #831843 0%, #9d174d 50%, transparent 75%)',
-          filter: 'blur(60px)',
-          opacity: 0.14,
-        }}
-      />
-      {/* Subtle grain in dark mode */}
-      <div
-        className="absolute inset-0 pointer-events-none hidden dark:block"
-        style={{
-          backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%\' height=\'100%\' filter=\'url(%23n)\' opacity=\'1\'/%3E%3C/svg%3E")',
-          opacity: 0.03,
-          mixBlendMode: 'overlay',
-        }}
-      />
+      {/* ═══════════════════════════════════════════════════════════════
+          LAYER 1 — Three mouse-reactive gaussian color blobs
+      ═══════════════════════════════════════════════════════════════ */}
+      {/* Blue — top right */}
+      <div className="absolute pointer-events-none rounded-full" style={{
+        width: '72vw', height: '72vw',
+        top: '-12%', right: '-18%',
+        background: 'radial-gradient(circle, rgba(37,99,235,0.28) 0%, rgba(67,56,202,0.14) 45%, transparent 70%)',
+        filter: 'blur(90px)',
+        transform: `translate(${(mouse.x - 0.5) * -60}px, ${(mouse.y - 0.5) * -60}px)`,
+        transition: 'transform 3.5s cubic-bezier(0.16,1,0.3,1)',
+        zIndex: 1,
+      }} />
+      {/* Violet — bottom left */}
+      <div className="absolute pointer-events-none rounded-full" style={{
+        width: '58vw', height: '58vw',
+        bottom: '-15%', left: '-12%',
+        background: 'radial-gradient(circle, rgba(109,40,217,0.22) 0%, rgba(124,58,237,0.12) 45%, transparent 70%)',
+        filter: 'blur(80px)',
+        transform: `translate(${(mouse.x - 0.5) * 50}px, ${(mouse.y - 0.5) * 50}px)`,
+        transition: 'transform 2.8s cubic-bezier(0.16,1,0.3,1)',
+        zIndex: 1,
+      }} />
+      {/* Pink — center */}
+      <div className="absolute pointer-events-none rounded-full" style={{
+        width: '38vw', height: '38vw',
+        top: '40%', left: '42%',
+        background: 'radial-gradient(circle, rgba(219,39,119,0.14) 0%, transparent 70%)',
+        filter: 'blur(70px)',
+        transform: `translate(${(mouse.x - 0.5) * -35}px, ${(mouse.y - 0.5) * -35}px)`,
+        transition: 'transform 2.2s cubic-bezier(0.16,1,0.3,1)',
+        zIndex: 1,
+      }} />
 
+      {/* ═══════════════════════════════════════════════════════════════
+          LAYER 2 — Architectural grid overlay
+      ═══════════════════════════════════════════════════════════════ */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: 'linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)',
+        backgroundSize: '80px 80px',
+        zIndex: 2,
+      }} />
+      {/* Noise grain */}
+      <div className="absolute inset-0 pointer-events-none" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E")`,
+        opacity: 0.04,
+        mixBlendMode: 'overlay',
+        zIndex: 3,
+      }} />
+
+      {/* ═══════════════════════════════════════════════════════════════
+          MAIN CONTENT — Parallax + fade on scroll
+      ═══════════════════════════════════════════════════════════════ */}
       <div
-        className="container mx-auto px-6 md:px-12 relative z-10 w-full"
+        className="relative flex flex-col"
         style={{
-          opacity: opacityFade,
-          transform: `translateY(${textTranslateY}px)`,
-          willChange: 'transform, opacity'
+          minHeight: '100vh',
+          zIndex: 10,
+          opacity: fade,
+          transform: `translateY(${scrollY * 0.32}px)`,
+          willChange: 'transform, opacity',
         }}
       >
-        <div className="flex flex-col md:flex-row justify-between items-end w-full gap-12 md:gap-0">
+        {/* ── Metadata strip (top) ──────────────────────────────────── */}
+        <div
+          className="flex items-center gap-6 px-8 md:px-14 pt-12"
+          style={{
+            opacity: isMounted ? 1 : 0,
+            transform: isMounted ? 'translateY(0)' : 'translateY(-16px)',
+            transition: 'all 0.9s cubic-bezier(0.16,1,0.3,1)',
+            transitionDelay: '0.1s',
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <div className="relative w-1.5 h-1.5">
+              <div className="absolute inset-0 rounded-full bg-green-400 opacity-60 animate-ping" />
+              <div className="w-1.5 h-1.5 rounded-full bg-green-400" style={{ boxShadow: '0 0 6px rgba(74,222,128,0.8)' }} />
+            </div>
+            <span className="font-mono text-[9px] uppercase tracking-[0.4em] text-white/40">Available</span>
+          </div>
+          <div className="w-px h-3 bg-white/10" />
+          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">System Architect</span>
+          <div className="w-px h-3 bg-white/10" />
+          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/25">{new Date().getFullYear()}</span>
+        </div>
 
-          {/* The Monolithic Typography */}
-          <div className="flex flex-col relative z-20 pointer-events-auto">
-            <span
-              className="font-mono text-xs tracking-[0.4em] uppercase text-black/50 dark:text-white/50 mb-8 overflow-hidden inline-block transition-colors duration-500"
-            >
-              <span
-                className="inline-block transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
-                style={{ transform: isMounted ? 'translateY(0)' : 'translateY(100%)' }}
+        {/* ── Hero body: TYPE LEFT + PORTRAIT RIGHT ────────────────── */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-end flex-1 px-8 md:px-14 pt-10 pb-8 gap-8 lg:gap-0">
+
+          {/* ── LEFT: Monolithic typography ──────────────────────────── */}
+          <div className="flex-1 flex flex-col justify-end relative z-20">
+
+            {/* Line 1: IDEAS BECOME — architectural white */}
+            <div className="overflow-hidden">
+              <div
+                className="font-black uppercase leading-[0.88] tracking-[-0.03em]"
+                style={{
+                  fontFamily: 'Inter, sans-serif',
+                  fontSize: 'clamp(64px, 11.5vw, 176px)',
+                  color: '#ffffff',
+                  textShadow: '0 0 80px rgba(255,255,255,0.06)',
+                  transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
+                  transition: 'transform 1.1s cubic-bezier(0.16,1,0.3,1)',
+                  transitionDelay: '0.25s',
+                  display: 'inline-block',
+                }}
               >
-                Portfolio // {new Date().getFullYear()}
-              </span>
-            </span>
+                Ideas Become
+              </div>
+            </div>
 
-            <h1 className="flex flex-col leading-[0.85] tracking-tighter relative group cursor-default">
-
-              {/* Persistent ambient glow behind the headline */}
+            {/* Line 2: INFRASTRUCTURE — chromatic gradient, indented, bigger */}
+            <div className="overflow-hidden" style={{ marginLeft: 'clamp(20px, 4vw, 80px)' }}>
               <div
-                className="absolute -inset-8 z-0 pointer-events-none"
                 style={{
-                  background: 'radial-gradient(ellipse 80% 60% at 40% 50%, rgba(99,102,241,0.12) 0%, rgba(168,85,247,0.08) 50%, transparent 75%)',
-                  animation: 'heroAura 6s ease-in-out infinite',
+                  fontFamily: 'Cormorant Garamond, serif',
+                  fontSize: 'clamp(72px, 13.5vw, 210px)',
+                  fontWeight: 300,
+                  fontStyle: 'italic',
+                  letterSpacing: '-0.04em',
+                  lineHeight: 0.88,
+                  display: 'inline-block',
+                  background: 'linear-gradient(110deg, #818cf8 0%, #a78bfa 20%, #f472b6 42%, #fb923c 62%, #fbbf24 78%, #818cf8 100%)',
+                  backgroundSize: '250% 100%',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  animation: 'heroFlow 7s linear infinite',
+                  filter: 'drop-shadow(0 0 30px rgba(139,92,246,0.4))',
+                  transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
+                  transition: 'transform 1.3s cubic-bezier(0.16,1,0.3,1)',
+                  transitionDelay: '0.42s',
                 }}
-              />
+              >
+                Infrastructure
+              </div>
+            </div>
 
-              {/* Hover: spinning chromatic blob (keep from original) */}
-              <div
-                className="absolute inset-[-20%] z-0 rounded-full blur-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-[2s] pointer-events-none"
-                style={{
-                  background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)',
-                  animation: 'heroSpin 10s linear infinite'
-                }}
-              />
+            {/* Hairline divider */}
+            <div
+              className="my-8 h-px"
+              style={{
+                background: 'linear-gradient(90deg, rgba(255,255,255,0.15) 0%, rgba(139,92,246,0.4) 50%, transparent 100%)',
+                width: isMounted ? '100%' : '0%',
+                transition: 'width 1.4s cubic-bezier(0.16,1,0.3,1)',
+                transitionDelay: '0.7s',
+              }}
+            />
 
-              {/* ── Line 1: IDEAS BECOME — flowing gradient fill ── */}
-              <span className="overflow-hidden py-2 inline-block -ml-1 relative z-10">
+            {/* Tagline + CTAs */}
+            <div
+              className="flex flex-col sm:flex-row items-start sm:items-center gap-6"
+              style={{
+                opacity: isMounted ? 1 : 0,
+                transform: isMounted ? 'translateY(0)' : 'translateY(20px)',
+                transition: 'all 1s cubic-bezier(0.16,1,0.3,1)',
+                transitionDelay: '0.85s',
+              }}
+            >
+              <p
+                className="font-light text-white/45 leading-relaxed max-w-sm"
+                style={{ fontSize: 'clamp(13px, 1.2vw, 16px)', fontFamily: 'Inter, sans-serif' }}
+              >
+                I architect intelligent systems that think, automate, and scale.
+              </p>
+              <a
+                href={siteConfig.linkedIn}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-3 flex-shrink-0"
+              >
                 <span
-                  className="inline-block text-[10vw] md:text-[7rem] lg:text-[9rem] font-medium uppercase tracking-tight leading-none"
+                  className="font-mono text-[10px] uppercase tracking-[0.35em] text-white/50 group-hover:text-white/90 transition-colors duration-500"
+                >
+                  Explore work
+                </span>
+                <div
+                  className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-500 group-hover:scale-110"
                   style={{
-                    fontFamily: 'Inter, sans-serif',
-                    background: 'linear-gradient(100deg, #e0e7ff 0%, #818cf8 18%, #a78bfa 36%, #f472b6 54%, #fb923c 72%, #e0e7ff 100%)',
-                    backgroundSize: '300% 100%',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    backgroundClip: 'text',
-                    animation: 'heroGradientFlow 6s linear infinite',
-                    transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
-                    transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)',
-                    filter: 'drop-shadow(0 0 40px rgba(139,92,246,0.3))',
+                    background: 'linear-gradient(135deg, #6366f1, #a855f7)',
+                    boxShadow: '0 0 20px rgba(99,102,241,0.4)',
                   }}
                 >
-                  Ideas Become
-                </span>
-              </span>
-
-              {/* ── Line 2: INFRASTRUCTURE — outlined + gradient lit ── */}
-              <span className="overflow-hidden py-2 inline-block ml-4 md:ml-16 relative z-10">
-                <span
-                  className="inline-block text-[11vw] md:text-[8rem] lg:text-[10rem] font-light italic uppercase tracking-tighter leading-none relative"
-                  style={{
-                    fontFamily: 'Cormorant Garamond, serif',
-                    transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
-                    transition: 'transform 1.4s cubic-bezier(0.16,1,0.3,1)',
-                    transitionDelay: '0.12s',
-                  }}
-                >
-                  {/* Gradient fill layer */}
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 select-none"
-                    style={{
-                      background: 'linear-gradient(100deg, #fb923c 0%, #f472b6 25%, #a78bfa 50%, #818cf8 75%, #fb923c 100%)',
-                      backgroundSize: '300% 100%',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                      animation: 'heroGradientFlow 6s linear infinite reverse',
-                      // Slight delay to create offset between line 1 and 2
-                      animationDelay: '-3s',
-                      opacity: 0.9,
-                    }}
-                  >
-                    Infrastructure
-                  </span>
-                  {/* Outline layer — gives depth and makes it feel etched */}
-                  <span
-                    style={{
-                      background: 'linear-gradient(100deg, #fb923c 0%, #f472b6 25%, #a78bfa 50%, #818cf8 75%, #fb923c 100%)',
-                      backgroundSize: '300% 100%',
-                      WebkitBackgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                      backgroundClip: 'text',
-                      animation: 'heroGradientFlow 6s linear infinite reverse',
-                      animationDelay: '-3s',
-                    }}
-                  >
-                    Infrastructure
-                  </span>
-                </span>
-              </span>
-
-              <style>{`
-                @keyframes heroSpin {
-                  from { transform: rotate(0deg); }
-                  to { transform: rotate(360deg); }
-                }
-                @keyframes heroGradientFlow {
-                  0%   { background-position: 0%   50%; }
-                  100% { background-position: 300% 50%; }
-                }
-                @keyframes heroAura {
-                  0%, 100% { opacity: 0.8; transform: scale(1); }
-                  50%      { opacity: 1;   transform: scale(1.05); }
-                }
-              `}</style>
-            </h1>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M2 10L10 2M10 2H4M10 2V8" stroke="white" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+              </a>
+            </div>
           </div>
 
-          {/* Massive Personality Anchor - True God-Tier Scale */}
+          {/* ── RIGHT: Editorial Portrait ─────────────────────────────── */}
           <div
-            ref={profileRef}
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-full md:w-[55%] lg:w-[45%] h-[80vh] md:h-[110vh] overflow-visible group pointer-events-none z-0 mix-blend-normal"
+            className="relative flex-shrink-0 self-end"
             style={{
-              transform: `perspective(2000px) rotateX(${mousePos.y * -0.2}deg) rotateY(${mousePos.x * -0.2}deg)`,
-              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
+              width: 'clamp(200px, 28vw, 420px)',
+              height: 'clamp(240px, 36vw, 520px)',
+              marginBottom: '-2px',
+              opacity: fadeImg,
+              transform: isMounted
+                ? `translateY(${scrollY * -0.1}px) translate(${(mouse.x - 0.5) * -16}px, ${(mouse.y - 0.5) * -12}px)`
+                : 'translateY(60px)',
+              transition: isMounted
+                ? 'transform 3s cubic-bezier(0.16,1,0.3,1)'
+                : 'transform 1.4s cubic-bezier(0.16,1,0.3,1)',
+              transitionDelay: isMounted ? '0s' : '0.55s',
             }}
           >
-            {/* Ambient Image Glow */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-purple-500/10 to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-0" />
+            {/* Spinning gradient border ring */}
+            <div
+              className="absolute pointer-events-none"
+              style={{
+                inset: '-3px',
+                borderRadius: '20px',
+                padding: '3px',
+                background: 'conic-gradient(from 0deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b, #3b82f6)',
+                animation: 'portraitRing 6s linear infinite',
+                WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                WebkitMaskComposite: 'xor',
+                maskComposite: 'exclude',
+                opacity: 0.65,
+              }}
+            />
 
-            <div className="relative w-full h-full">
+            {/* Portrait glow */}
+            <div
+              className="absolute pointer-events-none rounded-[18px]"
+              style={{
+                inset: '-20px',
+                background: 'radial-gradient(ellipse at 50% 100%, rgba(99,102,241,0.25) 0%, rgba(139,92,246,0.15) 40%, transparent 70%)',
+                filter: 'blur(20px)',
+                zIndex: 0,
+              }}
+            />
+
+            {/* Portrait image */}
+            <div className="relative w-full h-full overflow-hidden rounded-[18px]" style={{ zIndex: 1 }}>
               <img
                 src={siteConfig.profileImage}
                 alt={siteConfig.name}
-                className="w-full h-full object-cover object-center filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform scale-110 drop-shadow-2xl"
+                className="w-full h-full object-cover object-top"
                 style={{
-                  transform: isMounted
-                    ? `scale(1) translate3d(${mousePos.x * -0.8}px, ${imageTranslateY * -0.8 + mousePos.y * -0.8}px, 0)`
-                    : 'scale(1.1) translateY(40px)',
-                  transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 1.5s ease',
-                  maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
-                  WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
+                  filter: 'brightness(0.92) contrast(1.1) saturate(0.85)',
+                  transform: isMounted ? 'scale(1)' : 'scale(1.08)',
+                  transition: 'transform 2s cubic-bezier(0.16,1,0.3,1)',
+                  transitionDelay: '0.4s',
+                }}
+              />
+              {/* Cinematic wipe reveal */}
+              <div
+                className="absolute inset-0 z-10 origin-top"
+                style={{
+                  background: '#07080d',
+                  transform: isMounted ? 'scaleY(0)' : 'scaleY(1)',
+                  transition: 'transform 1.6s cubic-bezier(0.85,0,0.15,1)',
+                  transitionDelay: '0.35s',
+                }}
+              />
+              {/* Bottom fade into page */}
+              <div
+                className="absolute bottom-0 left-0 right-0 h-1/3 z-10 pointer-events-none"
+                style={{
+                  background: 'linear-gradient(to bottom, transparent, #07080d)',
                 }}
               />
             </div>
-            {/* Cinematic Wipe */}
-            <div
-              className="absolute inset-0 bg-[#f8f9fa] dark:bg-[#0a0a0a] z-20 origin-top"
-              style={{
-                transform: isMounted ? 'scaleY(0)' : 'scaleY(1)',
-                transition: 'transform 2s cubic-bezier(0.85, 0, 0.15, 1)',
-                transitionDelay: '0.2s'
-              }}
-            />
-          </div>
 
+            {/* Identity badge */}
+            <div
+              className="absolute bottom-4 left-4 right-4 z-20"
+              style={{
+                opacity: isMounted ? 1 : 0,
+                transform: isMounted ? 'translateY(0)' : 'translateY(12px)',
+                transition: 'all 1s cubic-bezier(0.16,1,0.3,1)',
+                transitionDelay: '1.1s',
+              }}
+            >
+              <div
+                className="px-4 py-2.5 rounded-xl flex items-center gap-3"
+                style={{
+                  background: 'rgba(7,8,13,0.7)',
+                  backdropFilter: 'blur(16px)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                }}
+              >
+                <div>
+                  <p className="font-mono text-[8px] uppercase tracking-[0.35em] text-white/35 mb-0.5">Full-Stack Architect</p>
+                  <p className="font-medium text-[12px] text-white/80" style={{ fontFamily: 'Inter, sans-serif' }}>
+                    {siteConfig.name}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Tactical Tagline / Ideology Block */}
-        <div className="mt-24 md:mt-40 max-w-2xl overflow-hidden relative z-20">
-          <div
-            className="p-8 md:p-12 border border-black/10 dark:border-white/10 bg-black/[0.02] dark:bg-white/[0.02] backdrop-blur-md rounded-2xl relative overflow-hidden group"
-            style={{
-              opacity: isMounted ? 1 : 0,
-              transform: isMounted ? 'translateY(0)' : 'translateY(40px)',
-              transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1)',
-              transitionDelay: '0.6s'
-            }}
-          >
-            {/* Hover Glow */}
-            <div className="absolute inset-0 bg-gradient-to-br from-black/5 to-transparent dark:from-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+        {/* ── Bottom strip: socials + scroll cue ───────────────────── */}
+        <div
+          className="flex items-center justify-between px-8 md:px-14 pb-10 pt-2"
+          style={{
+            opacity: isMounted ? 1 : 0,
+            transform: isMounted ? 'translateY(0)' : 'translateY(10px)',
+            transition: 'all 1s cubic-bezier(0.16,1,0.3,1)',
+            transitionDelay: '1.25s',
+          }}
+        >
+          <div className="flex items-center gap-6">
+            {[
+              { label: 'GitHub', href: siteConfig.github },
+              { label: 'LinkedIn', href: siteConfig.linkedIn },
+              { label: 'Email', href: `mailto:${siteConfig.email}` },
+            ].map(l => (
+              <a
+                key={l.label}
+                href={l.href}
+                target={l.href.startsWith('mailto') ? '_self' : '_blank'}
+                rel="noopener noreferrer"
+                className="group font-mono text-[9px] uppercase tracking-[0.35em] text-white/25 hover:text-white/70 transition-colors duration-400"
+              >
+                {l.label}
+                <span className="opacity-0 group-hover:opacity-100 ml-0.5 inline-block translate-x-0 group-hover:translate-x-1 transition-all duration-400">↗</span>
+              </a>
+            ))}
+          </div>
 
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-black/40 dark:text-white/40 mb-6 block">
-              The Architecture Directive
-            </p>
-            <p className="text-black/80 dark:text-white/80 text-xl md:text-3xl font-light leading-snug tracking-tight">
-              I architect intelligent systems that think, automate, and scale. This is where ideas become infrastructure.
-            </p>
-
-            {/* Signature / Name identity restored gracefully here */}
-            <div className="mt-12 flex items-center gap-4">
-              <div className="w-12 h-[1px] bg-black/20 dark:bg-white/20" />
-              <span className="font-medium text-sm tracking-widest uppercase text-black dark:text-white" style={{ fontFamily: 'Inter, sans-serif' }}>
-                {siteConfig.name}
-              </span>
+          {/* Scroll indicator */}
+          <div className="flex flex-col items-center gap-1.5">
+            <span className="font-mono text-[7px] uppercase tracking-[0.5em] text-white/20">Scroll</span>
+            <div className="w-px h-10 relative overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
+              <div
+                className="absolute top-0 left-0 w-full"
+                style={{
+                  background: 'linear-gradient(to bottom, transparent, rgba(139,92,246,0.8), transparent)',
+                  height: '50%',
+                  animation: 'scrollPulse 1.8s ease-in-out infinite',
+                }}
+              />
             </div>
           </div>
         </div>
       </div>
+
+      {/* ── CSS Keyframes ────────────────────────────────────────────── */}
+      <style>{`
+        @keyframes auroraRotate {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to   { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @keyframes heroFlow {
+          0%   { background-position: 0%   50%; }
+          100% { background-position: 250% 50%; }
+        }
+        @keyframes portraitRing {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+        @keyframes scrollPulse {
+          0%   { transform: translateY(-100%); opacity: 0; }
+          50%  { opacity: 1; }
+          100% { transform: translateY(200%); opacity: 0; }
+        }
+      `}</style>
     </section>
   );
 };

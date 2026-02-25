@@ -13,10 +13,9 @@ const Header = ({ onMenuClick }) => {
   const [mx, setMx] = useState(0.5);
   const [my, setMy] = useState(0.5);
   const [hoveredIdx, setHoveredIdx] = useState(null);
-  const [activeId, setActiveId] = useState('hero');
+  const [activeId, setActiveId] = useState('home');
   const headerRef = useRef(null);
   const { theme, toggleTheme } = useTheme();
-
   const isDark = theme === 'dark';
 
   /* ── Scroll tracking ─────────────────────────────────────────────── */
@@ -31,7 +30,6 @@ const Header = ({ onMenuClick }) => {
           if (headerRef.current) {
             headerRef.current.style.setProperty('--sp', `${Math.min((y / h) * 100, 100)}%`);
           }
-          // Track active section
           ['home', 'about', 'work', 'contact'].forEach(id => {
             const el = document.getElementById(id);
             if (el) {
@@ -73,12 +71,20 @@ const Header = ({ onMenuClick }) => {
     { label: 'Connect', id: 'contact', num: '04' },
   ];
 
-  /* ── Pill surface tokens ─────────────────────────────────────────── */
-  const pillBg = isDark ? 'rgba(10,10,12,0.82)' : 'rgba(255,255,255,0.78)';
-  const pillBorder = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
-  const textPrimary = isDark ? 'rgba(255,255,255,0.9)' : 'rgba(0,0,0,0.85)';
-  const textSecondary = isDark ? 'rgba(255,255,255,0.35)' : 'rgba(0,0,0,0.35)';
-  const navHoverBg = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)';
+  /* ─────────────────────────────────────────────────────────────── */
+  /* Pill appearance tokens — adapt to scroll and theme             */
+  /* ─────────────────────────────────────────────────────────────── */
+  const pillBg = scrolled
+    ? (isDark ? 'rgba(7,8,13,0.65)' : 'rgba(255,255,255,0.60)')
+    : 'transparent';
+
+  const pillBorder = scrolled
+    ? (isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.07)')
+    : (isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)');
+
+  const textPrimary = isDark ? 'rgba(255,255,255,0.90)' : (scrolled ? 'rgba(0,0,0,0.85)' : 'rgba(255,255,255,0.88)');
+  const textSecondary = isDark ? 'rgba(255,255,255,0.35)' : (scrolled ? 'rgba(0,0,0,0.40)' : 'rgba(255,255,255,0.45)');
+  const navHoverBg = isDark ? 'rgba(255,255,255,0.06)' : (scrolled ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.10)');
 
   return (
     <>
@@ -92,13 +98,13 @@ const Header = ({ onMenuClick }) => {
           maxWidth: '96vw',
         }}
       >
-        {/* ── Bloom glow beneath ──────────────────────────────────── */}
+        {/* Bloom glow beneath */}
         <div className="absolute pointer-events-none" style={{
           bottom: '-14px', left: '5%', right: '5%', height: '28px',
           borderRadius: '50%',
           background: 'linear-gradient(to bottom, rgba(99,102,241,0.5), rgba(168,85,247,0.2), transparent)',
           filter: 'blur(16px)',
-          opacity: scrolled ? 0.75 : 0.35,
+          opacity: scrolled ? 0.7 : 0.3,
           animation: 'navBloom 4s ease-in-out infinite',
           transition: 'opacity 1s ease',
           zIndex: 0,
@@ -108,7 +114,7 @@ const Header = ({ onMenuClick }) => {
           bottom: '-3px', left: '10%', right: '10%', height: '1px',
           background: 'linear-gradient(90deg, transparent, #3b82f6 25%, #a855f7 55%, #ec4899 80%, transparent)',
           filter: 'blur(1.5px)',
-          opacity: scrolled ? 0.9 : 0.45,
+          opacity: scrolled ? 0.8 : 0.3,
           animation: 'navBeam 3.5s ease-in-out infinite',
           transition: 'opacity 1s ease',
           zIndex: 0,
@@ -119,18 +125,67 @@ const Header = ({ onMenuClick }) => {
           className="relative z-10 overflow-hidden"
           style={{
             borderRadius: '999px',
-            padding: scrolled ? '8px 10px 8px 16px' : '7px 9px 7px 15px',
+            padding: scrolled ? '8px 10px 8px 14px' : '8px 10px 8px 14px',
             background: pillBg,
-            backdropFilter: 'blur(56px) saturate(200%)',
-            WebkitBackdropFilter: 'blur(56px) saturate(200%)',
+            backdropFilter: scrolled ? 'blur(56px) saturate(200%)' : 'blur(20px) saturate(140%)',
+            WebkitBackdropFilter: scrolled ? 'blur(56px) saturate(200%)' : 'blur(20px) saturate(140%)',
             border: `1px solid ${pillBorder}`,
-            transition: 'all 0.8s cubic-bezier(0.16,1,0.3,1)',
+            transition: 'all 0.9s cubic-bezier(0.16,1,0.3,1)',
             boxShadow: scrolled
-              ? `0 0 0 0.5px rgba(168,85,247,0.2), 0 2px 20px rgba(0,0,0,0.3), 0 8px 40px rgba(0,0,0,0.2)`
-              : `0 2px 16px rgba(0,0,0,0.12), 0 0 0 0.5px ${pillBorder}`,
+              ? `0 2px 24px rgba(0,0,0,0.25), 0 0 0 0.5px rgba(168,85,247,0.15)`
+              : `0 2px 12px rgba(0,0,0,0.1), 0 0 0 0.5px ${pillBorder}`,
           }}
         >
-          {/* Spinning chromatic border (visible on scroll) */}
+          {/* ── Hero aurora INSIDE the pill — same conic, small scale ── */}
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              inset: 0,
+              borderRadius: '999px',
+              overflow: 'hidden',
+            }}
+          >
+            {/* Spinning conic aurora — same as hero background */}
+            <div
+              className="absolute"
+              style={{
+                top: '50%', left: '50%',
+                width: '300%', height: '300%',
+                transform: 'translate(-50%, -50%)',
+                animation: 'navAuroraRotate 20s linear infinite',
+                background: 'conic-gradient(from 0deg at 50% 50%, #050917 0deg, #0d1a3a 40deg, #13053a 90deg, #0a0019 130deg, #06162e 180deg, #0e0430 220deg, #050917 260deg, #0b1832 310deg, #050917 360deg)',
+                opacity: scrolled ? 0.0 : 0.85,
+                transition: 'opacity 0.8s ease',
+              }}
+            />
+            {/* Color bleed — matches hero blue/violet/pink */}
+            <div
+              className="absolute"
+              style={{
+                top: '-50%', right: '-20%',
+                width: '80%', height: '200%',
+                background: 'radial-gradient(ellipse, rgba(37,99,235,0.25) 0%, transparent 70%)',
+                filter: 'blur(12px)',
+                animation: 'navColorDrift 8s ease-in-out infinite',
+                opacity: scrolled ? 0.0 : 1,
+                transition: 'opacity 0.8s ease',
+              }}
+            />
+            <div
+              className="absolute"
+              style={{
+                bottom: '-60%', left: '-10%',
+                width: '70%', height: '180%',
+                background: 'radial-gradient(ellipse, rgba(109,40,217,0.2) 0%, transparent 70%)',
+                filter: 'blur(10px)',
+                animation: 'navColorDrift 10s ease-in-out infinite reverse',
+                opacity: scrolled ? 0.0 : 1,
+                transition: 'opacity 0.8s ease',
+              }}
+            />
+          </div>
+
+          {/* Spinning chromatic border (on scroll) */}
           <div className="absolute inset-0 z-0 pointer-events-none rounded-full" style={{
             padding: '1px',
             WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
@@ -157,52 +212,18 @@ const Header = ({ onMenuClick }) => {
           {/* ── Row ───────────────────────────────────────────────── */}
           <div className="relative z-10 flex items-center gap-0">
 
-            {/* LEFT: Spinning Chromatic Orb — navbar identity anchor */}
-            <div className="flex items-center gap-3 flex-shrink-0 pr-4" style={{
+            {/* LEFT: Live dot ──────────────────────────────────────── */}
+            <div className="flex items-center flex-shrink-0 pr-3" style={{
               borderRight: `1px solid ${pillBorder}`,
             }}>
-              {/* Live dot */}
-              <div className="relative w-2 h-2 flex-shrink-0">
+              <div className="relative w-2 h-2">
                 <div className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-50" />
                 <div className="w-2 h-2 rounded-full bg-green-400" style={{ boxShadow: '0 0 6px rgba(74,222,128,0.8)' }} />
               </div>
-
-              {/* Orbital Spinner — 3-ring mini galaxy */}
-              <div
-                className="relative flex items-center justify-center flex-shrink-0 cursor-pointer"
-                style={{ width: '34px', height: '34px' }}
-                onClick={() => scrollTo('home')}
-                title="Home"
-              >
-                {/* Outer slow ring */}
-                <div className="absolute rounded-full" style={{
-                  width: '34px', height: '34px',
-                  border: `1px solid ${isDark ? 'rgba(139,92,246,0.35)' : 'rgba(99,102,241,0.3)'}`,
-                  animation: 'orbSpinCCW 8s linear infinite',
-                }}>
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full"
-                    style={{ background: 'rgba(236,72,153,0.9)', boxShadow: '0 0 5px rgba(236,72,153,0.9)' }} />
-                </div>
-                {/* Mid ring */}
-                <div className="absolute rounded-full" style={{
-                  width: '24px', height: '24px',
-                  border: `1px solid ${isDark ? 'rgba(59,130,246,0.4)' : 'rgba(59,130,246,0.35)'}`,
-                  animation: 'orbSpinCW 5s linear infinite',
-                }}>
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 rounded-full"
-                    style={{ background: 'rgba(59,130,246,0.9)', boxShadow: '0 0 5px rgba(59,130,246,0.9)' }} />
-                </div>
-                {/* Core orb — spinning conic gradient */}
-                <div className="relative w-[9px] h-[9px] rounded-full z-10" style={{
-                  background: 'conic-gradient(from 0deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b, #3b82f6)',
-                  animation: 'orbSpinCW 3s linear infinite',
-                  boxShadow: `0 0 8px 2px rgba(139,92,246,0.6), 0 0 16px 4px rgba(99,102,241,0.3)`,
-                }} />
-              </div>
             </div>
 
-            {/* CENTER: Nav links ────────────────────────────────── */}
-            <nav className="hidden sm:flex items-center px-2">
+            {/* CENTER: Nav links ────────────────────────────────────── */}
+            <nav className="flex items-center px-1">
               {navItems.map((item, i) => {
                 const isActive = activeId === item.id;
                 const isHovered = hoveredIdx === i;
@@ -213,80 +234,79 @@ const Header = ({ onMenuClick }) => {
                     onMouseEnter={() => setHoveredIdx(i)}
                     onMouseLeave={() => setHoveredIdx(null)}
                     className="relative group px-3.5 py-2 rounded-full transition-all duration-300"
-                    style={{
-                      background: isHovered ? navHoverBg : 'transparent',
-                    }}
+                    style={{ background: isHovered ? navHoverBg : 'transparent' }}
                   >
-                    {/* Active dot */}
+                    {/* Active indicator */}
                     {isActive && (
-                      <span className="absolute top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
-                        style={{ background: 'linear-gradient(90deg, #3b82f6, #a855f7)', boxShadow: '0 0 4px rgba(99,102,241,0.8)' }} />
+                      <span
+                        className="absolute top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
+                        style={{
+                          background: 'linear-gradient(90deg, #3b82f6, #a855f7)',
+                          boxShadow: '0 0 4px rgba(99,102,241,0.9)',
+                        }}
+                      />
                     )}
                     <span
-                      className="font-mono text-[10px] uppercase tracking-[0.2em] transition-all duration-300 block"
+                      className="font-mono text-[10px] uppercase tracking-[0.2em] block transition-all duration-300"
                       style={{
-                        color: isActive
-                          ? (isDark ? '#fff' : '#000')
-                          : isHovered
-                            ? textPrimary
-                            : textSecondary,
+                        color: isActive ? textPrimary : isHovered ? textPrimary : textSecondary,
                         fontWeight: isActive ? '600' : '400',
                         transform: isHovered ? 'translateY(-1px)' : 'translateY(0)',
                       }}
                     >
                       {item.label}
                     </span>
-                    {/* Hover underline sweep */}
-                    <span className="absolute bottom-1 left-3.5 right-3.5 h-[1px] rounded-full transition-all duration-400 origin-left"
+                    {/* Sweep underline */}
+                    <span
+                      className="absolute bottom-1 left-3.5 right-3.5 h-[1px] rounded-full origin-left transition-all duration-400"
                       style={{
                         background: 'linear-gradient(90deg, #3b82f6, #a855f7)',
                         transform: isHovered ? 'scaleX(1)' : 'scaleX(0)',
                         opacity: isHovered ? 0.8 : 0,
                         boxShadow: '0 0 6px rgba(99,102,241,0.6)',
-                      }} />
+                      }}
+                    />
                   </button>
                 );
               })}
             </nav>
 
-            {/* RIGHT: Theme + Menu ─────────────────────────────── */}
-            <div className="flex items-center gap-2 flex-shrink-0 pl-3" style={{
+            {/* RIGHT: Theme + Menu ─────────────────────────────────── */}
+            <div className="flex items-center gap-2 flex-shrink-0 pl-2" style={{
               borderLeft: `1px solid ${pillBorder}`,
             }}>
-
               {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
                 aria-label="Toggle theme"
                 className="group relative flex items-center justify-center w-8 h-8 rounded-full transition-all duration-400 hover:scale-110 active:scale-95"
                 style={{
-                  background: isDark ? 'rgba(250,204,21,0.1)' : 'rgba(99,102,241,0.10)',
-                  border: isDark ? '1px solid rgba(250,204,21,0.25)' : '1px solid rgba(99,102,241,0.25)',
+                  background: isDark ? 'rgba(250,204,21,0.1)' : 'rgba(255,255,255,0.10)',
+                  border: isDark ? '1px solid rgba(250,204,21,0.25)' : '1px solid rgba(255,255,255,0.18)',
                 }}
               >
                 {isDark
                   ? <Sun className="w-3.5 h-3.5 text-yellow-300 group-hover:rotate-90 transition-transform duration-700" />
-                  : <Moon className="w-3.5 h-3.5 text-indigo-400 group-hover:-rotate-12 transition-transform duration-500" />
+                  : <Moon className="w-3.5 h-3.5 text-indigo-300 group-hover:-rotate-12 transition-transform duration-500" />
                 }
               </button>
 
-              {/* Menu button — pill with lines */}
+              {/* Menu button */}
               <button
                 onClick={handleMenuClick}
                 aria-label="Toggle menu"
                 className="group relative flex items-center gap-2 pl-3 pr-3.5 h-8 rounded-full transition-all duration-500 hover:scale-105 active:scale-95"
                 style={{
                   background: isMenuOpen
-                    ? (isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)')
-                    : (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.05)'),
+                    ? 'rgba(168,85,247,0.15)'
+                    : (isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.12)'),
                   border: isMenuOpen
-                    ? `1px solid rgba(168,85,247,0.5)`
+                    ? '1px solid rgba(168,85,247,0.45)'
                     : `1px solid ${pillBorder}`,
                   boxShadow: isMenuOpen ? '0 0 16px rgba(168,85,247,0.25)' : 'none',
                   transition: 'all 0.4s cubic-bezier(0.16,1,0.3,1)',
                 }}
               >
-                {/* Animated hamburger lines */}
                 <div className="flex flex-col justify-center items-center gap-[4.5px]" style={{ width: '14px' }}>
                   <span style={{
                     display: 'block', height: '1.5px', borderRadius: '2px', width: '14px',
@@ -313,7 +333,6 @@ const Header = ({ onMenuClick }) => {
                 </span>
               </button>
             </div>
-
           </div>
         </div>
       </header>
@@ -323,7 +342,6 @@ const Header = ({ onMenuClick }) => {
         className="fixed inset-0 z-[90] overflow-hidden"
         style={{ pointerEvents: isMenuOpen ? 'auto' : 'none' }}
       >
-        {/* Dark curtain */}
         <div
           className="absolute inset-0"
           style={{
@@ -389,7 +407,6 @@ const Header = ({ onMenuClick }) => {
 
           {/* Nav body */}
           <div className="flex-1 flex overflow-hidden">
-            {/* LEFT nav links */}
             <div className="flex-1 flex flex-col justify-center px-8 md:px-14 py-8">
               <nav className="flex flex-col gap-0">
                 {navItems.map((item, i) => (
@@ -407,7 +424,6 @@ const Header = ({ onMenuClick }) => {
                       transition: `opacity 0.6s ease ${0.3 + i * 0.07}s, clip-path 0.7s cubic-bezier(0.16,1,0.3,1) ${0.25 + i * 0.07}s`,
                     }}
                   >
-                    {/* Sweep underline */}
                     <div className="absolute bottom-0 left-0 h-[1px] transition-all duration-500"
                       style={{
                         width: hoveredIdx === i ? '100%' : '0%',
@@ -497,8 +513,8 @@ const Header = ({ onMenuClick }) => {
             <div className="flex items-center gap-6 md:gap-10">
               {[
                 { label: 'Email', href: 'mailto:gandreddylokesh7@gmail.com' },
-                { label: 'LinkedIn', href: '#' },
-                { label: 'GitHub', href: '#' },
+                { label: 'LinkedIn', href: 'https://linkedin.com/in/lokeshh-hhh' },
+                { label: 'GitHub', href: 'https://github.com/Lokeshgandreddy81' },
               ].map((l) => (
                 <a key={l.label} href={l.href}
                   target={l.href.startsWith('mailto') ? '_self' : '_blank'}
@@ -517,6 +533,7 @@ const Header = ({ onMenuClick }) => {
         </div>
       </div>
 
+      {/* ── CSS Keyframes ─────────────────────────────────────────────── */}
       <style>{`
         @keyframes navBloom {
           0%, 100% { opacity: 0.35; transform: scaleY(0.7) scaleX(0.92); }
@@ -530,13 +547,13 @@ const Header = ({ onMenuClick }) => {
           from { transform: rotate(0deg); }
           to   { transform: rotate(360deg); }
         }
-        @keyframes orbSpinCW {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(360deg); }
+        @keyframes navAuroraRotate {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to   { transform: translate(-50%, -50%) rotate(360deg); }
         }
-        @keyframes orbSpinCCW {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(-360deg); }
+        @keyframes navColorDrift {
+          0%, 100% { transform: translate(0, 0) scale(1); }
+          50%       { transform: translate(15%, 10%) scale(1.1); }
         }
       `}</style>
     </>
