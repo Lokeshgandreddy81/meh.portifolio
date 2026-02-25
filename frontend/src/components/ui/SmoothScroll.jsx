@@ -1,75 +1,49 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
+import Lenis from 'lenis';
 
 const SmoothScroll = ({ children }) => {
-    const scrollContainerRef = useRef(null);
-    const [windowHeight, setWindowHeight] = useState(0);
+    const lenisRef = useRef(null);
 
     useEffect(() => {
-        const setBodyHeight = () => {
-            if (scrollContainerRef.current) {
-                setWindowHeight(scrollContainerRef.current.getBoundingClientRect().height);
+        // Initialize Lenis for buttery, un-janky scroll
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom ease out expo
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        lenisRef.current = lenis;
+
+        // Listen to scroll and broadcast lerped value back to CSS for Parallax Sync
+        lenis.on('scroll', (e) => {
+            document.body.style.setProperty('--scroll-y', e.animatedScroll);
+        });
+
+        // Native RAF loop for Lenis
+        function raf(time) {
+            if (lenisRef.current) {
+                lenisRef.current.raf(time);
             }
-        };
-
-        setBodyHeight();
-
-        const resizeObserver = new ResizeObserver(() => setBodyHeight());
-        if (scrollContainerRef.current) {
-            resizeObserver.observe(scrollContainerRef.current);
+            requestAnimationFrame(raf);
         }
+        requestAnimationFrame(raf);
 
-        return () => resizeObserver.disconnect();
-    }, [children]);
-
-    useEffect(() => {
-        document.body.style.height = `${windowHeight}px`;
-    }, [windowHeight]);
-
-    useEffect(() => {
-        let animationFrameId;
-
-        // Configuration for inertia moved inside effect to prevent dependency warnings
-        const config = {
-            ease: 0.15,
-            currentY: 0,
-            targetY: 0
-        };
-
-        const smoothScroll = () => {
-            config.targetY = window.scrollY;
-
-            // Lerp (Linear Interpolation) for that smooth inertia
-            config.currentY += (config.targetY - config.currentY) * config.ease;
-
-            // Write the lerped value to a global CSS variable so children (like Hero parallax)
-            // can perfectly synchronize with the smooth scroll instead of fighting raw window.scrollY
-            document.body.style.setProperty('--scroll-y', config.currentY);
-            window.smoothScrollY = config.currentY; // Fast JS global reference to avoid getComputedStyle thrashing
-
-            // Apply transform to the container with 3D hardware acceleration
-            if (scrollContainerRef.current) {
-                scrollContainerRef.current.style.transform = `translate3d(0, -${config.currentY}px, 0)`;
+        return () => {
+            if (lenisRef.current) {
+                lenisRef.current.destroy();
             }
-
-            animationFrameId = requestAnimationFrame(smoothScroll);
         };
-
-        smoothScroll();
-
-        return () => cancelAnimationFrame(animationFrameId);
     }, []);
 
     return (
-        <div
-            className="fixed top-0 left-0 w-full overflow-hidden"
-            style={{ height: '100vh' }}
-        >
-            <div
-                ref={scrollContainerRef}
-                className="will-change-transform w-full"
-            >
-                {children}
-            </div>
+        <div className="lenis-wrapper relative w-full h-full">
+            {children}
         </div>
     );
 };
