@@ -120,7 +120,7 @@ const Header = ({ onMenuClick }) => {
           style={{
             borderRadius: '999px',
             padding: scrolled ? '10px 18px' : '9px 16px',
-            background: 'transparent', // Fully transparent per user request
+            background: 'rgba(255,255,255,0.08)', // Base border color beneath the spin
             backdropFilter: 'blur(48px)',
             WebkitBackdropFilter: 'blur(48px)',
             transition: 'all 0.9s cubic-bezier(0.16,1,0.3,1)',
