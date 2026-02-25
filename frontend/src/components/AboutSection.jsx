@@ -119,6 +119,39 @@ const ManifestoCard = ({ index, section, dark }) => {
 const AboutSection = () => {
   const { theme } = useTheme();
   const dark = theme === 'dark';
+  const cardRef = useRef(null);
+
+  // Antigravity Parallax State
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+  const [glareX, setGlareX] = useState(50);
+  const [glareY, setGlareY] = useState(50);
+  const [isHoveringCard, setIsHoveringCard] = useState(false);
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Calculate rotation (-10 to 10 degrees)
+    const rY = ((x / rect.width) - 0.5) * 20;
+    const rX = ((y / rect.height) - 0.5) * -20;
+
+    setRotateX(rX);
+    setRotateY(rY);
+    setGlareX((x / rect.width) * 100);
+    setGlareY((y / rect.height) * 100);
+  };
+
+  const handleMouseEnter = () => setIsHoveringCard(true);
+  const handleMouseLeave = () => {
+    setIsHoveringCard(false);
+    setRotateX(0);
+    setRotateY(0);
+    setGlareX(50);
+    setGlareY(50);
+  };
 
   return (
     <section
@@ -157,27 +190,54 @@ const AboutSection = () => {
             ))}
           </div>
 
-          {/* RIGHT — portrait */}
-          <div className="order-1 md:order-2 md:sticky top-20 self-start">
+          {/* RIGHT — portrait (Antigravity Parallax Wrapper) */}
+          <div className="order-1 md:order-2 md:sticky top-20 self-start perspective-[1500px]">
             <div
-              className="relative w-full overflow-hidden group transition-all duration-700"
+              ref={cardRef}
+              onMouseMove={handleMouseMove}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              className="relative w-full overflow-hidden transition-all duration-300 ease-out"
               style={{
                 minHeight: '88vh',
                 borderRadius: '2.5rem',
-                /* Solid background prevents ANY parent color from bleeding through */
                 background: dark ? '#000000' : '#f7f6f2',
                 isolation: 'isolate',
                 border: dark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.08)',
-                boxShadow: dark
-                  ? '0 40px 120px rgba(0,0,0,0.6)'
-                  : '0 40px 100px rgba(0,0,0,0.12)',
+                boxShadow: isHoveringCard
+                  ? (dark ? '0 50px 100px -20px rgba(99,102,241,0.25), 0 30px 60px -30px rgba(0,0,0,1)' : '0 50px 100px -20px rgba(0,0,0,0.2), 0 30px 60px -30px rgba(0,0,0,0.15)')
+                  : (dark ? '0 40px 120px rgba(0,0,0,0.6)' : '0 40px 100px rgba(0,0,0,0.12)'),
+                transform: isHoveringCard
+                  ? `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`
+                  : 'translateY(0) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)',
+                transition: isHoveringCard ? 'transform 0.1s ease-out, box-shadow 0.4s ease-out' : 'transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.6s ease-out',
+                transformStyle: 'preserve-3d',
               }}
             >
-              <img
-                src={siteConfig.architectImage}
-                alt={siteConfig.name}
-                className="absolute inset-0 w-full h-full object-cover object-center"
-                style={{ display: 'block' }}
+
+              {/* Image layer inside 3D transforms */}
+              <div
+                className="absolute inset-0 w-full h-full transition-transform duration-300"
+                style={{
+                  transform: isHoveringCard ? `translateZ(40px) scale(1.05)` : 'translateZ(0px) scale(1)',
+                }}
+              >
+                <img
+                  src={siteConfig.architectImage}
+                  alt={siteConfig.name}
+                  className="w-full h-full object-cover object-center"
+                  style={{ display: 'block' }}
+                />
+              </div>
+
+              {/* Dynamic Mouse Glare Overlay */}
+              <div
+                className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-10"
+                style={{
+                  opacity: isHoveringCard ? 1 : 0,
+                  background: `radial-gradient(circle at ${glareX}% ${glareY}%, ${dark ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0.4)'} 0%, transparent 60%)`,
+                  mixBlendMode: dark ? 'screen' : 'overlay'
+                }}
               />
               {/* Bottom-only gradient — just enough for text contrast, photo top is 100% clear */}
               <div
@@ -189,8 +249,13 @@ const AboutSection = () => {
                     : 'linear-gradient(to top, rgba(247,246,242,0.95) 0%, rgba(247,246,242,0.5) 55%, transparent 100%)',
                 }}
               />
-              {/* Identity text */}
-              <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
+              {/* Identity text - pops out in 3D */}
+              <div
+                className="absolute bottom-0 left-0 right-0 p-8 md:p-10 transition-transform duration-300 z-20"
+                style={{
+                  transform: isHoveringCard ? `translateZ(60px)` : 'translateZ(0px)',
+                }}
+              >
                 <span
                   className="font-mono text-[10px] uppercase tracking-[0.25em] mb-3 block font-bold text-blue-400"
                 >
@@ -201,6 +266,9 @@ const AboutSection = () => {
                   style={{
                     fontFamily: 'Cormorant Garamond, serif',
                     color: dark ? '#ffffff' : '#000000',
+                    textShadow: isHoveringCard
+                      ? (dark ? '0 10px 20px rgba(0,0,0,0.5)' : '0 10px 20px rgba(255,255,255,0.5)')
+                      : 'none',
                   }}
                 >
                   {siteConfig.name}
