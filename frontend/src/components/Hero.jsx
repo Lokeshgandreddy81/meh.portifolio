@@ -189,7 +189,7 @@ const Hero = () => {
                 style={{
                   background: 'conic-gradient(from 0deg at 50% 50%, #3b82f6 0deg, transparent 60deg, #a853ba 120deg, transparent 180deg, #e92a67 240deg, transparent 300deg, #3b82f6 360deg)',
                   animation: 'heroSpinCCW 24s linear infinite',
-                  opacity: 0.12,
+                  opacity: 0.45,
                   transition: 'opacity 1.5s ease',
                 }}
               />
@@ -200,13 +200,13 @@ const Hero = () => {
                 style={{
                   background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
                   animation: 'heroSpin 18s linear infinite',
-                  opacity: 0.18,
+                  opacity: 0.70,
                   transition: 'opacity 2s ease, transform 2s ease, filter 2s ease',
                 }}
               />
               {/* Hover overlay to intensify */}
               <div
-                className="absolute inset-[-20%] z-0 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-40"
+                className="absolute inset-[-20%] z-0 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-80"
                 style={{
                   background: 'conic-gradient(from 0deg at 50% 50%, #e92a67 0deg, #a853ba 120deg, #2a8af6 240deg, #e92a67 360deg)',
                   animation: 'heroSpinCCW 5s linear infinite',
@@ -225,13 +225,11 @@ const Hero = () => {
                     letterSpacing: '-0.02em',
                     textTransform: 'uppercase',
                     lineHeight: '1',
-                    background: 'linear-gradient(105deg, #ffffff 0%, #ffffff 15%, #c7d2fe 25%, #a78bfa 40%, #f472b6 55%, #fb923c 70%, #ffffff 85%, #ffffff 100%)',
-                    backgroundSize: '280% 100%',
+                    background: 'linear-gradient(135deg, #1e1e28 0%, #030305 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
-                    animation: 'heroGradientFlow 6s ease-in-out infinite alternate',
-                    filter: 'drop-shadow(0 12px 32px rgba(0,0,0,0.4)) drop-shadow(0 0 45px rgba(255,255,255,0.25))',
+                    filter: 'drop-shadow(0 0 60px rgba(139,92,246,0.6)) drop-shadow(0 10px 15px rgba(0,0,0,0.8))',
                     transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
                     transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)',
                     transitionDelay: '0.1s',
@@ -253,14 +251,11 @@ const Hero = () => {
                     letterSpacing: '0.01em',
                     textTransform: 'uppercase',
                     lineHeight: '1',
-                    background: 'linear-gradient(105deg, #ffffff 0%, #ffffff 15%, #fbbf24 30%, #fb923c 45%, #f472b6 60%, #a78bfa 75%, #ffffff 90%, #ffffff 100%)',
-                    backgroundSize: '280% 100%',
+                    background: 'linear-gradient(135deg, #2a2a35 0%, #050508 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
-                    animation: 'heroGradientFlow 6s ease-in-out infinite alternate-reverse',
-                    animationDelay: '-2.5s',
-                    filter: 'drop-shadow(0 12px 40px rgba(0,0,0,0.5)) drop-shadow(0 0 55px rgba(255,255,255,0.25))',
+                    filter: 'drop-shadow(0 0 70px rgba(168,85,247,0.5)) drop-shadow(0 15px 25px rgba(0,0,0,0.9))',
                     transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
                     transition: 'transform 1.4s cubic-bezier(0.16,1,0.3,1)',
                     transitionDelay: '0.22s',
