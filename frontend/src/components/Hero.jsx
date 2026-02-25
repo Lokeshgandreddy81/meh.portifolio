@@ -220,13 +220,13 @@ const Hero = () => {
                   className="inline-block text-[7.5vw] md:text-[5.5rem] lg:text-[7rem] font-black uppercase tracking-tight leading-none"
                   style={{
                     fontFamily: 'Inter, sans-serif',
-                    background: 'linear-gradient(105deg, #c7d2fe 0%, #818cf8 15%, #a78bfa 30%, #f472b6 50%, #fb923c 68%, #fbbf24 82%, #c7d2fe 100%)',
+                    background: 'linear-gradient(105deg, #ffffff 0%, #ffffff 15%, #c7d2fe 25%, #a78bfa 40%, #f472b6 55%, #fb923c 70%, #ffffff 85%, #ffffff 100%)',
                     backgroundSize: '280% 100%',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
                     animation: 'heroGradientFlow 5s linear infinite',
-                    filter: 'drop-shadow(0 0 45px rgba(139,92,246,0.45))',
+                    filter: 'drop-shadow(0 0 45px rgba(255,255,255,0.4))',
                     transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
                     transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)',
                     transitionDelay: '0.1s',
@@ -242,14 +242,14 @@ const Hero = () => {
                   className="inline-block text-[9vw] md:text-[7rem] lg:text-[9rem] font-light italic uppercase tracking-tighter leading-none"
                   style={{
                     fontFamily: 'Cormorant Garamond, serif',
-                    background: 'linear-gradient(105deg, #fbbf24 0%, #fb923c 18%, #f472b6 38%, #a78bfa 58%, #818cf8 78%, #fbbf24 100%)',
+                    background: 'linear-gradient(105deg, #ffffff 0%, #ffffff 15%, #fbbf24 30%, #fb923c 45%, #f472b6 60%, #a78bfa 75%, #ffffff 90%, #ffffff 100%)',
                     backgroundSize: '280% 100%',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
                     animation: 'heroGradientFlow 5s linear infinite reverse',
                     animationDelay: '-2.5s',
-                    filter: 'drop-shadow(0 0 55px rgba(251,146,60,0.4))',
+                    filter: 'drop-shadow(0 0 55px rgba(255,255,255,0.4))',
                     transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
                     transition: 'transform 1.4s cubic-bezier(0.16,1,0.3,1)',
                     transitionDelay: '0.22s',
