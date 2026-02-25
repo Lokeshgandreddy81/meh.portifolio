@@ -7,7 +7,6 @@ import WorkSection from '../components/WorkSection';
 import AboutSection from '../components/AboutSection';
 import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
-import SideMenu from '../components/SideMenu';
 import Preloader from '../components/Preloader';
 import { useTheme } from '../context/ThemeContext';
 
@@ -262,7 +261,6 @@ const ManifestoBreak = () => {
 
 /* ─── Home page ───────────────────────────────────────────────────────────── */
 const Home = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
   const [preloaderDone, setPreloaderDone] = useState(false);
 
   useEffect(() => {
@@ -279,8 +277,7 @@ const Home = () => {
         style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.85\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E")' }}
       />
 
-      <Header onMenuClick={() => setMenuOpen(true)} />
-      <SideMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)} />
+      <Header />
 
       {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
 

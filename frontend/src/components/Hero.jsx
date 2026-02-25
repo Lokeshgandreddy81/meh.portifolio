@@ -15,8 +15,9 @@ const Hero = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           if (sectionRef.current) {
-            // Read lerped smooth scroll value directly off window object to avoid heavy DOM Layout Thrashing
-            const sy = window.smoothScrollY ?? window.scrollY;
+            // Read lerped smooth scroll value
+            const rawBodyScroll = getComputedStyle(document.body).getPropertyValue('--scroll-y');
+            const sy = rawBodyScroll ? parseFloat(rawBodyScroll) : window.scrollY;
 
             sectionRef.current.style.setProperty('--sy', sy);
 
@@ -198,38 +199,32 @@ const Hero = () => {
             style={{
               transform: 'perspective(2000px) rotateX(calc(var(--my, 0) * -0.2deg)) rotateY(calc(var(--mx, 0) * -0.2deg))',
               transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-              maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
+              maskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)',
+              WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)'
             }}
           >
             {/* Ambient Image Glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-purple-500/10 to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-0" />
 
-            {/* Scroll-parallax wrapper with extra height bleeding room */}
+            {/* Scroll-parallax wrapper. Shifted bleeding room to the top to prevent cropping the face at the bottom */}
             <div
-              className="absolute inset-x-0 -top-[15%] -bottom-[15%] will-change-transform"
+              className="absolute inset-x-0 -top-[30%] -bottom-[2%] will-change-transform"
               style={{
                 transform: 'translate3d(0, calc(var(--sy, 0) * -0.12px), 0)', // 0.15 Image parallax * -0.8 multiplier
               }}
             >
-              {/* Dedicated mouse-parallax un-transitioned wrapper to stop CSS animation engine fighting */}
-              <div
-                className="w-full h-full will-change-transform"
+              {/* Image with mouse-parallax and mount animation (Has CSS transition for smoothing) */}
+              <img
+                src={siteConfig.profileImage}
+                alt={siteConfig.name}
+                className="w-full h-full object-cover object-[center_85%] filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform drop-shadow-2xl"
                 style={{
-                  transform: 'translate3d(calc(var(--mx, 0) * -0.8px), calc(var(--my, 0) * -0.8px), 0)'
+                  transform: isMounted
+                    ? 'scale(1.02) translate3d(calc(var(--mx, 0) * -0.8px), calc(var(--my, 0) * -0.8px), 0)'
+                    : 'scale(1.1) translateY(40px)',
+                  transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 1.5s ease'
                 }}
-              >
-                {/* Image solely handling mount animation with CSS transition */}
-                <img
-                  src={siteConfig.profileImage}
-                  alt={siteConfig.name}
-                  className="w-full h-full object-cover object-bottom filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform scale-110 drop-shadow-2xl"
-                  style={{
-                    transform: isMounted ? 'scale(1)' : 'scale(1.1) translateY(40px)',
-                    transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 1.5s ease'
-                  }}
-                />
-              </div>
+              />
             </div>
             {/* Cinematic Wipe */}
             <div
@@ -275,7 +270,7 @@ const Hero = () => {
           </div>
         </div>
       </div>
-    </section >
+    </section>
   );
 };
 
