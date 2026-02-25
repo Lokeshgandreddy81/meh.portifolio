@@ -26,7 +26,12 @@ const ManifestoCard = ({ index, section, dark }) => {
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => setInView(e.isIntersecting),
+      ([e]) => {
+        if (e.isIntersecting) {
+          setInView(true);
+          obs.disconnect(); // Trigger once to prevent scroll jitter
+        }
+      },
       { threshold: 0.3 }
     );
     if (cardRef.current) obs.observe(cardRef.current);

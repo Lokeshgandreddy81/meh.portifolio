@@ -33,7 +33,12 @@ const ContactSection = () => {
 
   useEffect(() => {
     const obs = new IntersectionObserver(
-      ([e]) => setVisible(e.isIntersecting),
+      ([e]) => {
+        if (e.isIntersecting) {
+          setVisible(true);
+          obs.disconnect(); // Trigger once to prevent scroll jitter
+        }
+      },
       { threshold: 0.05 }
     );
     if (sectionRef.current) obs.observe(sectionRef.current);
