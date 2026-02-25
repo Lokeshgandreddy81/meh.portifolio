@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const scrollTo = (id) => {
   const el = document.getElementById(id);
@@ -17,6 +18,18 @@ const Header = ({ onMenuClick }) => {
   const headerRef = useRef(null);
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+
+  useEffect(() => {
+    if (location.pathname === '/resume') {
+      setActiveId('resume');
+    } else if (isHome && window.scrollY < 60) {
+      setActiveId('home');
+    }
+  }, [location.pathname, isHome]);
 
   /* ── Scroll tracking ─────────────────────────────────────────────── */
   useEffect(() => {
@@ -69,7 +82,21 @@ const Header = ({ onMenuClick }) => {
     { label: 'Architect', id: 'about', num: '02' },
     { label: 'Work', id: 'work', num: '03' },
     { label: 'Connect', id: 'contact', num: '04' },
+    { label: 'Resume', route: '/resume', id: 'resume', num: '05' },
   ];
+
+  const handleNavClick = (item) => {
+    if (item.route) {
+      navigate(item.route);
+    } else {
+      if (!isHome) {
+        navigate('/');
+        setTimeout(() => scrollTo(item.id), 100);
+      } else {
+        scrollTo(item.id);
+      }
+    }
+  };
 
   /* ─────────────────────────────────────────────────────────────── */
   /* Pill appearance tokens — adapt to scroll and theme             */
@@ -230,7 +257,7 @@ const Header = ({ onMenuClick }) => {
                 return (
                   <button
                     key={item.id}
-                    onClick={() => scrollTo(item.id)}
+                    onClick={() => handleNavClick(item)}
                     onMouseEnter={() => setHoveredIdx(i)}
                     onMouseLeave={() => setHoveredIdx(null)}
                     className="relative group px-3.5 py-2 rounded-full transition-all duration-300"
@@ -412,7 +439,7 @@ const Header = ({ onMenuClick }) => {
                 {navItems.map((item, i) => (
                   <button
                     key={item.id}
-                    onClick={() => { closeMenu(); setTimeout(() => scrollTo(item.id), 500); }}
+                    onClick={() => { closeMenu(); setTimeout(() => handleNavClick(item), 500); }}
                     onMouseEnter={() => setHoveredIdx(i)}
                     onMouseLeave={() => setHoveredIdx(null)}
                     className="group relative text-left w-full overflow-hidden"
