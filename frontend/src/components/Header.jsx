@@ -11,6 +11,7 @@ const scrollTo = (id) => {
 const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [hoveredIdx, setHoveredIdx] = useState(null);
+  const [isNavHovered, setIsNavHovered] = useState(false);
   const [activeId, setActiveId] = useState('home');
   const headerRef = useRef(null);
   const { theme, toggleTheme } = useTheme();
@@ -93,6 +94,8 @@ const Header = () => {
   const textPrimary = isDark ? 'rgba(255,255,255,0.90)' : (scrolled ? 'rgba(0,0,0,0.85)' : 'rgba(255,255,255,0.88)');
   const textSecondary = isDark ? 'rgba(255,255,255,0.35)' : (scrolled ? 'rgba(0,0,0,0.40)' : 'rgba(255,255,255,0.45)');
   const navHoverBg = isDark ? 'rgba(255,255,255,0.06)' : (scrolled ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.10)');
+
+  const isExpanded = !scrolled || isNavHovered;
 
   return (
     <>
@@ -218,7 +221,11 @@ const Header = () => {
           }} />
 
           {/* ── Row ───────────────────────────────────────────────── */}
-          <div className="relative z-10 flex items-center gap-0">
+          <div
+            className="relative z-10 flex items-center gap-0"
+            onMouseEnter={() => setIsNavHovered(true)}
+            onMouseLeave={() => setIsNavHovered(false)}
+          >
 
             {/* LEFT: Live dot ──────────────────────────────────────── */}
             <div className="flex items-center flex-shrink-0 pr-3" style={{
@@ -234,46 +241,59 @@ const Header = () => {
             <nav className="flex items-center px-1">
               {navItems.map((item, i) => {
                 const isActive = activeId === item.id;
-                const isHovered = hoveredIdx === i;
+                const isItemHovered = hoveredIdx === i;
+                const showItem = isExpanded || isActive;
+
                 return (
                   <button
                     key={item.id}
                     onClick={() => handleNavClick(item)}
                     onMouseEnter={() => setHoveredIdx(i)}
                     onMouseLeave={() => setHoveredIdx(null)}
-                    className="relative group px-3.5 py-2 rounded-full transition-all duration-300"
-                    style={{ background: isHovered ? navHoverBg : 'transparent' }}
+                    className="relative group rounded-full overflow-hidden transition-all duration-500"
+                    style={{
+                      background: isItemHovered ? navHoverBg : 'transparent',
+                      maxWidth: showItem ? '140px' : '0px',
+                      padding: showItem ? '8px 14px' : '8px 0px',
+                      opacity: showItem ? 1 : 0,
+                      margin: showItem ? '0 2px' : '0 0px',
+                      pointerEvents: showItem ? 'auto' : 'none',
+                      transition: 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                    }}
                   >
-                    {/* Active indicator */}
-                    {isActive && (
+                    <div className="flex flex-col items-center justify-center whitespace-nowrap min-w-max relative w-full h-full">
+                      {/* Active indicator */}
+                      {isActive && (
+                        <span
+                          className="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
+                          style={{
+                            background: isDark ? '#ffffff' : 'linear-gradient(90deg, #3b82f6, #a855f7)',
+                            boxShadow: isDark ? '0 0 4px rgba(255,255,255,0.8)' : '0 0 4px rgba(99,102,241,0.9)',
+                            transform: 'translateY(-4px)'
+                          }}
+                        />
+                      )}
                       <span
-                        className="absolute top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
+                        className="font-mono text-[10px] uppercase tracking-[0.2em] block transition-all duration-300"
+                        style={{
+                          color: isActive ? textPrimary : isItemHovered ? textPrimary : textSecondary,
+                          fontWeight: isActive ? '600' : '400',
+                          transform: isItemHovered ? 'translateY(-1px)' : 'translateY(0)',
+                        }}
+                      >
+                        {item.label}
+                      </span>
+                      {/* Sweep underline */}
+                      <span
+                        className="absolute bottom-[-4px] left-0 right-0 h-[1px] rounded-full origin-left transition-all duration-400"
                         style={{
                           background: isDark ? '#ffffff' : 'linear-gradient(90deg, #3b82f6, #a855f7)',
-                          boxShadow: isDark ? '0 0 4px rgba(255,255,255,0.8)' : '0 0 4px rgba(99,102,241,0.9)',
+                          transform: isItemHovered ? 'scaleX(1)' : 'scaleX(0)',
+                          opacity: isItemHovered ? 0.8 : 0,
+                          boxShadow: isDark ? '0 0 6px rgba(255,255,255,0.5)' : '0 0 6px rgba(99,102,241,0.6)',
                         }}
                       />
-                    )}
-                    <span
-                      className="font-mono text-[10px] uppercase tracking-[0.2em] block transition-all duration-300"
-                      style={{
-                        color: isActive ? textPrimary : isHovered ? textPrimary : textSecondary,
-                        fontWeight: isActive ? '600' : '400',
-                        transform: isHovered ? 'translateY(-1px)' : 'translateY(0)',
-                      }}
-                    >
-                      {item.label}
-                    </span>
-                    {/* Sweep underline */}
-                    <span
-                      className="absolute bottom-1 left-3.5 right-3.5 h-[1px] rounded-full origin-left transition-all duration-400"
-                      style={{
-                        background: isDark ? '#ffffff' : 'linear-gradient(90deg, #3b82f6, #a855f7)',
-                        transform: isHovered ? 'scaleX(1)' : 'scaleX(0)',
-                        opacity: isHovered ? 0.8 : 0,
-                        boxShadow: isDark ? '0 0 6px rgba(255,255,255,0.5)' : '0 0 6px rgba(99,102,241,0.6)',
-                      }}
-                    />
+                    </div>
                   </button>
                 );
               })}
