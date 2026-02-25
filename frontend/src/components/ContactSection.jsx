@@ -83,7 +83,7 @@ const ContactSection = () => {
     ],
   };
 
-  const bg = dark ? '#000000' : '#f0ede8';
+  const bg = dark ? '#000000' : '#ffffff';
   const text = dark ? '#ffffff' : '#0a0a0a';
   const sub = dark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)';
   const border = dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
@@ -298,13 +298,13 @@ const ContactSection = () => {
               letterSpacing: '-0.02em',
             }}
           >
-            {/* GANDREDDY — fades out on hover */}
+            {/* GANDREDDY — solid black in light mode, outlined in dark mode */}
             <span
               className="block w-full transition-all duration-500 group-hover:opacity-0"
               style={{
                 fontWeight: 600,
-                color: dark ? '#000000' : '#ffffff',
-                WebkitTextStroke: dark ? '3px #ffffff' : '3px #000000',
+                color: '#000000',
+                WebkitTextStroke: dark ? '3px #ffffff' : '0',
               }}
             >
               GANDREDDY

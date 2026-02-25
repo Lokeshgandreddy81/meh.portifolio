@@ -157,7 +157,7 @@ const AboutSection = () => {
     <section
       id="about"
       className="w-full relative z-30 overflow-hidden transition-colors duration-700"
-      style={{ background: dark ? '#000000' : '#f7f6f2' }}
+      style={{ background: dark ? '#000000' : '#ffffff' }}
     >
       <div className="container mx-auto px-6 md:px-12 max-w-[1600px] py-24 md:py-32">
 

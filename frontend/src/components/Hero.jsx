@@ -189,37 +189,53 @@ const Hero = () => {
               />
 
               {/* Outer counter-rotating ring — majestic mouse parallax */}
-              <div className="absolute inset-[-35%] z-0 rounded-full blur-[80px] pointer-events-none transition-opacity duration-[1500ms]" style={{ opacity: 0.45 }}>
+              <div
+                className="absolute inset-[-35%] z-0 rounded-full blur-[80px] pointer-events-none transition-all duration-[1500ms]"
+                style={{
+                  opacity: 0.45,
+                  transform: `translate(${(0.5 - mouse.x) * 60}px, ${(0.5 - mouse.y) * 60}px) scale(1.1)`,
+                  transition: 'transform 1.8s cubic-bezier(0.16,1,0.3,1), opacity 1500ms'
+                }}
+              >
                 <div
                   className="absolute inset-0 rounded-full"
                   style={{
                     background: 'conic-gradient(from 0deg at 50% 50%, #3b82f6 0deg, transparent 60deg, #a853ba 120deg, transparent 180deg, #e92a67 240deg, transparent 300deg, #3b82f6 360deg)',
-                    transform: `rotate(${(0.5 - mouse.x) * 280}deg) translate(${(0.5 - mouse.x) * 60}px, ${(0.5 - mouse.y) * 60}px) scale(1.1)`,
-                    transition: 'transform 1.8s cubic-bezier(0.16,1,0.3,1)',
+                    animation: 'heroSpinCCW 30s linear infinite',
                   }}
                 />
               </div>
 
               {/* Inner tracking conic bloom — base visible, intensifies on hover */}
-              <div className="absolute inset-[-20%] z-0 rounded-full blur-[60px] pointer-events-none group-hover:scale-110 group-hover:blur-[80px] transition-all duration-[2000ms] opacity-70">
+              <div
+                className="absolute inset-[-20%] z-0 rounded-full blur-[60px] pointer-events-none group-hover:scale-110 group-hover:blur-[80px] transition-all duration-[2000ms] opacity-70"
+                style={{
+                  transform: `translate(${(mouse.x - 0.5) * -70}px, ${(mouse.y - 0.5) * -70}px) scale(1.2)`,
+                  transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1), opacity 2000ms, filter 2000ms'
+                }}
+              >
                 <div
                   className="absolute inset-0 rounded-full"
                   style={{
                     background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
-                    transform: `rotate(${(mouse.x - 0.5) * 360}deg) translate(${(mouse.x - 0.5) * -70}px, ${(mouse.y - 0.5) * -70}px) scale(1.2)`,
-                    transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)',
+                    animation: 'heroSpin 20s linear infinite',
                   }}
                 />
               </div>
 
               {/* Hover overlay to intensify tracking */}
-              <div className="absolute inset-[-20%] z-0 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-80 transition-opacity duration-[1500ms]">
+              <div
+                className="absolute inset-[-20%] z-0 rounded-full blur-2xl pointer-events-none opacity-0 group-hover:opacity-80 transition-opacity duration-[1500ms]"
+                style={{
+                  transform: `scale(1.15)`,
+                  transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1), opacity 1500ms'
+                }}
+              >
                 <div
                   className="absolute inset-0 rounded-full"
                   style={{
                     background: 'conic-gradient(from 0deg at 50% 50%, #e92a67 0deg, #a853ba 120deg, #2a8af6 240deg, #e92a67 360deg)',
-                    transform: `rotate(${(mouse.x - 0.5) * -180}deg) scale(1.15)`,
-                    transition: 'transform 0.8s cubic-bezier(0.16,1,0.3,1)',
+                    animation: 'heroSpinCCW 15s linear infinite',
                   }}
                 />
               </div>

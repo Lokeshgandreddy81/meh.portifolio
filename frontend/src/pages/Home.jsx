@@ -96,7 +96,7 @@ const ManifestoBreak = () => {
           letterSpacing: '-0.04em',
         }}
       >
-        04
+        G
       </div>
 
       {/* ── Subtle dot grid ─────────────────────────────────────── */}
