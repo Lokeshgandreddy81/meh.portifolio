@@ -51,8 +51,7 @@
     }
 
     * {
-        cursor: none !important;
-        /* Force custom cursor */
+        /* Remove aggressive global cursor: none so native pointer fallback works on overlays */
         box-sizing: border-box;
     }
 }

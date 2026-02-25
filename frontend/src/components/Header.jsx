@@ -156,14 +156,20 @@ const Header = ({ onMenuClick }) => {
                 <span
                   className="absolute left-0 top-0 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.22em] transition-all duration-300 group-hover:opacity-0 group-hover:-translate-y-full"
                   style={{
-                    background: scrolled
-                      ? 'linear-gradient(90deg, #fff 0%, #a5b4fc 45%, #fff 80%)'
-                      : 'rgba(255,255,255,0.88)',
-                    backgroundSize: '200% 100%',
-                    WebkitBackgroundClip: scrolled ? 'text' : 'unset',
-                    WebkitTextFillColor: scrolled ? 'transparent' : 'unset',
-                    color: scrolled ? 'transparent' : 'rgba(255,255,255,0.88)',
-                    animation: scrolled ? 'nameShimmer 3s ease infinite' : 'none',
+                    ...(scrolled
+                      ? {
+                        backgroundImage: 'linear-gradient(90deg, #fff 0%, #a5b4fc 45%, #fff 80%)',
+                        backgroundSize: '200% 100%',
+                        WebkitBackgroundClip: 'text',
+                        backgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        color: 'transparent',
+                        animation: 'nameShimmer 3s ease infinite',
+                      }
+                      : {
+                        color: 'rgba(255,255,255,0.88)',
+                        background: 'none',
+                      }),
                   }}
                 >
                   GANDREDDY
