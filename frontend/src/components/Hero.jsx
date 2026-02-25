@@ -193,7 +193,7 @@ const Hero = () => {
               <img
                 src={siteConfig.profileImage}
                 alt={siteConfig.name}
-                className="w-full h-full object-cover object-center filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform scale-110 drop-shadow-2xl"
+                className="w-full h-full object-cover object-[center_80%] filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform scale-110 drop-shadow-2xl"
                 style={{
                   transform: isMounted
                     ? `scale(1) translate3d(${mousePos.x * -0.8}px, ${imageTranslateY * -0.8 + mousePos.y * -0.8}px, 0)`
