@@ -110,7 +110,7 @@ const Header = () => {
         <div className="absolute pointer-events-none" style={{
           bottom: '-14px', left: '5%', right: '5%', height: '28px',
           borderRadius: '50%',
-          background: 'linear-gradient(to bottom, rgba(99,102,241,0.5), rgba(168,85,247,0.2), transparent)',
+          background: isDark ? 'linear-gradient(to bottom, rgba(255,255,255,0.15), rgba(255,255,255,0.05), transparent)' : 'linear-gradient(to bottom, rgba(99,102,241,0.5), rgba(168,85,247,0.2), transparent)',
           filter: 'blur(16px)',
           opacity: scrolled ? 0.7 : 0.3,
           animation: 'navBloom 4s ease-in-out infinite',
@@ -120,7 +120,7 @@ const Header = () => {
         {/* Beam line */}
         <div className="absolute pointer-events-none" style={{
           bottom: '-3px', left: '10%', right: '10%', height: '1px',
-          background: 'linear-gradient(90deg, transparent, #3b82f6 25%, #a855f7 55%, #ec4899 80%, transparent)',
+          background: isDark ? 'linear-gradient(90deg, transparent, #ffffff 25%, #ffffff 55%, #ffffff 80%, transparent)' : 'linear-gradient(90deg, transparent, #3b82f6 25%, #a855f7 55%, #ec4899 80%, transparent)',
           filter: 'blur(1.5px)',
           opacity: scrolled ? 0.8 : 0.3,
           animation: 'navBeam 3.5s ease-in-out infinite',
@@ -140,7 +140,7 @@ const Header = () => {
             border: `1px solid ${pillBorder}`,
             transition: 'all 0.9s cubic-bezier(0.16,1,0.3,1)',
             boxShadow: scrolled
-              ? `0 2px 24px rgba(0,0,0,0.25), 0 0 0 0.5px rgba(168,85,247,0.15)`
+              ? `0 2px 24px rgba(0,0,0,0.25), 0 0 0 0.5px ${isDark ? 'rgba(255,255,255,0.15)' : 'rgba(168,85,247,0.15)'}`
               : `0 2px 12px rgba(0,0,0,0.1), 0 0 0 0.5px ${pillBorder}`,
           }}
         >
@@ -211,8 +211,8 @@ const Header = () => {
           <div className="absolute top-0 left-0 pointer-events-none z-20" style={{
             height: '1.5px', borderRadius: '0 2px 2px 0',
             width: 'var(--sp, 0%)',
-            background: 'linear-gradient(90deg, #3b82f6, #a855f7 55%, #ec4899)',
-            boxShadow: '0 0 8px rgba(99,102,241,0.8)',
+            background: isDark ? '#ffffff' : 'linear-gradient(90deg, #3b82f6, #a855f7 55%, #ec4899)',
+            boxShadow: isDark ? '0 0 8px rgba(255,255,255,0.6)' : '0 0 8px rgba(99,102,241,0.8)',
             opacity: scrolled ? 1 : 0,
             transition: 'opacity 0.4s ease',
           }} />
@@ -249,8 +249,8 @@ const Header = () => {
                       <span
                         className="absolute top-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full"
                         style={{
-                          background: 'linear-gradient(90deg, #3b82f6, #a855f7)',
-                          boxShadow: '0 0 4px rgba(99,102,241,0.9)',
+                          background: isDark ? '#ffffff' : 'linear-gradient(90deg, #3b82f6, #a855f7)',
+                          boxShadow: isDark ? '0 0 4px rgba(255,255,255,0.8)' : '0 0 4px rgba(99,102,241,0.9)',
                         }}
                       />
                     )}
@@ -268,10 +268,10 @@ const Header = () => {
                     <span
                       className="absolute bottom-1 left-3.5 right-3.5 h-[1px] rounded-full origin-left transition-all duration-400"
                       style={{
-                        background: 'linear-gradient(90deg, #3b82f6, #a855f7)',
+                        background: isDark ? '#ffffff' : 'linear-gradient(90deg, #3b82f6, #a855f7)',
                         transform: isHovered ? 'scaleX(1)' : 'scaleX(0)',
                         opacity: isHovered ? 0.8 : 0,
-                        boxShadow: '0 0 6px rgba(99,102,241,0.6)',
+                        boxShadow: isDark ? '0 0 6px rgba(255,255,255,0.5)' : '0 0 6px rgba(99,102,241,0.6)',
                       }}
                     />
                   </button>
