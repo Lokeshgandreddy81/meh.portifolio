@@ -7,7 +7,6 @@ const Hero = () => {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    // Trigger mount animations after a tiny delay for smoothness
     const timer = setTimeout(() => setIsMounted(true), 100);
 
     let ticking = false;
@@ -15,13 +14,9 @@ const Hero = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           if (sectionRef.current) {
-            // Read lerped smooth scroll value
             const rawBodyScroll = getComputedStyle(document.body).getPropertyValue('--scroll-y');
             const sy = rawBodyScroll ? parseFloat(rawBodyScroll) : window.scrollY;
-
             sectionRef.current.style.setProperty('--sy', sy);
-
-            // Calculate opacity fade based on viewport
             const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
             const fade = Math.max(0, 1 - (sy / (vh * 0.8)));
             sectionRef.current.style.setProperty('--fade', fade);
@@ -43,8 +38,7 @@ const Hero = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('mousemove', handleMouseMove);
-    handleScroll(); // Initialize variables immediately
-
+    handleScroll();
     return () => {
       clearTimeout(timer);
       window.removeEventListener('scroll', handleScroll);
@@ -52,236 +46,339 @@ const Hero = () => {
     };
   }, []);
 
-  // Split name for staggered reveal
-  const nameParts = siteConfig.name.split(' ');
-  const firstName = nameParts[0];
-  const lastName = nameParts[1] || '';
-
   return (
     <section
       id="home"
       ref={sectionRef}
-      className="min-h-[120dvh] w-full relative z-50 bg-[#f8f9fa] dark:bg-[#0a0a0a] transition-colors duration-500 ease-out flex flex-col justify-center overflow-hidden"
+      className="min-h-[120dvh] w-full relative z-50 bg-[#f8f9fa] dark:bg-[#080808] transition-colors duration-500 ease-out flex flex-col justify-center overflow-hidden"
     >
-      {/* High-End Ambient Aura (Light Mode) */}
+      {/* ── 1. ENGINEERING GRID OVERLAY ────────────────────────────── */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-40 mix-blend-multiply block dark:hidden will-change-transform"
+        className="absolute inset-0 pointer-events-none z-0 opacity-[0.04] dark:opacity-[0.07]"
         style={{
-          background: 'radial-gradient(circle at 70% 30%, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0) 50%)',
-          transform: 'translate3d(0, calc(var(--sy, 0) * 0.2px), 0)'
+          backgroundImage: `
+            linear-gradient(rgba(0,0,0,1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,0,0,1) 1px, transparent 1px)
+          `,
+          backgroundSize: '80px 80px',
+          maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
         }}
       />
       <div
-        className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply block dark:hidden will-change-transform"
+        className="absolute inset-0 pointer-events-none z-0 hidden dark:block opacity-[0.04]"
         style={{
-          background: 'radial-gradient(circle at 30% 80%, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0) 60%)',
-          transform: 'translate3d(0, calc(var(--sy, 0) * -0.1px), 0)'
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)
+          `,
+          backgroundSize: '80px 80px',
+          maskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%)',
         }}
       />
 
-      {/* ── Rich Dark Mode Ambient Orbs ─────────────────────────── */}
-      {/* Blue orb — top right */}
-      <div
-        className="absolute pointer-events-none mix-blend-screen hidden dark:block will-change-transform rounded-full"
+      {/* ── 2. AMBIENT ORBS (Dark Mode) ─────────────────────── */}
+      <div className="absolute pointer-events-none mix-blend-screen hidden dark:block will-change-transform rounded-full"
         style={{
-          width: '70vw', height: '70vw',
-          top: '-20%', right: '-15%',
+          width: '70vw', height: '70vw', top: '-20%', right: '-15%',
           background: 'radial-gradient(circle, #1e40af 0%, #1d4ed8 30%, #312e81 60%, transparent 80%)',
-          filter: 'blur(90px)',
-          opacity: 0.3,
-          transform: 'translate3d(0, calc(var(--sy, 0) * 0.15px), 0)',
+          filter: 'blur(90px)', opacity: 0.35,
+          transform: 'translate3d(0, calc(var(--sy, 0) * 0.15px), 0)'
         }}
       />
-      {/* Violet orb — bottom left */}
-      <div
-        className="absolute pointer-events-none mix-blend-screen hidden dark:block will-change-transform rounded-full"
+      <div className="absolute pointer-events-none mix-blend-screen hidden dark:block will-change-transform rounded-full"
         style={{
-          width: '55vw', height: '55vw',
-          bottom: '-10%', left: '-10%',
+          width: '55vw', height: '55vw', bottom: '-10%', left: '-10%',
           background: 'radial-gradient(circle, #5b21b6 0%, #6d28d9 40%, #4c1d95 65%, transparent 82%)',
-          filter: 'blur(80px)',
-          opacity: 0.22,
-          transform: 'translate3d(0, calc(var(--sy, 0) * -0.08px), 0)',
+          filter: 'blur(80px)', opacity: 0.25,
+          transform: 'translate3d(0, calc(var(--sy, 0) * -0.08px), 0)'
         }}
       />
-      {/* Pink accent orb — center fade */}
-      <div
-        className="absolute pointer-events-none mix-blend-screen hidden dark:block rounded-full"
+      <div className="absolute pointer-events-none mix-blend-screen hidden dark:block rounded-full"
         style={{
-          width: '30vw', height: '30vw',
-          top: '55%', left: '45%',
+          width: '30vw', height: '30vw', top: '55%', left: '45%',
           background: 'radial-gradient(circle, #831843 0%, #9d174d 50%, transparent 75%)',
-          filter: 'blur(60px)',
-          opacity: 0.14,
-        }}
-      />
-      {/* Subtle grain in dark mode */}
-      <div
-        className="absolute inset-0 pointer-events-none hidden dark:block"
-        style={{
-          backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%\' height=\'100%\' filter=\'url(%23n)\' opacity=\'1\'/%3E%3C/svg%3E")',
-          opacity: 0.03,
-          mixBlendMode: 'overlay',
+          filter: 'blur(60px)', opacity: 0.18
         }}
       />
 
+      {/* ── 3. VERTICAL SIDE RAIL (right edge) ─────────────── */}
       <div
-        className="container mx-auto px-6 md:px-12 relative z-10 w-full"
+        className="absolute right-6 top-1/2 -translate-y-1/2 hidden md:flex flex-col items-center gap-3 z-30 pointer-events-none"
+        style={{
+          opacity: isMounted ? 1 : 0,
+          transition: 'opacity 1s ease',
+          transitionDelay: '1.2s'
+        }}
+      >
+        <div className="h-16 w-[1px] bg-gradient-to-b from-transparent via-black/20 dark:via-white/20 to-transparent" />
+        <span
+          className="font-mono text-[8px] uppercase tracking-[0.4em] text-black/30 dark:text-white/30"
+          style={{ writingMode: 'vertical-lr', letterSpacing: '0.4em' }}
+        >
+          System Design
+        </span>
+        <div className="h-16 w-[1px] bg-gradient-to-b from-transparent via-black/20 dark:via-white/20 to-transparent" />
+      </div>
+
+      {/* ── 4. COUNTER STATS (Left Margin) ──────────────────── */}
+      <div
+        className="absolute left-4 md:left-8 bottom-16 hidden md:flex flex-col gap-8 z-30 pointer-events-none"
+        style={{ opacity: isMounted ? 1 : 0, transition: 'opacity 1s ease', transitionDelay: '1.4s' }}
+      >
+        {[
+          { num: '3+', label: 'Years' },
+          { num: '12+', label: 'Systems Built' },
+        ].map(({ num, label }) => (
+          <div key={label} className="flex flex-col items-center gap-1">
+            <span className="font-mono text-lg font-bold text-black dark:text-white leading-none">{num}</span>
+            <span className="font-mono text-[8px] uppercase tracking-[0.25em] text-black/40 dark:text-white/40">{label}</span>
+          </div>
+        ))}
+        <div className="w-[1px] h-10 bg-gradient-to-b from-black/20 dark:from-white/20 to-transparent mx-auto" />
+      </div>
+
+      {/* ── MAIN CONTENT ─────────────────────────────────────── */}
+      <div
+        className="container mx-auto px-6 md:px-16 relative z-10 w-full"
         style={{
           opacity: 'var(--fade, 1)',
           transform: 'translate3d(0, calc(var(--sy, 0) * 0.4px), 0)',
           willChange: 'transform, opacity'
         }}
       >
-        <div className="flex flex-col md:flex-row justify-between items-end w-full gap-12 md:gap-0">
+        <div className="flex flex-col md:flex-row justify-between items-center w-full gap-12 md:gap-0 min-h-[80dvh]">
 
-          {/* The Monolithic Typography */}
-          <div className="flex flex-col relative z-20 pointer-events-auto">
-            <span
-              className="font-mono text-xs tracking-[0.4em] uppercase text-black/50 dark:text-white/50 mb-8 overflow-hidden inline-block transition-colors duration-500"
-            >
+          {/* ══ LEFT: Monolithic Typography ══════════════════════ */}
+          <div className="flex flex-col relative z-20 pointer-events-auto md:w-[55%] pt-24 md:pt-0">
+
+            {/* Label row */}
+            <div className="flex items-center gap-3 mb-8 overflow-hidden">
               <span
-                className="inline-block transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                className="font-mono text-xs tracking-[0.4em] uppercase text-black/50 dark:text-white/40 inline-block transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
                 style={{ transform: isMounted ? 'translateY(0)' : 'translateY(100%)' }}
               >
                 Portfolio // {new Date().getFullYear()}
               </span>
-            </span>
+              {/* Available badge */}
+              <span
+                className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full border border-green-500/30 bg-green-500/10 font-mono text-[9px] uppercase tracking-widest text-green-500"
+                style={{
+                  opacity: isMounted ? 1 : 0,
+                  transition: 'opacity 0.8s ease',
+                  transitionDelay: '1s'
+                }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                Available
+              </span>
+            </div>
 
+            {/* Giant H1 */}
             <h1 className="flex flex-col leading-[0.85] tracking-tighter relative group cursor-default">
-              {/* Fluid Gradient Mesh Mask Background */}
+              {/* Gradient mesh on hover */}
               <div
-                className="absolute inset-[-20%] z-0 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-[2s]"
+                className="absolute inset-[-20%] z-0 rounded-full blur-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-[2s] pointer-events-none"
                 style={{
                   background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)',
-                  animation: 'spin 10s linear infinite'
+                  animation: 'heroSpin 10s linear infinite'
                 }}
               />
-              <style>{`
-                @keyframes spin {
-                  from { transform: rotate(0deg); }
-                  to { transform: rotate(360deg); }
-                }
-              `}</style>
 
-              {/* Line 1 */}
-              <span className="overflow-hidden py-2 inline-block -ml-2 relative z-10 mix-blend-difference text-white">
+              {/* Line 1 — "Ideas Become" */}
+              <span className="overflow-hidden py-1 inline-block relative z-10">
                 <span
-                  className="inline-block transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] text-[10vw] md:text-[7rem] lg:text-[9rem] font-medium uppercase tracking-tight leading-none"
+                  className="inline-block text-[12vw] md:text-[7rem] lg:text-[9.5rem] font-extrabold uppercase tracking-[-0.02em] leading-none text-black dark:text-white"
                   style={{
                     fontFamily: 'Inter, sans-serif',
-                    transform: isMounted ? 'translateY(0)' : 'translateY(100%)'
+                    transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
+                    transition: 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)',
                   }}
                 >
-                  Ideas Become
+                  Ideas
                 </span>
               </span>
-              {/* Line 2 */}
-              <span className="overflow-hidden py-2 inline-block ml-4 md:ml-16 relative z-10 mix-blend-difference text-white">
+
+              {/* Line 2 — "Become" italic serif, with a chromatic gradient background clip */}
+              <span className="overflow-hidden py-1 inline-block ml-4 md:ml-12 relative z-10">
                 <span
-                  className="inline-block transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] text-[11vw] md:text-[8rem] lg:text-[10rem] font-light italic uppercase tracking-tighter leading-none"
+                  className="inline-block text-[10vw] md:text-[6rem] lg:text-[8rem] font-light italic uppercase tracking-[-0.03em] leading-none"
                   style={{
                     fontFamily: 'Cormorant Garamond, serif',
-                    transform: isMounted ? 'translateY(0)' : 'translateY(100%)',
-                    transitionDelay: '0.1s'
+                    background: 'linear-gradient(135deg, #3b82f6 0%, #a855f7 50%, #ec4899 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
+                    transition: 'transform 1.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transitionDelay: '0.08s',
+                  }}
+                >
+                  Become
+                </span>
+              </span>
+
+              {/* Line 3 — "Infrastructure" */}
+              <span className="overflow-hidden py-1 inline-block ml-0 relative z-10">
+                <span
+                  className="inline-block text-[11vw] md:text-[7.5rem] lg:text-[10rem] font-black uppercase tracking-[-0.04em] leading-none text-black dark:text-white"
+                  style={{
+                    fontFamily: 'Inter, sans-serif',
+                    transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
+                    transition: 'transform 1.6s cubic-bezier(0.16, 1, 0.3, 1)',
+                    transitionDelay: '0.16s',
                   }}
                 >
                   Infrastructure
                 </span>
               </span>
             </h1>
-          </div>
 
-          {/* Massive Personality Anchor - True God-Tier Scale */}
-          <div
-            ref={profileRef}
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-full md:w-[55%] lg:w-[45%] h-[80dvh] md:h-[110dvh] overflow-hidden group pointer-events-none z-0 mix-blend-normal"
-            style={{
-              transform: 'perspective(2000px) rotateX(calc(var(--my, 0) * -0.2deg)) rotateY(calc(var(--mx, 0) * -0.2deg))',
-              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-              maskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)'
-            }}
-          >
-            {/* Ambient Image Glow */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-purple-500/10 to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-0" />
-
-            {/* Scroll-parallax wrapper. Shifted bleeding room to the top to prevent cropping the face at the bottom */}
+            {/* ── Tagline Block ────────────────────────────── */}
             <div
-              className="absolute inset-x-0 -top-[30%] -bottom-[2%] will-change-transform"
+              className="mt-12 md:mt-16 max-w-xl"
               style={{
-                transform: 'translate3d(0, calc(var(--sy, 0) * -0.12px), 0)', // 0.15 Image parallax * -0.8 multiplier
+                opacity: isMounted ? 1 : 0,
+                transform: isMounted ? 'translateY(0)' : 'translateY(30px)',
+                transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1)',
+                transitionDelay: '0.7s',
               }}
             >
-              {/* Image with mouse-parallax and mount animation (Has CSS transition for smoothing) */}
-              <img
-                src={siteConfig.profileImage}
-                alt={siteConfig.name}
-                className="w-full h-full object-cover object-[center_85%] filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform drop-shadow-2xl"
-                style={{
-                  transform: isMounted
-                    ? 'scale(1.02) translate3d(calc(var(--mx, 0) * -0.8px), calc(var(--my, 0) * -0.8px), 0)'
-                    : 'scale(1.1) translateY(40px)',
-                  transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 1.5s ease'
-                }}
-              />
+              {/* Blue rule accent */}
+              <div className="flex items-center gap-4 mb-5">
+                <div className="w-10 h-[2px] bg-blue-500 rounded-full" />
+                <p className="font-mono text-[10px] uppercase tracking-[0.35em] text-blue-500 font-bold">
+                  The Architecture Directive
+                </p>
+              </div>
+
+              <p className="text-black/70 dark:text-white/70 text-lg md:text-2xl font-light leading-snug tracking-tight" style={{ fontFamily: 'Inter, sans-serif' }}>
+                I architect intelligent systems that{' '}
+                <span className="font-semibold text-black dark:text-white">think, automate,</span>{' '}
+                and <span className="font-semibold text-black dark:text-white">scale.</span>
+              </p>
+
+              {/* Signature */}
+              <div className="mt-8 flex items-center gap-5 pt-6 border-t border-black/10 dark:border-white/10">
+                <div className="flex flex-col">
+                  <span className="font-bold text-sm tracking-[0.2em] uppercase text-black dark:text-white" style={{ fontFamily: 'Inter, sans-serif' }}>
+                    {siteConfig.name}
+                  </span>
+                  <span className="text-black/40 dark:text-white/40 text-[10px] font-mono uppercase tracking-[0.3em] mt-1">
+                    System Architect &amp; Engineer
+                  </span>
+                </div>
+              </div>
             </div>
-            {/* Cinematic Wipe */}
-            <div
-              className="absolute inset-0 bg-[#f8f9fa] dark:bg-[#0a0a0a] z-20 origin-top"
-              style={{
-                transform: isMounted ? 'scaleY(0)' : 'scaleY(1)',
-                transition: 'transform 2s cubic-bezier(0.85, 0, 0.15, 1)',
-                transitionDelay: '0.2s'
-              }}
-            />
           </div>
 
-        </div>
-
-        {/* Tactical Tagline / Ideology Block - Redesigned (Ultra-Clean Editorial) */}
-        <div className="mt-32 md:mt-48 max-w-3xl relative z-20">
+          {/* ══ RIGHT: Massive Profile Image ══════════════════════ */}
           <div
-            className="flex flex-col gap-6"
+            ref={profileRef}
+            className="relative md:w-[42%] h-[70dvh] md:h-[90dvh] flex-shrink-0"
             style={{
-              opacity: isMounted ? 1 : 0,
-              transform: isMounted ? 'translateY(0)' : 'translateY(40px)',
-              transition: 'all 1s cubic-bezier(0.16, 1, 0.3, 1)',
-              transitionDelay: '0.6s'
+              transform: 'perspective(2000px) rotateX(calc(var(--my, 0) * -0.15deg)) rotateY(calc(var(--mx, 0) * -0.15deg))',
+              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
             }}
           >
-            {/* Minimalist Blue Label */}
-            <div className="flex items-center gap-4">
-              <div className="w-8 h-[2px] bg-blue-500 rounded-full" />
-              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-blue-500 font-bold">
-                The Architecture Directive
-              </p>
+            {/* ── Chromatic Halo ── */}
+            <div
+              className="absolute -inset-4 z-0 rounded-3xl pointer-events-none"
+              style={{
+                background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
+                filter: 'blur(40px)',
+                opacity: isMounted ? 0.25 : 0,
+                animation: 'heroSpin 8s linear infinite',
+                transition: 'opacity 2s ease',
+                transitionDelay: '0.5s',
+              }}
+            />
+
+            {/* Image container */}
+            <div
+              className="relative w-full h-full overflow-hidden z-10"
+              style={{
+                borderRadius: '24px',
+                maskImage: 'linear-gradient(to bottom, black 75%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, black 75%, transparent 100%)',
+              }}
+            >
+              {/* Parallax inner */}
+              <div
+                className="absolute inset-x-0 -top-[25%] -bottom-[5%] will-change-transform"
+                style={{ transform: 'translate3d(0, calc(var(--sy, 0) * -0.1px), 0)' }}
+              >
+                <img
+                  src={siteConfig.profileImage}
+                  alt={siteConfig.name}
+                  className="w-full h-full object-cover object-[center_85%] filter contrast-110 brightness-95 will-change-transform"
+                  style={{
+                    transform: isMounted
+                      ? 'scale(1.02) translate3d(calc(var(--mx, 0) * -0.6px), calc(var(--my, 0) * -0.6px), 0)'
+                      : 'scale(1.12) translateY(40px)',
+                    transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)',
+                  }}
+                />
+              </div>
+
+              {/* Cinematic Wipe */}
+              <div
+                className="absolute inset-0 bg-[#f8f9fa] dark:bg-[#080808] z-20 origin-top"
+                style={{
+                  transform: isMounted ? 'scaleY(0)' : 'scaleY(1)',
+                  transition: 'transform 2s cubic-bezier(0.85, 0, 0.15, 1)',
+                  transitionDelay: '0.2s'
+                }}
+              />
+
+              {/* Corner accent lines */}
+              {[
+                { top: 0, left: 0, borderTop: '2px solid', borderLeft: '2px solid' },
+                { top: 0, right: 0, borderTop: '2px solid', borderRight: '2px solid' },
+                { bottom: 0, left: 0, borderBottom: '2px solid', borderLeft: '2px solid' },
+                { bottom: 0, right: 0, borderBottom: '2px solid', borderRight: '2px solid' },
+              ].map((style, i) => (
+                <div
+                  key={i}
+                  className="absolute w-6 h-6 border-blue-400/60 z-30 pointer-events-none"
+                  style={{
+                    ...style,
+                    borderColor: 'rgba(99,102,241,0.5)',
+                    opacity: isMounted ? 1 : 0,
+                    transition: 'opacity 0.5s ease',
+                    transitionDelay: `${1.0 + i * 0.1}s`,
+                  }}
+                />
+              ))}
             </div>
 
-            {/* Core Ideology Typography */}
-            <h3 className="text-black/80 dark:text-white/80 text-3xl md:text-5xl lg:text-6xl font-light leading-[1.1] tracking-tighter" style={{ fontFamily: 'Inter, sans-serif' }}>
-              I architect intelligent systems that <br className="hidden md:block" />
-              <span className="font-semibold text-black dark:text-white">think, automate,</span> and <span className="font-semibold text-black dark:text-white">scale.</span>
-            </h3>
-
-            <p className="text-black/50 dark:text-white/50 text-base md:text-xl font-light max-w-xl leading-relaxed mt-2" style={{ fontFamily: 'Inter, sans-serif' }}>
-              This is where abstract ideas are engineered into robust,<br className="hidden md:block" /> high-performance infrastructure.
-            </p>
-
-            {/* Signature Block */}
-            <div className="mt-8 md:mt-12 flex items-center gap-6">
-              <div className="flex flex-col">
-                <span className="font-bold text-sm md:text-base tracking-[0.2em] uppercase text-black dark:text-white" style={{ fontFamily: 'Inter, sans-serif' }}>
-                  {siteConfig.name}
-                </span>
-                <span className="text-black/40 dark:text-white/40 text-[10px] font-mono uppercase tracking-[0.3em] mt-1">
-                  System Architect & Engineer
-                </span>
-              </div>
+            {/* Floating role badge */}
+            <div
+              className="absolute -bottom-4 left-4 z-30 px-4 py-2 rounded-xl backdrop-blur-md border"
+              style={{
+                background: 'rgba(255,255,255,0.08)',
+                borderColor: 'rgba(255,255,255,0.12)',
+                opacity: isMounted ? 1 : 0,
+                transform: isMounted ? 'translateY(0)' : 'translateY(12px)',
+                transition: 'all 0.8s cubic-bezier(0.16,1,0.3,1)',
+                transitionDelay: '1.1s',
+              }}
+            >
+              <p className="font-mono text-[9px] uppercase tracking-[0.3em] text-white/50">Role</p>
+              <p className="font-mono text-xs text-white/90 font-semibold mt-0.5">Full-Stack AI Engineer</p>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Keyframes */}
+      <style>{`
+        @keyframes heroSpin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+      `}</style>
     </section>
   );
 };
