@@ -78,7 +78,7 @@ const ManifestoBreak = () => {
       className="w-full relative overflow-hidden transition-colors duration-700 flex flex-col min-h-screen justify-center"
       style={{ background: bg }}
     >
-      {/* ── Ghost background number ──────────────────────────────── */}
+      {/* ── Ghost background letter ──────────────────────────────── */}
       <div
         className="absolute pointer-events-none select-none"
         style={{
@@ -97,6 +97,51 @@ const ManifestoBreak = () => {
         }}
       >
         G
+      </div>
+
+      {/* ── Mini Spinning Hero Orbs (Right Side Parallax) ─────────── */}
+      <div
+        className="absolute right-[5%] top-1/2 -translate-y-1/2 w-[300px] h-[300px] pointer-events-none hidden lg:block z-0"
+        style={{
+          opacity: visible ? 1 : 0,
+          transition: 'opacity 2s ease 0.5s',
+        }}
+      >
+        {/* Outer counter-rotating ring */}
+        <div
+          className="absolute inset-0 z-0 rounded-full blur-[40px] transition-all duration-[1500ms]"
+          style={{
+            opacity: dark ? 0.4 : 0.25,
+            transform: `translate(${(0.5 - mx) * 60}px, ${(0.5 - my) * 60}px) scale(1)`,
+            transition: 'transform 1.8s cubic-bezier(0.16,1,0.3,1)'
+          }}
+        >
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background: 'conic-gradient(from 0deg at 50% 50%, #3b82f6 0deg, transparent 60deg, #a853ba 120deg, transparent 180deg, #e92a67 240deg, transparent 300deg, #3b82f6 360deg)',
+              animation: 'heroSpinCCW 30s linear infinite',
+            }}
+          />
+        </div>
+
+        {/* Inner tracking conic bloom */}
+        <div
+          className="absolute inset-[10%] z-0 rounded-full blur-[35px] transition-all duration-[2000ms]"
+          style={{
+            opacity: dark ? 0.6 : 0.45,
+            transform: `translate(${(mx - 0.5) * -80}px, ${(my - 0.5) * -80}px) scale(1)`,
+            transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)'
+          }}
+        >
+          <div
+            className="absolute inset-0 rounded-full"
+            style={{
+              background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
+              animation: 'heroSpin 20s linear infinite',
+            }}
+          />
+        </div>
       </div>
 
       {/* ── Subtle dot grid ─────────────────────────────────────── */}
