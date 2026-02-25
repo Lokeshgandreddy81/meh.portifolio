@@ -134,46 +134,106 @@ const Hero = () => {
             </span>
 
             <h1 className="flex flex-col leading-[0.85] tracking-tighter relative group cursor-default">
-              {/* Fluid Gradient Mesh Mask Background */}
+
+              {/* Persistent ambient glow behind the headline */}
               <div
-                className="absolute inset-[-20%] z-0 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-[2s]"
+                className="absolute -inset-8 z-0 pointer-events-none"
                 style={{
-                  background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)',
-                  animation: 'spin 10s linear infinite'
+                  background: 'radial-gradient(ellipse 80% 60% at 40% 50%, rgba(99,102,241,0.12) 0%, rgba(168,85,247,0.08) 50%, transparent 75%)',
+                  animation: 'heroAura 6s ease-in-out infinite',
                 }}
               />
-              <style>{`
-                @keyframes spin {
-                  from { transform: rotate(0deg); }
-                  to { transform: rotate(360deg); }
-                }
-              `}</style>
 
-              {/* Line 1 */}
-              <span className="overflow-hidden py-2 inline-block -ml-2 relative z-10 mix-blend-difference text-white">
+              {/* Hover: spinning chromatic blob (keep from original) */}
+              <div
+                className="absolute inset-[-20%] z-0 rounded-full blur-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-[2s] pointer-events-none"
+                style={{
+                  background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)',
+                  animation: 'heroSpin 10s linear infinite'
+                }}
+              />
+
+              {/* ── Line 1: IDEAS BECOME — flowing gradient fill ── */}
+              <span className="overflow-hidden py-2 inline-block -ml-1 relative z-10">
                 <span
-                  className="inline-block transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] text-[10vw] md:text-[7rem] lg:text-[9rem] font-medium uppercase tracking-tight leading-none"
+                  className="inline-block text-[10vw] md:text-[7rem] lg:text-[9rem] font-medium uppercase tracking-tight leading-none"
                   style={{
                     fontFamily: 'Inter, sans-serif',
-                    transform: isMounted ? 'translateY(0)' : 'translateY(100%)'
+                    background: 'linear-gradient(100deg, #e0e7ff 0%, #818cf8 18%, #a78bfa 36%, #f472b6 54%, #fb923c 72%, #e0e7ff 100%)',
+                    backgroundSize: '300% 100%',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    animation: 'heroGradientFlow 6s linear infinite',
+                    transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
+                    transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)',
+                    filter: 'drop-shadow(0 0 40px rgba(139,92,246,0.3))',
                   }}
                 >
                   Ideas Become
                 </span>
               </span>
-              {/* Line 2 */}
-              <span className="overflow-hidden py-2 inline-block ml-4 md:ml-16 relative z-10 mix-blend-difference text-white">
+
+              {/* ── Line 2: INFRASTRUCTURE — outlined + gradient lit ── */}
+              <span className="overflow-hidden py-2 inline-block ml-4 md:ml-16 relative z-10">
                 <span
-                  className="inline-block transition-transform duration-[1.4s] ease-[cubic-bezier(0.16,1,0.3,1)] text-[11vw] md:text-[8rem] lg:text-[10rem] font-light italic uppercase tracking-tighter leading-none"
+                  className="inline-block text-[11vw] md:text-[8rem] lg:text-[10rem] font-light italic uppercase tracking-tighter leading-none relative"
                   style={{
                     fontFamily: 'Cormorant Garamond, serif',
-                    transform: isMounted ? 'translateY(0)' : 'translateY(100%)',
-                    transitionDelay: '0.1s'
+                    transform: isMounted ? 'translateY(0)' : 'translateY(110%)',
+                    transition: 'transform 1.4s cubic-bezier(0.16,1,0.3,1)',
+                    transitionDelay: '0.12s',
                   }}
                 >
-                  Infrastructure
+                  {/* Gradient fill layer */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 select-none"
+                    style={{
+                      background: 'linear-gradient(100deg, #fb923c 0%, #f472b6 25%, #a78bfa 50%, #818cf8 75%, #fb923c 100%)',
+                      backgroundSize: '300% 100%',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                      animation: 'heroGradientFlow 6s linear infinite reverse',
+                      // Slight delay to create offset between line 1 and 2
+                      animationDelay: '-3s',
+                      opacity: 0.9,
+                    }}
+                  >
+                    Infrastructure
+                  </span>
+                  {/* Outline layer — gives depth and makes it feel etched */}
+                  <span
+                    style={{
+                      background: 'linear-gradient(100deg, #fb923c 0%, #f472b6 25%, #a78bfa 50%, #818cf8 75%, #fb923c 100%)',
+                      backgroundSize: '300% 100%',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      backgroundClip: 'text',
+                      animation: 'heroGradientFlow 6s linear infinite reverse',
+                      animationDelay: '-3s',
+                    }}
+                  >
+                    Infrastructure
+                  </span>
                 </span>
               </span>
+
+              <style>{`
+                @keyframes heroSpin {
+                  from { transform: rotate(0deg); }
+                  to { transform: rotate(360deg); }
+                }
+                @keyframes heroGradientFlow {
+                  0%   { background-position: 0%   50%; }
+                  100% { background-position: 300% 50%; }
+                }
+                @keyframes heroAura {
+                  0%, 100% { opacity: 0.8; transform: scale(1); }
+                  50%      { opacity: 1;   transform: scale(1.05); }
+                }
+              `}</style>
             </h1>
           </div>
 
@@ -193,7 +253,7 @@ const Hero = () => {
               <img
                 src={siteConfig.profileImage}
                 alt={siteConfig.name}
-                className="w-full h-full object-cover object-[center_80%] filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform scale-110 drop-shadow-2xl"
+                className="w-full h-full object-cover object-center filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform scale-110 drop-shadow-2xl"
                 style={{
                   transform: isMounted
                     ? `scale(1) translate3d(${mousePos.x * -0.8}px, ${imageTranslateY * -0.8 + mousePos.y * -0.8}px, 0)`
