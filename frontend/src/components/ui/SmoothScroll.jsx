@@ -44,6 +44,7 @@ const SmoothScroll = ({ children }) => {
             // Write the lerped value to a global CSS variable so children (like Hero parallax)
             // can perfectly synchronize with the smooth scroll instead of fighting raw window.scrollY
             document.body.style.setProperty('--scroll-y', config.currentY);
+            window.smoothScrollY = config.currentY; // Fast JS global reference to avoid getComputedStyle thrashing
 
             // Apply transform to the container with 3D hardware acceleration
             if (scrollContainerRef.current) {
