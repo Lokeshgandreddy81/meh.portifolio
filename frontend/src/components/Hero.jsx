@@ -16,7 +16,10 @@ const Hero = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           if (sectionRef.current) {
-            const sy = window.scrollY;
+            // Read lerped smooth scroll value
+            const rawBodyScroll = getComputedStyle(document.body).getPropertyValue('--scroll-y');
+            const sy = rawBodyScroll ? parseFloat(rawBodyScroll) : window.scrollY;
+
             sectionRef.current.style.setProperty('--sy', sy);
 
             // Calculate opacity fade based on viewport

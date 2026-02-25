@@ -22,7 +22,10 @@ const Header = ({ onMenuClick }) => {
     const onScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          const y = window.scrollY;
+          // Read lerped smooth scroll value
+          const rawBodyScroll = getComputedStyle(document.body).getPropertyValue('--scroll-y');
+          const y = rawBodyScroll ? parseFloat(rawBodyScroll) : window.scrollY;
+
           const h = document.documentElement.scrollHeight - window.innerHeight;
           setScrolled(y > 80);
 

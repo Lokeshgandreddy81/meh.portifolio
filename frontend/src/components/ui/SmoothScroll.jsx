@@ -41,6 +41,10 @@ const SmoothScroll = ({ children }) => {
             // Lerp (Linear Interpolation) for that smooth inertia
             config.currentY += (config.targetY - config.currentY) * config.ease;
 
+            // Write the lerped value to a global CSS variable so children (like Hero parallax)
+            // can perfectly synchronize with the smooth scroll instead of fighting raw window.scrollY
+            document.body.style.setProperty('--scroll-y', config.currentY);
+
             // Apply transform to the container with 3D hardware acceleration
             if (scrollContainerRef.current) {
                 scrollContainerRef.current.style.transform = `translate3d(0, -${config.currentY}px, 0)`;
