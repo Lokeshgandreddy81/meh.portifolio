@@ -2,34 +2,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import siteConfig from '../config/siteConfig';
 
 const Hero = () => {
+  const [scrollY, setScrollY] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const profileRef = useRef(null);
-  const sectionRef = useRef(null);
 
   useEffect(() => {
     // Trigger mount animations after a tiny delay for smoothness
     const timer = setTimeout(() => setIsMounted(true), 100);
 
-    let ticking = false;
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          if (sectionRef.current) {
-            // Read lerped smooth scroll value
-            const rawBodyScroll = getComputedStyle(document.body).getPropertyValue('--scroll-y');
-            const sy = rawBodyScroll ? parseFloat(rawBodyScroll) : window.scrollY;
-
-            sectionRef.current.style.setProperty('--sy', sy);
-
-            // Calculate opacity fade based on viewport
-            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
-            const fade = Math.max(0, 1 - (sy / (vh * 0.8)));
-            sectionRef.current.style.setProperty('--fade', fade);
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
+      setScrollY(window.scrollY);
     };
 
     const handleMouseMove = (e) => {
@@ -37,13 +20,11 @@ const Hero = () => {
       const rect = profileRef.current.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
-      profileRef.current.style.setProperty('--mx', x * 0.1);
-      profileRef.current.style.setProperty('--my', y * 0.1);
+      setMousePos({ x: x * 0.1, y: y * 0.1 });
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('mousemove', handleMouseMove);
-    handleScroll(); // Initialize variables immediately
 
     return () => {
       clearTimeout(timer);
@@ -51,6 +32,11 @@ const Hero = () => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, []);
+
+  // Parallax physics calculations
+  const textTranslateY = scrollY * 0.4;
+  const imageTranslateY = scrollY * 0.15;
+  const opacityFade = Math.max(0, 1 - (scrollY / (window.innerHeight * 0.8)));
 
   // Split name for staggered reveal
   const nameParts = siteConfig.name.split(' ');
@@ -60,22 +46,21 @@ const Hero = () => {
   return (
     <section
       id="home"
-      ref={sectionRef}
-      className="min-h-[120dvh] w-full relative z-50 bg-[#f8f9fa] dark:bg-[#0a0a0a] transition-colors duration-500 ease-out flex flex-col justify-center overflow-hidden"
+      className="min-h-[120vh] w-full relative z-50 bg-[#f8f9fa] dark:bg-[#0a0a0a] transition-colors duration-500 ease-out flex flex-col justify-center overflow-hidden"
     >
       {/* High-End Ambient Aura (Light Mode) */}
       <div
         className="absolute inset-0 pointer-events-none opacity-40 mix-blend-multiply block dark:hidden will-change-transform"
         style={{
           background: 'radial-gradient(circle at 70% 30%, rgba(0,0,0,0.06) 0%, rgba(0,0,0,0) 50%)',
-          transform: 'translate3d(0, calc(var(--sy, 0) * 0.2px), 0)'
+          transform: `translateY(${scrollY * 0.2}px)`
         }}
       />
       <div
         className="absolute inset-0 pointer-events-none opacity-30 mix-blend-multiply block dark:hidden will-change-transform"
         style={{
           background: 'radial-gradient(circle at 30% 80%, rgba(0,0,0,0.04) 0%, rgba(0,0,0,0) 60%)',
-          transform: 'translate3d(0, calc(var(--sy, 0) * -0.1px), 0)'
+          transform: `translateY(${scrollY * -0.1}px)`
         }}
       />
 
@@ -89,7 +74,7 @@ const Hero = () => {
           background: 'radial-gradient(circle, #1e40af 0%, #1d4ed8 30%, #312e81 60%, transparent 80%)',
           filter: 'blur(90px)',
           opacity: 0.3,
-          transform: 'translate3d(0, calc(var(--sy, 0) * 0.15px), 0)',
+          transform: `translateY(${scrollY * 0.15}px)`,
         }}
       />
       {/* Violet orb — bottom left */}
@@ -101,7 +86,7 @@ const Hero = () => {
           background: 'radial-gradient(circle, #5b21b6 0%, #6d28d9 40%, #4c1d95 65%, transparent 82%)',
           filter: 'blur(80px)',
           opacity: 0.22,
-          transform: 'translate3d(0, calc(var(--sy, 0) * -0.08px), 0)',
+          transform: `translateY(${scrollY * -0.08}px)`,
         }}
       />
       {/* Pink accent orb — center fade */}
@@ -128,8 +113,8 @@ const Hero = () => {
       <div
         className="container mx-auto px-6 md:px-12 relative z-10 w-full"
         style={{
-          opacity: 'var(--fade, 1)',
-          transform: 'translate3d(0, calc(var(--sy, 0) * 0.4px), 0)',
+          opacity: opacityFade,
+          transform: `translateY(${textTranslateY}px)`,
           willChange: 'transform, opacity'
         }}
       >
@@ -195,34 +180,27 @@ const Hero = () => {
           {/* Massive Personality Anchor - True God-Tier Scale */}
           <div
             ref={profileRef}
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-full md:w-[55%] lg:w-[45%] h-[80dvh] md:h-[110dvh] overflow-hidden group pointer-events-none z-0 mix-blend-normal"
+            className="absolute right-0 top-1/2 -translate-y-1/2 w-full md:w-[55%] lg:w-[45%] h-[80vh] md:h-[110vh] overflow-visible group pointer-events-none z-0 mix-blend-normal"
             style={{
-              transform: 'perspective(2000px) rotateX(calc(var(--my, 0) * -0.2deg)) rotateY(calc(var(--mx, 0) * -0.2deg))',
-              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-              maskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)',
-              WebkitMaskImage: 'linear-gradient(to bottom, black 85%, transparent 100%)'
+              transform: `perspective(2000px) rotateX(${mousePos.y * -0.2}deg) rotateY(${mousePos.x * -0.2}deg)`,
+              transition: 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)'
             }}
           >
             {/* Ambient Image Glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-purple-500/10 to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-0" />
 
-            {/* Scroll-parallax wrapper. Shifted bleeding room to the top to prevent cropping the face at the bottom */}
-            <div
-              className="absolute inset-x-0 -top-[30%] -bottom-[2%] will-change-transform"
-              style={{
-                transform: 'translate3d(0, calc(var(--sy, 0) * -0.12px), 0)', // 0.15 Image parallax * -0.8 multiplier
-              }}
-            >
-              {/* Image with mouse-parallax and mount animation (Has CSS transition for smoothing) */}
+            <div className="relative w-full h-full">
               <img
                 src={siteConfig.profileImage}
                 alt={siteConfig.name}
-                className="w-full h-full object-cover object-[center_85%] filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform drop-shadow-2xl"
+                className="w-full h-full object-cover object-center filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform scale-110 drop-shadow-2xl"
                 style={{
                   transform: isMounted
-                    ? 'scale(1.02) translate3d(calc(var(--mx, 0) * -0.8px), calc(var(--my, 0) * -0.8px), 0)'
+                    ? `scale(1) translate3d(${mousePos.x * -0.8}px, ${imageTranslateY * -0.8 + mousePos.y * -0.8}px, 0)`
                     : 'scale(1.1) translateY(40px)',
-                  transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 1.5s ease'
+                  transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 1.5s ease',
+                  maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
+                  WebkitMaskImage: 'linear-gradient(to bottom, black 80%, transparent 100%)'
                 }}
               />
             </div>
