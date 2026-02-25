@@ -6,7 +6,7 @@ import ProjectAccessModal from './ProjectAccessModal';
 const ExpandingCard = ({ project, index, isHovered, onHover, onLeave, onOpen }) => {
   return (
     <div
-      className={`relative h-[60vh] md:h-[75vh] overflow-hidden rounded-[2rem] md:rounded-[3rem] transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer group bg-[#070707] dark:bg-[#08081a] border border-black/10 dark:border-[rgba(99,102,241,0.12)] ${isHovered ? 'flex-[4] md:flex-[5]' : 'flex-[1]'
+      className={`relative h-[60vh] md:h-[75vh] overflow-hidden rounded-[2rem] md:rounded-[3rem] transition-all duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer group bg-[#070707] dark:bg-black border border-black/10 dark:border-[rgba(99,102,241,0.12)] ${isHovered ? 'flex-[4] md:flex-[5]' : 'flex-[1]'
         }`}
       onMouseEnter={() => onHover(index)}
       onMouseLeave={onLeave}
@@ -111,7 +111,7 @@ const WorkSection = () => {
 
       <section
         id="work"
-        className="w-full bg-transparent dark:bg-[#060614] relative z-40 section-border border-t pt-32 pb-48 transition-colors duration-500 overflow-hidden"
+        className="w-full bg-transparent dark:bg-black relative z-40 section-border border-t pt-32 pb-48 transition-colors duration-500 overflow-hidden"
       >
         {/* Dark mode ambient light source at top of section */}
         <div className="absolute inset-x-0 top-0 h-[50vh] pointer-events-none hidden dark:block"

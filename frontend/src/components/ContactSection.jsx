@@ -12,7 +12,7 @@ const NavLink = ({ href, children, dark }) => (
     rel="noopener noreferrer"
     className="group flex items-center gap-1.5 w-fit transition-all duration-300"
     style={{ color: dark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)' }}
-    onMouseEnter={e => { e.currentTarget.style.color = dark ? '#fff' : '#0a0a0a'; }}
+    onMouseEnter={e => { e.currentTarget.style.color = dark ? '#ffffff' : '#0a0a0a'; }}
     onMouseLeave={e => { e.currentTarget.style.color = dark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)'; }}
   >
     <span className="font-mono text-sm md:text-base tracking-tight">{children}</span>
@@ -83,7 +83,7 @@ const ContactSection = () => {
     ],
   };
 
-  const bg = dark ? '#060606' : '#f0ede8';
+  const bg = dark ? '#000000' : '#f0ede8';
   const text = dark ? '#ffffff' : '#0a0a0a';
   const sub = dark ? 'rgba(255,255,255,0.25)' : 'rgba(0,0,0,0.25)';
   const border = dark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
@@ -226,7 +226,7 @@ const ContactSection = () => {
             <a href={`mailto:${siteConfig.email}`}
               className="transition-colors duration-300 break-all"
               style={{ color: dark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)', fontSize: '0.8rem', fontFamily: 'monospace' }}
-              onMouseEnter={e => e.currentTarget.style.color = dark ? '#fff' : '#000'}
+              onMouseEnter={e => e.currentTarget.style.color = dark ? '#ffffff' : '#000000'}
               onMouseLeave={e => e.currentTarget.style.color = dark ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.6)'}
             >
               {siteConfig.email}
@@ -248,7 +248,7 @@ const ContactSection = () => {
                 onClick={l.onClick}
                 className="group flex items-center gap-1.5 w-fit transition-all duration-300 cursor-pointer"
                 style={{ color: dark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)', background: 'none', border: 'none', padding: 0 }}
-                onMouseEnter={e => e.currentTarget.style.color = dark ? '#fff' : '#0a0a0a'}
+                onMouseEnter={e => e.currentTarget.style.color = dark ? '#ffffff' : '#0a0a0a'}
                 onMouseLeave={e => e.currentTarget.style.color = dark ? 'rgba(255,255,255,0.45)' : 'rgba(0,0,0,0.4)'}
               >
                 <span className="font-mono text-sm md:text-base tracking-tight">{l.label}</span>

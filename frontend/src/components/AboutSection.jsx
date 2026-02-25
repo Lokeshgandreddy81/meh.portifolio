@@ -83,7 +83,7 @@ const ManifestoCard = ({ index, section, dark }) => {
           fontFamily: 'Cormorant Garamond, serif',
           color: dark
             ? (hovered ? '#fff' : 'rgba(255,255,255,0.85)')
-            : (hovered ? '#0a0a0a' : 'rgba(10,10,10,0.75)'),
+            : (hovered ? '#000000' : 'rgba(0,0,0,0.75)'),
           transform: hovered ? 'skewX(-3deg) translateX(8px)' : 'skewX(0deg) translateX(0)',
         }}
       >
@@ -124,7 +124,7 @@ const AboutSection = () => {
     <section
       id="about"
       className="w-full relative z-30 overflow-hidden transition-colors duration-700"
-      style={{ background: dark ? '#050505' : '#f7f6f2' }}
+      style={{ background: dark ? '#000000' : '#f7f6f2' }}
     >
       <div className="container mx-auto px-6 md:px-12 max-w-[1600px] py-24 md:py-32">
 
@@ -140,7 +140,7 @@ const AboutSection = () => {
             className="text-7xl md:text-[10rem] font-light tracking-tighter leading-none transition-colors duration-700"
             style={{
               fontFamily: 'Cormorant Garamond, serif',
-              color: dark ? '#fff' : '#0a0a0a',
+              color: dark ? '#ffffff' : '#000000',
             }}
           >
             The Architect
@@ -165,7 +165,7 @@ const AboutSection = () => {
                 minHeight: '88vh',
                 borderRadius: '2.5rem',
                 /* Solid background prevents ANY parent color from bleeding through */
-                background: dark ? '#0a0a0a' : '#f7f6f2',
+                background: dark ? '#000000' : '#f7f6f2',
                 isolation: 'isolate',
                 border: dark ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.08)',
                 boxShadow: dark
@@ -200,7 +200,7 @@ const AboutSection = () => {
                   className="text-4xl md:text-6xl font-light leading-none transition-colors duration-700"
                   style={{
                     fontFamily: 'Cormorant Garamond, serif',
-                    color: dark ? '#fff' : '#0a0a0a',
+                    color: dark ? '#ffffff' : '#000000',
                   }}
                 >
                   {siteConfig.name}

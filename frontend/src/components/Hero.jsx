@@ -42,7 +42,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="min-h-[120vh] w-full relative z-50 dark:bg-[#07080d] bg-[#f8f9fa] transition-colors duration-500 ease-out flex flex-col justify-center overflow-hidden"
+      className="min-h-[120vh] w-full relative z-50 dark:bg-black bg-[#f8f9fa] transition-colors duration-500 ease-out flex flex-col justify-center overflow-hidden"
     >
 
       {/* ════════════════════════════════════════════════════
@@ -225,7 +225,7 @@ const Hero = () => {
                     letterSpacing: '-0.02em',
                     textTransform: 'uppercase',
                     lineHeight: '1',
-                    background: 'linear-gradient(135deg, #1e1e28 0%, #030305 100%)',
+                    background: 'linear-gradient(135deg, #000000 0%, #000000 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
@@ -251,7 +251,7 @@ const Hero = () => {
                     letterSpacing: '0.01em',
                     textTransform: 'uppercase',
                     lineHeight: '1',
-                    background: 'linear-gradient(135deg, #2a2a35 0%, #050508 100%)',
+                    background: 'linear-gradient(135deg, #000000 0%, #000000 100%)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text',
@@ -338,7 +338,7 @@ const Hero = () => {
             <div
               className="absolute inset-0 z-20 origin-top"
               style={{
-                background: 'linear-gradient(to bottom, #07080d 0%, #07080d 60%, transparent 100%)',
+                background: 'linear-gradient(to bottom, #000000 0%, #000000 60%, transparent 100%)',
                 transform: isMounted ? 'scaleY(0)' : 'scaleY(1)',
                 transition: 'transform 2.2s cubic-bezier(0.85,0,0.15,1)',
                 transitionDelay: '0.15s',

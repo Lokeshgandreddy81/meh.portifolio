@@ -83,7 +83,7 @@ const Header = () => {
   /* Pill appearance tokens — adapt to scroll and theme             */
   /* ─────────────────────────────────────────────────────────────── */
   const pillBg = scrolled
-    ? (isDark ? 'rgba(7,8,13,0.65)' : 'rgba(255,255,255,0.60)')
+    ? (isDark ? 'rgba(0,0,0,0.65)' : 'rgba(255,255,255,0.60)')
     : 'transparent';
 
   const pillBorder = scrolled
