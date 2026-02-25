@@ -78,63 +78,51 @@ const ManifestoBreak = () => {
       className="w-full relative overflow-hidden transition-colors duration-700 flex flex-col min-h-screen justify-center"
       style={{ background: bg }}
     >
-      {/* ── Medium-Sized Jaw-Dropping G Parallax Mask ───────────────── */}
+      {/* ── Refined & Natural G Parallax ──────────────────────────────── */}
       <div
-        className="absolute right-[5%] top-1/2 -translate-y-[45%] w-[400px] h-full pointer-events-none hidden lg:flex items-center justify-center select-none z-0"
+        className="absolute right-0 top-0 w-[45vw] h-full pointer-events-none hidden lg:flex items-center justify-center select-none z-0"
         style={{
           opacity: visible ? 1 : 0,
           transition: 'opacity 2.5s ease 0.3s',
         }}
       >
-        {/* Layer 1: Ambient base glow behind the G */}
+        {/* Soft, natural ambient base glow */}
         <div
-          className="absolute inset-0 rounded-full blur-[80px] opacity-[0.15]"
+          className="absolute inset-0 rounded-full blur-[100px] opacity-[0.12]"
           style={{
-            background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
-            transform: `translate(${(0.5 - mx) * 30}px, ${(0.5 - my) * 30}px)`,
+            background: 'radial-gradient(circle at center, #a853ba 0%, #3b82f6 50%, transparent 100%)',
+            transform: `translate(${(0.5 - mx) * 20}px, ${(0.5 - my) * 20}px)`,
             transition: 'transform 2s cubic-bezier(0.16,1,0.3,1)'
           }}
         />
 
-        {/* Layer 2: The actual G containing spinning animations */}
+        {/* Clean, elegant G */}
         <div
-          className="absolute inset-0 flex items-center justify-center overflow-visible"
+          className="absolute inset-0 flex items-center justify-center"
           style={{
-            transform: `translate(${(mx - 0.5) * -60}px, ${(my - 0.5) * -40}px)`,
+            transform: `translate(${(mx - 0.5) * -40}px, ${(my - 0.5) * -25}px)`,
             transition: 'transform 1.2s cubic-bezier(0.16,1,0.3,1)'
           }}
         >
-          <div className="relative w-full h-full flex items-center justify-center mix-blend-screen isolate pt-8">
-            <span
-              style={{
-                fontFamily: 'Cormorant Garamond, serif',
-                fontSize: 'clamp(20rem, 35vw, 42rem)',
-                fontWeight: 300,
-                lineHeight: 0.8,
-                letterSpacing: '-0.06em',
-                background: 'conic-gradient(from 0deg at 50% 50%, #3b82f6 0deg, transparent 60deg, #a853ba 120deg, transparent 180deg, #e92a67 240deg, transparent 300deg, #3b82f6 360deg)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                display: 'inline-block',
-                position: 'relative',
-              }}
-            >
-              G
-              {/* Internal spinning overlay on the text */}
-              <div
-                className="absolute inset-0 pointer-events-none mix-blend-overlay opacity-80"
-                style={{
-                  background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 120deg, #e92a67 240deg, #2a8af6 360deg)',
-                  animation: 'heroSpin 15s linear infinite',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                G
-              </div>
-            </span>
-          </div>
+          <span
+            style={{
+              fontFamily: 'Cormorant Garamond, serif',
+              fontSize: 'clamp(22rem, 38vw, 44rem)',
+              fontWeight: 300,
+              lineHeight: 0.8,
+              letterSpacing: '-0.06em',
+              background: 'linear-gradient(135deg, #3b82f6 0%, #a853ba 40%, #e92a67 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              opacity: 0.75, // Keeps it natural and sheer
+              display: 'inline-block',
+              position: 'relative',
+              right: '2vw', // Optical centering adjustment
+            }}
+          >
+            G
+          </span>
         </div>
       </div>
 
@@ -274,15 +262,20 @@ const ManifestoBreak = () => {
 
       {/* ── Vertical side label ─────────────────────────────────── */}
       <div
-        className="absolute right-8 top-1/2 hidden lg:block pointer-events-none"
+        className="absolute right-6 top-1/2 -translate-y-1/2 hidden lg:flex pointer-events-none items-center justify-center z-10 h-full"
         style={{
-          transform: 'translateY(-50%) rotate(90deg)',
-          transformOrigin: 'center',
-          opacity: visible ? 0.2 : 0,
+          opacity: visible ? 0.3 : 0,
           transition: 'opacity 1s ease 0.8s',
         }}
       >
-        <span className="font-mono text-[9px] uppercase tracking-[0.5em] whitespace-nowrap" style={{ color: dark ? '#0a0a0a' : '#f0efe9' }}>
+        <span
+          className="font-mono text-[9px] uppercase tracking-[0.5em] whitespace-nowrap"
+          style={{
+            color: dark ? '#ffffff' : '#0a0a0a',
+            writingMode: 'vertical-rl',
+            textOrientation: 'mixed',
+          }}
+        >
           Gandreddy Systems · Core Architecture
         </span>
       </div>
