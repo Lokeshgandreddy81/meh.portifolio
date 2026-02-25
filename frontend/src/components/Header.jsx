@@ -120,7 +120,7 @@ const Header = ({ onMenuClick }) => {
           style={{
             borderRadius: '999px',
             padding: scrolled ? '10px 18px' : '9px 16px',
-            background: 'rgba(255,255,255,0.08)', // Base border color beneath the spin
+            background: 'rgba(255,255,255,0.06)', // Slightly reduced base background to let the spin show through
             backdropFilter: 'blur(48px)',
             WebkitBackdropFilter: 'blur(48px)',
             transition: 'all 0.9s cubic-bezier(0.16,1,0.3,1)',
@@ -132,6 +132,19 @@ const Header = ({ onMenuClick }) => {
                  0 0 0 0.5px rgba(255,255,255,0.06)`,
           }}
         >
+          {/* Inner Spinning Kinetic Gradient (Matches Hero Section) */}
+          <div className="absolute inset-0 z-0 pointer-events-none rounded-full overflow-hidden mask-image-circle">
+            <div
+              className="absolute top-1/2 left-1/2 w-[200%] h-[200%] -translate-x-1/2 -translate-y-1/2 blur-[24px]"
+              style={{
+                background: 'conic-gradient(from 180deg at 50% 50%, #2a8af6 0deg, #a853ba 180deg, #e92a67 360deg)',
+                animation: 'islandSpin 8s linear infinite',
+                opacity: scrolled ? 0.4 : 0.15,
+                transition: 'opacity 0.6s ease',
+              }}
+            />
+          </div>
+
           {/* The Spinning Gradient Border Container (clips the center to leave only a 1px border) */}
           <div
             className="absolute inset-0 z-0 pointer-events-none rounded-full"
