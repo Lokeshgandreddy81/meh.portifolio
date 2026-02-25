@@ -302,9 +302,9 @@ const ContactSection = () => {
             <span
               className="block w-full transition-all duration-500 group-hover:opacity-0"
               style={{
-                fontWeight: 300,
-                color: dark ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.12)',
-                WebkitTextStroke: dark ? '2px rgba(255,255,255,0.6)' : '2px rgba(0,0,0,0.4)',
+                fontWeight: 600,
+                color: dark ? '#000000' : '#ffffff',
+                WebkitTextStroke: dark ? '3px #ffffff' : '3px #000000',
               }}
             >
               GANDREDDY
@@ -314,9 +314,9 @@ const ContactSection = () => {
             <span
               className="absolute inset-0 flex items-center justify-center w-full opacity-0 transition-all duration-500 group-hover:opacity-100"
               style={{
-                fontWeight: 300,
+                fontWeight: 600,
                 fontStyle: 'italic',
-                color: dark ? 'rgba(255,255,255,0.75)' : 'rgba(0,0,0,0.7)',
+                color: dark ? '#ffffff' : '#000000',
                 WebkitTextStroke: '0',
               }}
             >
