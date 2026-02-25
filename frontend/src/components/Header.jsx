@@ -106,21 +106,39 @@ const Header = ({ onMenuClick }) => {
           style={{
             borderRadius: '999px',
             padding: scrolled ? '10px 18px' : '9px 16px',
-            background: 'rgba(6,6,10,0.88)',
+            background: 'rgba(255,255,255,0.08)', // Base border color beneath the spin
             backdropFilter: 'blur(48px)',
             WebkitBackdropFilter: 'blur(48px)',
-            border: '1px solid rgba(255,255,255,0.1)',
             transition: 'all 0.9s cubic-bezier(0.16,1,0.3,1)',
             boxShadow: scrolled
               ? `0 0 0 0.5px rgba(168,85,247,0.25),
                  0 2px 16px rgba(99,102,241,0.35),
-                 0 8px 40px rgba(0,0,0,0.6),
-                 inset 0 1px 0 rgba(255,255,255,0.13)`
+                 0 8px 40px rgba(0,0,0,0.6)`
               : `0 2px 12px rgba(0,0,0,0.4),
-                 inset 0 1px 0 rgba(255,255,255,0.08),
                  0 0 0 0.5px rgba(255,255,255,0.06)`,
           }}
         >
+          {/* The Spinning Gradient Ring */}
+          <div
+            className="absolute z-0 pointer-events-none"
+            style={{
+              inset: '-100%',
+              background: 'conic-gradient(from 0deg, transparent 40%, rgba(59,130,246,0.8), rgba(168,85,247,1), rgba(236,72,153,0.8), transparent 60%)',
+              animation: 'islandSpin 3s linear infinite',
+              opacity: scrolled ? 1 : 0,
+              transition: 'opacity 0.6s ease',
+            }}
+          />
+
+          {/* Inner Dark Mask (leaves a 1px gap for the spinning border) */}
+          <div
+            className="absolute inset-[1px] rounded-full z-[1] pointer-events-none"
+            style={{
+              background: 'rgba(6,6,10,0.92)',
+              boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.05)',
+            }}
+          />
+
           {/* Scroll progress bar */}
           <div
             className="absolute top-0 left-0 pointer-events-none"
