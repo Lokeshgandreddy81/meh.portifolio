@@ -189,14 +189,21 @@ const Hero = () => {
             {/* Ambient Image Glow */}
             <div className="absolute inset-0 bg-gradient-to-tr from-blue-500/20 via-purple-500/10 to-transparent blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-0" />
 
-            <div className="relative w-full h-full">
+            {/* Scroll-parallax wrapper (No CSS transition, instantaneous to match Lenis smooth scroll) */}
+            <div
+              className="relative w-full h-full will-change-transform"
+              style={{
+                transform: `translate3d(0, ${imageTranslateY * -0.8}px, 0)`,
+              }}
+            >
+              {/* Image with mouse-parallax and mount animation (Has CSS transition for smoothing) */}
               <img
                 src={siteConfig.profileImage}
                 alt={siteConfig.name}
                 className="w-full h-full object-cover object-bottom filter grayscale-[30%] contrast-125 brightness-90 md:brightness-100 will-change-transform scale-110 drop-shadow-2xl"
                 style={{
                   transform: isMounted
-                    ? `scale(1) translate3d(${mousePos.x * -0.8}px, ${imageTranslateY * -0.8 + mousePos.y * -0.8}px, 0)`
+                    ? `scale(1) translate3d(${mousePos.x * -0.8}px, ${mousePos.y * -0.8}px, 0)`
                     : 'scale(1.1) translateY(40px)',
                   transition: 'transform 1s cubic-bezier(0.16, 1, 0.3, 1), filter 1.5s ease',
                   maskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
